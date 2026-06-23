@@ -19,19 +19,25 @@ export const revalidate = 300; // 5 minutes - balances freshness with performanc
 const GITHUB_API_BASE = 'https://api.github.com';
 
 async function fetchGitHub(endpoint: string, token?: string) {
-    const headers: HeadersInit = {
+    const normalizedToken = token?.trim();
+    const getHeaders = (withAuth = true): HeadersInit => ({
         'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'Portfolio-Metrics-App'
-    };
+        'User-Agent': 'Portfolio-Metrics-App',
+        ...(withAuth && normalizedToken ? { Authorization: `Bearer ${normalizedToken}` } : {}),
+    });
 
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const response = await fetch(`${GITHUB_API_BASE}${endpoint}`, {
-        headers,
+    let response = await fetch(`${GITHUB_API_BASE}${endpoint}`, {
+        headers: getHeaders(),
         next: { revalidate: 60 }
     });
+
+    if (response.status === 401 && normalizedToken) {
+        console.warn('GitHub token was rejected; retrying public request without authentication.');
+        response = await fetch(`${GITHUB_API_BASE}${endpoint}`, {
+            headers: getHeaders(false),
+            next: { revalidate: 60 }
+        });
+    }
 
     if (!response.ok) {
         throw new Error(`GitHub API error: ${response.status}`);
@@ -44,7 +50,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const username = searchParams.get('username') || process.env.GITHUB_USERNAME || 'TheManishCode';
     const type = searchParams.get('type') || 'profile';
-    const token = process.env.GITHUB_TOKEN;
+    const token = process.env.GITHUB_TOKEN?.trim();
 
     try {
         // Repos endpoint - returns list of repositories (excluding forks)

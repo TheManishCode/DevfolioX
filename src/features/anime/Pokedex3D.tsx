@@ -107,6 +107,7 @@ export default function Pokedex3D({ watchlist = [], onAnimeSelect }: Pokedex3DPr
     const handleClose = () => {
         setIsOpen(false);
         setCameraAngle('center');
+        setPressedButton(null);
     };
 
     // Navigate through anime list
@@ -377,9 +378,10 @@ export default function Pokedex3D({ watchlist = [], onAnimeSelect }: Pokedex3DPr
                     <div
                         className={`groupe-3d ${pressedButton === -1 ? 'btn-enfonce' : ''}`}
                         onClick={(e) => { e.stopPropagation(); handleSelect(); }}
-                        onMouseDown={() => handleButtonPress(-1)}
-                        onMouseUp={handleButtonRelease}
-                        onMouseLeave={handleButtonRelease}
+                        onPointerDown={(e) => { e.stopPropagation(); handleButtonPress(-1); }}
+                        onPointerUp={(e) => { e.stopPropagation(); handleButtonRelease(); }}
+                        onPointerLeave={handleButtonRelease}
+                        onPointerCancel={handleButtonRelease}
                     >
                         <div className="btn-noir__face btn-noir__face--front"><div></div></div>
                         <div className="btn-noir__face btn-noir__face--left"></div>
@@ -468,9 +470,10 @@ export default function Pokedex3D({ watchlist = [], onAnimeSelect }: Pokedex3DPr
                             key={num}
                             className={`bouton-carre btn-bleu bouton-carre-${num} groupe-3d ${pressedButton === num ? 'btn-enfonce' : ''}`}
                             onClick={(e) => { e.stopPropagation(); handleBlueButton(num); }}
-                            onMouseDown={() => handleButtonPress(num)}
-                            onMouseUp={handleButtonRelease}
-                            onMouseLeave={handleButtonRelease}
+                            onPointerDown={(e) => { e.stopPropagation(); handleButtonPress(num); }}
+                            onPointerUp={(e) => { e.stopPropagation(); handleButtonRelease(); }}
+                            onPointerLeave={handleButtonRelease}
+                            onPointerCancel={handleButtonRelease}
                         >
                             <div className="bouton-carre__face bouton-carre__face--front flex-center">
                                 <img
@@ -490,9 +493,10 @@ export default function Pokedex3D({ watchlist = [], onAnimeSelect }: Pokedex3DPr
                     <div
                         className={`bouton-carre btn-blanc bouton-carre-11 groupe-3d ${pressedButton === 11 ? 'btn-enfonce' : ''}`}
                         onClick={(e) => { e.stopPropagation(); handleClose(); }}
-                        onMouseDown={() => handleButtonPress(11)}
-                        onMouseUp={handleButtonRelease}
-                        onMouseLeave={handleButtonRelease}
+                        onPointerDown={(e) => { e.stopPropagation(); handleButtonPress(11); }}
+                        onPointerUp={(e) => { e.stopPropagation(); handleButtonRelease(); }}
+                        onPointerLeave={handleButtonRelease}
+                        onPointerCancel={handleButtonRelease}
                     >
                         <div className="bouton-carre__face bouton-carre__face--front flex-center">
                             <img src="/pokedex/svg/return.svg" alt="Return" style={{ height: 20 }} />
@@ -505,9 +509,10 @@ export default function Pokedex3D({ watchlist = [], onAnimeSelect }: Pokedex3DPr
                     <div
                         className={`bouton-carre btn-blanc bouton-carre-12 groupe-3d ${pressedButton === 12 ? 'btn-enfonce' : ''}`}
                         onClick={(e) => { e.stopPropagation(); handleSelect(); }}
-                        onMouseDown={() => handleButtonPress(12)}
-                        onMouseUp={handleButtonRelease}
-                        onMouseLeave={handleButtonRelease}
+                        onPointerDown={(e) => { e.stopPropagation(); handleButtonPress(12); }}
+                        onPointerUp={(e) => { e.stopPropagation(); handleButtonRelease(); }}
+                        onPointerLeave={handleButtonRelease}
+                        onPointerCancel={handleButtonRelease}
                     >
                         <div className="bouton-carre__face bouton-carre__face--front flex-center">
                             <img src="/pokedex/svg/check.svg" alt="OK" style={{ height: 20 }} />

@@ -100,6 +100,7 @@ const GitHubContributions = () => {
     const availableYears = Object.keys(yearlyTotals).sort((a, b) => Number(b) - Number(a))
     const yearTotal = yearlyTotals[selectedYear] || 0
     const grandTotal = Object.values(yearlyTotals).reduce((a, b) => a + b, 0)
+    const weekColumnCount = Math.max(weeks.length, 1)
 
     return (
         <div className="w-full mt-16 animate-slide-up delay-300">
@@ -107,7 +108,7 @@ const GitHubContributions = () => {
                 Contribution Graph
             </h2>
 
-            <div className="dark:bg-zinc-900/50 bg-[#d5d5da] rounded-xl p-6 border dark:border-zinc-800 border-zinc-400">
+            <div className="dark:bg-zinc-900/50 bg-[#d5d5da] rounded-xl p-4 sm:p-6 border dark:border-zinc-800 border-zinc-400 overflow-hidden">
                 {/* Year tabs on top */}
                 <div className="flex flex-wrap gap-2 mb-6">
                     {availableYears.map((year) => (
@@ -127,9 +128,9 @@ const GitHubContributions = () => {
                 </div>
 
                 {/* Month labels - full width */}
-                <div className="flex mb-2 text-xs dark:text-zinc-500 text-zinc-600">
+                <div className="grid grid-cols-12 mb-2 text-[10px] sm:text-xs dark:text-zinc-500 text-zinc-600">
                     {months.map((m) => (
-                        <span key={m} className="flex-1 text-center">{m}</span>
+                        <span key={m} className="text-center">{m}</span>
                     ))}
                 </div>
 
@@ -139,15 +140,18 @@ const GitHubContributions = () => {
                 ) : error ? (
                     <div className="h-[88px] flex items-center justify-center text-red-500">{error}</div>
                 ) : (
-                    <div className="flex justify-between w-full">
+                    <div
+                        className="grid w-full gap-[2px]"
+                        style={{ gridTemplateColumns: `repeat(${weekColumnCount}, minmax(0, 1fr))` }}
+                    >
                         {weeks.map((week, wi) => (
-                            <div key={wi} className="flex flex-col gap-[2px]">
+                            <div key={wi} className="flex flex-col items-center gap-[2px]">
                                 {[0, 1, 2, 3, 4, 5, 6].map((di) => {
                                     const day = week[di]
                                     return (
                                         <div
                                             key={di}
-                                            className={`w-[10px] h-[10px] rounded-sm ${day ? getContributionColor(day.level) : "bg-transparent"
+                                            className={`aspect-square w-full max-w-[10px] rounded-[2px] ${day ? getContributionColor(day.level) : "bg-transparent"
                                                 }`}
                                             title={day ? `${day.count} on ${day.date}` : ""}
                                         />
@@ -159,10 +163,10 @@ const GitHubContributions = () => {
                 )}
 
                 {/* Footer */}
-                <div className="flex items-center justify-between mt-4 text-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4 text-sm">
                     <span className="dark:text-zinc-400 text-zinc-600">
                         <span className="text-[#33E092] font-medium">{yearTotal.toLocaleString()}</span> in {selectedYear}
-                        <span className="mx-2 opacity-50">•</span>
+                        <span className="mx-2 opacity-50">/</span>
                         {grandTotal.toLocaleString()} total
                     </span>
                     <div className="flex items-center gap-1 text-xs dark:text-zinc-500 text-zinc-600">
@@ -182,7 +186,7 @@ const GitHubContributions = () => {
                     rel="noopener noreferrer"
                     className="text-sm text-black dark:text-[#33E092] hover:underline"
                 >
-                    View full profile on GitHub →
+                    View full profile on GitHub -&gt;
                 </a>
             </div>
         </div>

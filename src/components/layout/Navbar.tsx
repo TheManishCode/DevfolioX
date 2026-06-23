@@ -88,6 +88,17 @@ export function Navbar() {
     const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
+    const routePrefetchList = useMemo(() => {
+        const routes = new Set<string>()
+
+        navigationItems.forEach((item) => {
+            routes.add(item.href)
+            item.children?.forEach((child) => routes.add(child.href))
+        })
+
+        return Array.from(routes)
+    }, [])
+
     // Close dropdowns on route change
     useEffect(() => {
         setMobileMenuOpen(false)
@@ -95,6 +106,27 @@ export function Navbar() {
         setActiveDropdown(null)
         setLastClickedDropdown(null)
     }, [pathname])
+
+    useEffect(() => {
+        const warmRoutes = () => {
+            routePrefetchList
+                .filter((href) => href !== pathname)
+                .forEach((href) => router.prefetch(href))
+        }
+
+        const idleWindow = window as Window & typeof globalThis & {
+            requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number
+            cancelIdleCallback?: (handle: number) => void
+        }
+
+        if (idleWindow.requestIdleCallback) {
+            const idleId = idleWindow.requestIdleCallback(warmRoutes, { timeout: 2500 })
+            return () => idleWindow.cancelIdleCallback?.(idleId)
+        }
+
+        const timeoutId = globalThis.setTimeout(warmRoutes, 1200)
+        return () => globalThis.clearTimeout(timeoutId)
+    }, [pathname, routePrefetchList, router])
 
     // Cleanup timeout on unmount
     useEffect(() => {
@@ -209,7 +241,11 @@ export function Navbar() {
                                     "hover:dark:text-[#33E092] hover:text-zinc-900",
                                     isActive(item.href) && "dark:text-[#33E092] text-zinc-900"
                                 )}
-                                onMouseEnter={() => setActiveDropdown(null)}
+                                onMouseEnter={() => {
+                                    setActiveDropdown(null)
+                                    router.prefetch(item.href)
+                                }}
+                                onFocus={() => router.prefetch(item.href)}
                             >
                                 {item.label}
                             </Link>
@@ -261,6 +297,8 @@ export function Navbar() {
                                                     isActive(child.href) && "dark:bg-zinc-800/50 bg-zinc-400/30 dark:text-[#33E092] text-[#0CCE6B]"
                                                 )}
                                                 onClick={() => setActiveDropdown(null)}
+                                                onMouseEnter={() => router.prefetch(child.href)}
+                                                onFocus={() => router.prefetch(child.href)}
                                             >
                                                 <div className="text-sm font-medium leading-none mb-1.5 dark:text-white text-zinc-900">
                                                     {child.label}
@@ -311,16 +349,30 @@ export function Navbar() {
 
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden p-2 dark:text-zinc-400 text-zinc-600"
+                        className={cn(
+                            "md:hidden relative grid h-10 w-10 place-items-center rounded-full border transition-all duration-300",
+                            "dark:border-zinc-800 border-zinc-300 dark:bg-zinc-900/60 bg-zinc-200/70",
+                            "dark:text-zinc-300 text-zinc-700 hover:dark:text-[#33E092] hover:text-zinc-900",
+                            mobileMenuOpen && "dark:border-[#33E092]/40 border-[#33E092]/60 shadow-[0_0_18px_rgba(51,224,146,0.18)]"
+                        )}
                         aria-label="Toggle menu"
+                        aria-expanded={mobileMenuOpen}
                     >
-                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            {mobileMenuOpen ? (
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            ) : (
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                            )}
-                        </svg>
+                        <span className="sr-only">Toggle menu</span>
+                        <span className="relative h-4 w-5">
+                            <span className={cn(
+                                "absolute left-0 top-0 h-[2px] w-5 rounded-full bg-current transition-all duration-300 ease-out",
+                                mobileMenuOpen && "top-[7px] rotate-45"
+                            )} />
+                            <span className={cn(
+                                "absolute left-0 top-[7px] h-[2px] w-4 rounded-full bg-current transition-all duration-300 ease-out",
+                                mobileMenuOpen ? "translate-x-3 opacity-0" : "translate-x-1"
+                            )} />
+                            <span className={cn(
+                                "absolute left-0 top-[14px] h-[2px] w-5 rounded-full bg-current transition-all duration-300 ease-out",
+                                mobileMenuOpen && "top-[7px] -rotate-45"
+                            )} />
+                        </span>
                     </button>
                 </div>
             </div>

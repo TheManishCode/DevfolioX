@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
+const ALLOWED_IMAGE_HOSTS = new Set([
+    'raw.githubusercontent.com',
+    'github.com',
+    'githubusercontent.com',
+    'github-contributions-api.jogruber.de',
+])
+
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const url = searchParams.get('url')
@@ -10,8 +17,19 @@ export async function GET(request: NextRequest) {
         return new NextResponse('Missing url parameter', { status: 400 })
     }
 
+    let target: URL
     try {
-        const response = await fetch(url, { cache: 'no-store' })
+        target = new URL(url)
+    } catch {
+        return new NextResponse('Invalid url parameter', { status: 400 })
+    }
+
+    try {
+        if (target.protocol !== 'https:' || !ALLOWED_IMAGE_HOSTS.has(target.hostname)) {
+            return new NextResponse('URL host is not allowed', { status: 400 })
+        }
+
+        const response = await fetch(target.toString(), { cache: 'no-store' })
         if (!response.ok) {
             return new NextResponse('Failed to fetch image', { status: response.status })
         }

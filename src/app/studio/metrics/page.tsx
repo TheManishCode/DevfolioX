@@ -36,11 +36,13 @@ const swrConfigFast = {
 function GridCell({
   children,
   span = 1,
+  mobileSpan = 1,
   minHeight = "min-h-[220px]",
   className = "",
 }: {
   children: React.ReactNode;
   span?: 1 | 2 | 3 | 4;
+  mobileSpan?: 1 | 2;
   minHeight?: string;
   className?: string;
 }) {
@@ -50,13 +52,17 @@ function GridCell({
     3: "md:col-span-3",
     4: "md:col-span-4",
   };
+  const mobileSpanClasses: Record<1 | 2, string> = {
+    1: "col-span-1",
+    2: "col-span-2",
+  };
 
   return (
     <div
       className={`
-        relative ${minHeight} p-8 border-t border-l dark:border-white/10 border-zinc-400
+        relative ${minHeight} p-5 sm:p-6 md:p-8 border-t border-l dark:border-white/10 border-zinc-400
         dark:hover:bg-white/[0.02] hover:bg-zinc-400/20 transition-colors duration-500
-        ${spanClasses[span]} ${className}
+        ${mobileSpanClasses[mobileSpan]} ${spanClasses[span]} ${className}
       `}
     >
       <div className="absolute top-0 left-0 w-[4px] h-[4px] border-t border-l dark:border-white/40 border-zinc-500" />
@@ -69,7 +75,7 @@ function GridCell({
 
 function MetricLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-6 block">
+    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.22em] sm:tracking-[0.3em] text-zinc-500 mb-5 sm:mb-6 block">
       {children}
     </span>
   );
@@ -139,22 +145,22 @@ export default function MetricsPage() {
 
   return (
     <div className="w-full">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-12 lg:px-16 pt-20 lg:pt-28 pb-20 bg-transparent">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 md:px-12 lg:px-16 pt-16 sm:pt-20 lg:pt-28 pb-20 bg-transparent">
         <PageHeader
           badge="Recruiter Terminal v5.0"
           title="System Metrics"
           description="Live performance indices, specialized competencies, and automated telemetry."
         />
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-4 border-r border-b dark:border-white/10 border-zinc-400">
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 border-r border-b dark:border-white/10 border-zinc-400">
 
           {/* ROW 1 */}
-          <GridCell span={3} minHeight="min-h-[240px]">
+          <GridCell span={3} mobileSpan={2} minHeight="min-h-[240px]">
             <MetricLabel>Coding Activity / 7 Days</MetricLabel>
 
-            <div className="flex flex-col md:flex-row justify-between items-end gap-10 mt-auto">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-10 mt-auto">
               <div>
-                <h2 className="text-8xl font-light tracking-tighter dark:text-white text-zinc-900">
+                <h2 className="text-5xl sm:text-6xl md:text-8xl font-light tracking-tighter dark:text-white text-zinc-900">
                   {wakatimeLoading ? "..." : wakatimeData?.totalHoursFormatted || "0h 0m"}
                 </h2>
                 <p className="text-zinc-500 mt-2 font-mono text-[11px] uppercase tracking-widest">
@@ -204,7 +210,7 @@ export default function MetricsPage() {
           </GridCell>
 
           {/* ROW 2 (TALL LISTS) */}
-          <GridCell span={2} minHeight="min-h-[340px]" className="!justify-start">
+          <GridCell span={2} mobileSpan={2} minHeight="min-h-[340px]" className="!justify-start">
             <MetricLabel>Development Roadmap</MetricLabel>
 
             <div className="space-y-5 mt-4">
@@ -223,7 +229,7 @@ export default function MetricsPage() {
                     rel="noopener noreferrer"
                     className="block border-b dark:border-white/5 border-zinc-400/50 pb-3 group/repo"
                   >
-                    <div className="flex justify-between items-center mb-1 gap-3">
+                    <div className="flex justify-between items-start sm:items-center mb-1 gap-3">
                       <h4 className="text-sm dark:text-white text-zinc-900 font-medium group-hover/repo:text-zinc-600 dark:group-hover/repo:text-[#33E092] transition-colors uppercase tracking-tight truncate">
                         {repo.name?.replace(/-/g, " ")}
                       </h4>
@@ -243,7 +249,7 @@ export default function MetricsPage() {
             </div>
           </GridCell>
 
-          <GridCell span={2} minHeight="min-h-[340px]" className="!justify-start">
+          <GridCell span={2} mobileSpan={2} minHeight="min-h-[340px]" className="!justify-start">
             <MetricLabel>Featured Deployments</MetricLabel>
 
             <div className="space-y-5 mt-4">
@@ -256,7 +262,7 @@ export default function MetricsPage() {
               ) : Array.isArray(featuredProjects) && featuredProjects.length > 0 ? (
                 featuredProjects.slice(0, 4).map((p: any) => (
                   <div key={p.id ?? p.name} className="border-b dark:border-white/5 border-zinc-400/50 pb-4 group">
-                    <div className="flex justify-between items-center gap-4">
+                    <div className="flex justify-between items-start sm:items-center gap-4">
                       <h4 className="text-sm dark:text-white text-zinc-900 font-medium uppercase tracking-tight truncate group-hover:text-zinc-600 dark:group-hover:text-[#33E092] transition-colors">
                         {p.name}
                       </h4>
@@ -270,7 +276,7 @@ export default function MetricsPage() {
                       {p.description || "Production-grade system module deployed successfully."}
                     </p>
 
-                    <div className="flex justify-between items-center mt-3">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mt-3">
                       <span className="text-[9px] text-zinc-600 uppercase tracking-[0.22em] font-bold truncate">
                         {p.stack || "Code"}
                       </span>
@@ -362,8 +368,8 @@ export default function MetricsPage() {
               ) : skills.length > 0 ? (
                 skills.slice(0, 2).map((skill: any) => (
                   <div key={skill.name}>
-                    <div className="flex justify-between text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
-                      <span>{skill.name}</span>
+                    <div className="flex justify-between gap-2 text-[10px] text-zinc-500 uppercase tracking-widest mb-1">
+                      <span className="truncate">{skill.name}</span>
                       <span>{skill.percent}%</span>
                     </div>
                     <div className="h-[1px] w-full dark:bg-white/5 bg-zinc-400/30 overflow-hidden">
@@ -403,10 +409,10 @@ export default function MetricsPage() {
                 <div className="h-14 w-full animate-pulse dark:bg-white/5 bg-zinc-400/30 rounded-lg" />
               ) : (
                 <div>
-                  <h3 className="text-3xl font-bold dark:text-white text-zinc-900 tracking-tight mb-1 line-clamp-1">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold dark:text-white text-zinc-900 tracking-tight mb-1 line-clamp-1">
                     {spotifyData?.title || "Silence"}
                   </h3>
-                  <p className="text-[13px] text-zinc-500 uppercase tracking-[0.2em] font-medium line-clamp-1">
+                  <p className="text-[10px] sm:text-[13px] text-zinc-500 uppercase tracking-[0.14em] sm:tracking-[0.2em] font-medium line-clamp-1">
                     {spotifyData?.artist || "Standby"}
                   </p>
                 </div>
@@ -448,7 +454,7 @@ export default function MetricsPage() {
           </GridCell>
 
           {/* ROW 4 - Technical Competency (Split into 2 boxes) */}
-          <GridCell span={2} minHeight="min-h-[180px]">
+          <GridCell span={2} mobileSpan={2} minHeight="min-h-[180px]">
             <MetricLabel>Academic Focus (VTU)</MetricLabel>
             <div className="mt-auto">
               <p className="text-[10px] text-zinc-500 leading-relaxed italic">
@@ -457,7 +463,7 @@ export default function MetricsPage() {
             </div>
           </GridCell>
 
-          <GridCell span={2} minHeight="min-h-[180px]">
+          <GridCell span={2} mobileSpan={2} minHeight="min-h-[180px]">
             <div className="flex justify-between items-start">
               <MetricLabel>Data Governance</MetricLabel>
               <span className="text-[9px] text-emerald-600 dark:text-emerald-500/50 border border-emerald-600/30 dark:border-emerald-500/20 px-2 py-0.5 uppercase tracking-wider">
@@ -472,7 +478,7 @@ export default function MetricsPage() {
           </GridCell>
 
           {/* ROW 5 - Language Learning (Full width) */}
-          <GridCell span={4} minHeight="min-h-[200px]">
+          <GridCell span={4} mobileSpan={2} minHeight="min-h-[200px]">
             <div className="flex justify-between items-start">
               <MetricLabel>Language Learning</MetricLabel>
               <svg
@@ -484,7 +490,7 @@ export default function MetricsPage() {
               </svg>
             </div>
 
-            <div className="flex justify-between items-end mt-auto max-w-md">
+            <div className="flex flex-wrap justify-between items-end gap-5 mt-auto max-w-md">
               {duolingoLoading ? (
                 <div className="flex-1 space-y-2">
                   <SkeletonLine w="w-24" />

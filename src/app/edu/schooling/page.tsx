@@ -1,307 +1,204 @@
-/**
- * =============================================================================
- * SCHOOLING PAGE - Novel Design (Compact Layout)
- * =============================================================================
- */
-
-"use client"
-
-import { useEffect, useState } from "react"
+import type { Metadata } from "next"
 import Link from "next/link"
+import { ArrowUpRight, CalendarDays, MapPin, GraduationCap } from "lucide-react"
+
+export const metadata: Metadata = {
+    title: "Schooling",
+    description: "A chaptered schooling timeline from early foundations to computer science engineering.",
+}
 
 const chapters = [
     {
-        number: 4,
-        title: "Maharaja Institute of Tech, Mysore",
-        subtitle: "B.E. Computer Science (Artificial Intelligence)",
-        period: "2022 - 2026",
-        grades: "Bachelor's Degree",
-        location: "Mysore, Karnataka",
-        content: "This is my current chapter — and honestly, the most exciting one so far. I’m exploring the core of Computer Science while going deeper into AI. From algorithms and data structures to software engineering, I’m learning how to build things that actually work in the real world (and solving problems along the way).",
+        number: "04",
+        years: "2022 – 2026",
+        status: "Current",
+        institution: "Maharaja Institute of Technology, Mysore",
+        program: "B.E. Computer Science — Artificial Intelligence",
+        place: "Mysore, Karnataka",
+        story: "The point where curiosity became engineering practice. Algorithms, systems, AI, and security stopped being abstract subjects and started becoming tools I could actually ship with.",
+        proof: ["AI track", "Software systems", "Security instinct"],
         current: true,
     },
     {
-        number: 3,
-        title: "St. Joseph's Pre-University College",
-        subtitle: "PUC - PCMCs Science Stream",
-        period: "2020 - 2022",
-        grades: "Grade 11-12",
-        location: "Hunsur, Mysore",
-        content: "This phase was the bridge between school life and engineering. Physics, Chemistry, Mathematics, and Computer Science shaped my thinking and gave me the strong base I still rely on today. It’s where I learned how to stay consistent and handle academic pressure with focus.",
+        number: "03",
+        years: "2020 – 2022",
+        status: "Completed",
+        institution: "St. Joseph's Pre-University College",
+        program: "PUC — PCMCs Science Stream",
+        place: "Hunsur, Mysore",
+        story: "A strict bridge between school and engineering. Physics, chemistry, mathematics, and computer science made the work sharper, faster, and less dependent on mood.",
+        proof: ["PCMCs", "Math rhythm", "Exam stamina"],
         current: false,
     },
     {
-        number: 2,
-        title: "Adarsha Vidyalaya [R.M.S.A]",
-        subtitle: "Secondary Education",
-        period: "2016 - 2020",
-        grades: "Grade 6-10",
-        location: "Hunsur, Mysore",
-        content: "This is where my curiosity really started turning into confidence. I found myself enjoying science and math, learning fast, and slowly figuring out what I was good at. It was also the best part of school life — amazing friends, great memories, and the first time I started taking my future seriously.",
+        number: "02",
+        years: "2016 – 2020",
+        status: "Completed",
+        institution: "Adarsha Vidyalaya [R.M.S.A]",
+        program: "Secondary Education",
+        place: "Hunsur, Mysore",
+        story: "The chapter where science and mathematics started feeling personal. Not just marks, but the first real sense that difficult things could be understood if I stayed with them.",
+        proof: ["Science curiosity", "Self-belief", "Core academics"],
         current: false,
     },
     {
-        number: 1,
-        title: "Talent School [T.E.T]",
-        subtitle: "Primary Education",
-        period: "2010 - 2015",
-        grades: "Grade 1-5",
-        location: "Hunsur, Mysore",
-        content: "The beginning of everything. These years shaped the basics — discipline, curiosity, and the habit of learning every day. Looking back, it’s the foundation stage that quietly built who I am today.",
+        number: "01",
+        years: "2010 – 2015",
+        status: "Completed",
+        institution: "Talent School [T.E.T]",
+        program: "Primary Education",
+        place: "Hunsur, Mysore",
+        story: "Small classrooms, simple routines, and the first habit of showing up. This is where the academic trail starts: curiosity before strategy, practice before polish.",
+        proof: ["Basics", "Routine", "Curiosity"],
         current: false,
     },
-]
-
-const stats = [
-    { value: "12+", label: "Years", symbols: ["∑", "π", "∫"] },
-    { value: "4", label: "Chapters", symbols: ["√", "∆", "∞"] },
-    { value: "∞", label: "Ahead", symbols: ["λ", "θ", "Ω"] },
 ]
 
 export default function SchoolingPage() {
-    const [mounted, setMounted] = useState(false)
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
-
     return (
-        <div className="min-h-screen relative overflow-hidden">
-            {/* Background */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute top-20 right-[20%] w-[500px] h-[500px] bg-[#33E092]/5 rounded-full blur-[150px]" />
-                <div className="absolute bottom-20 left-[10%] w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[120px]" />
-            </div>
+        <main className="max-w-[1400px] mx-auto px-6 pb-24 pt-14 sm:px-8 md:px-12 lg:px-16 lg:pt-20 dark:text-zinc-100 text-zinc-900">
 
-            <main className="max-w-7xl mx-auto px-6 lg:pt-20 pt-16 pb-20 relative z-10 sm:px-8 md:px-12 lg:px-16">
-                {/* Header */}
-                <header className={`mb-32 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-0.5 bg-[#33E092]" />
-                        <span className="text-xs uppercase tracking-[0.3em] dark:text-zinc-500 text-zinc-500">Chronicle</span>
-                    </div>
+            {/* Header */}
+            <header className="mb-16 animate-slide-up">
+                <div className="flex items-center gap-3 mb-6">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-400">Academic origin file</span>
+                    <div className="h-px flex-1 max-w-[60px] bg-zinc-300 dark:bg-zinc-700" />
+                </div>
 
-                    <h1 className="text-4xl md:text-6xl font-serif italic dark:text-white text-zinc-900 leading-tight mb-4">
-                        The Story of My Education
-                    </h1>
+                <h1 className="font-incognito text-5xl md:text-6xl font-semibold tracking-tight leading-[1.05] text-zinc-900 dark:text-zinc-100 max-w-3xl">
+                    The years that taught me how to learn.
+                </h1>
 
-                    <p className="dark:text-zinc-500 text-zinc-500 max-w-lg mb-6">
-                        A journey through four institutions of learning, growth, and discovery.
-                    </p>
+                <p className="mt-5 text-base dark:text-zinc-400 text-zinc-600 max-w-xl leading-relaxed">
+                    Not a list of schools — the trail of rooms, routines, and compounding habits that led into computer science and AI.
+                </p>
 
-                    {/* Stats - enhanced boxes with floating math symbols */}
-                    <div className="flex flex-wrap gap-3">
-                        {stats.map((stat, i) => (
-                            <div
-                                key={stat.label}
-                                className="relative px-6 py-4 border dark:border-zinc-700 border-zinc-300 rounded-xl overflow-hidden min-w-[100px] group hover:border-[#33E092] transition-colors"
-                            >
-                                {/* Floating math symbols - darker */}
-                                {stat.symbols.map((sym, j) => (
-                                    <span
-                                        key={j}
-                                        className="absolute font-serif select-none pointer-events-none dark:text-zinc-600 text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-[#33E092]/70 transition-colors"
-                                        style={{
-                                            fontSize: `${16 + j * 5}px`,
-                                            left: `${8 + j * 25}%`,
-                                            top: `${18 + j * 18}%`,
-                                            animation: `float-symbol-${j} ${3 + j}s ease-in-out infinite`,
-                                            animationDelay: `${i * 0.2 + j * 0.3}s`,
-                                        }}
-                                    >
-                                        {sym}
-                                    </span>
-                                ))}
-
-                                {/* Background watermark */}
-                                <span className="absolute -top-2 -right-1 text-4xl font-serif dark:text-zinc-800 text-zinc-200 select-none">
-                                    {stat.value}
-                                </span>
-
-                                {/* Content */}
-                                <span className="relative text-2xl font-serif dark:text-white text-zinc-900 block">{stat.value}</span>
-                                <span className="relative block text-[10px] uppercase tracking-[0.15em] dark:text-zinc-500 text-zinc-500 mt-1">{stat.label}</span>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* CSS for floating animation */}
-                    <style jsx>{`
-                        @keyframes float-symbol-0 {
-                            0%, 100% { transform: translateY(0) rotate(0deg); }
-                            50% { transform: translateY(-6px) rotate(5deg); }
-                        }
-                        @keyframes float-symbol-1 {
-                            0%, 100% { transform: translateY(0) rotate(0deg); }
-                            50% { transform: translateY(-10px) rotate(-3deg); }
-                        }
-                        @keyframes float-symbol-2 {
-                            0%, 100% { transform: translateY(0) rotate(0deg); }
-                            50% { transform: translateY(-4px) rotate(8deg); }
-                        }
-                    `}</style>
-                </header>
-
-                {/* Engineering Education Preview - Chapter Style */}
-                <section className={`mb-16 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '150ms' }}>
-                    <article>
-                        <div className="flex flex-col lg:flex-row gap-8 items-start">
-                            <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <span className="text-5xl font-serif dark:text-zinc-800 text-zinc-200">★</span>
-                                    <div>
-                                        <span className="text-xs uppercase tracking-[0.2em] dark:text-zinc-600 text-zinc-400 block">Featured</span>
-                                        <span className="flex items-center gap-1.5 text-xs text-[#33E092] mt-1">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-[#33E092] animate-pulse" />
-                                            In Progress
-                                        </span>
-                                    </div>
-                                </div>
-                                <h2 className="text-2xl md:text-3xl font-serif dark:text-white text-zinc-900 mb-2">Engineering Curriculum</h2>
-                                <p className="text-[#33E092] mb-1">B.E. Computer Science (Artificial Intelligence)</p>
-                                <p className="text-sm dark:text-zinc-500 text-zinc-500 mb-4">8 Semesters • Visvesvaraya Technological University</p>
-                                <p className="dark:text-zinc-400 text-zinc-600 leading-relaxed italic">&ldquo;A deep dive into the engineering curriculum — from algorithms and systems to AI and security. Eight semesters of structured learning, building the foundation for real-world engineering.&rdquo;</p>
-                                <span className="inline-block mt-4 font-mono text-xs px-3 py-1.5 dark:bg-zinc-800/50 bg-[#d5d5da] dark:text-zinc-400 text-zinc-600 rounded">2022 - 2026</span>
-                                <div className="mt-4">
-                                    <Link href="/edu/engineering" className="inline-flex items-center gap-2 text-sm text-[#33E092] hover:underline underline-offset-4">Explore Full Curriculum →</Link>
-                                </div>
-                            </div>
-                            <div className="lg:w-80 w-full max-w-xs mx-auto lg:mx-0 relative flex-shrink-0">
-                                <div className="aspect-square rounded-2xl overflow-hidden border dark:border-zinc-800 border-zinc-200">
-                                    <div className="w-full h-full flex flex-col items-center justify-center dark:bg-zinc-900 bg-[#d5d5da] p-6">
-                                        <span className="text-6xl font-serif dark:text-[#33E092]/60 text-[#33E092]/60 mb-2">∑</span>
-                                        <span className="text-xs uppercase tracking-[0.15em] dark:text-zinc-500 text-zinc-500">8 Semesters</span>
-                                        <span className="text-xs dark:text-zinc-600 text-zinc-400 mt-1">CS • AI/ML • Security</span>
-                                    </div>
-                                </div>
-                                <div className="absolute -bottom-3 -right-3 w-20 h-20 border-2 border-[#33E092] rounded-2xl -z-10" />
-                                <div className="absolute -top-3 -left-3 w-12 h-12 bg-[#33E092]/20 rounded-xl -z-10" />
-                            </div>
+                {/* Stats row */}
+                <div className="flex items-center gap-8 mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+                    {[
+                        { v: "16+", l: "Years" },
+                        { v: "04", l: "Chapters" },
+                        { v: "CSE-AI", l: "Direction" },
+                        { v: "2026", l: "Graduating" },
+                    ].map((s) => (
+                        <div key={s.l}>
+                            <div className="font-mono text-lg font-semibold">{s.v}</div>
+                            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 mt-0.5">{s.l}</div>
                         </div>
-                    </article>
-                    <div className="flex items-center justify-center mt-10">
-                        <div className="w-10 h-px dark:bg-zinc-800 bg-zinc-200" />
-                        <span className="mx-3 text-sm dark:text-zinc-700 text-zinc-300">✦</span>
-                        <div className="w-10 h-px dark:bg-zinc-800 bg-zinc-200" />
-                    </div>
-                </section>
-
-                {/* Chapters - Compact */}
-                <div className="space-y-12">
-                    {chapters.map((chapter, index) => (
-                        <article
-                            key={chapter.number}
-                            className={`transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                            style={{ transitionDelay: `${(index + 1) * 100}ms` }}
-                        >
-                            {/* Chapter content and image side by side */}
-                            <div className="flex flex-col lg:flex-row gap-8 items-start">
-                                {/* Text content */}
-                                <div className="flex-1">
-                                    {/* Chapter number */}
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <span className="text-5xl font-serif dark:text-zinc-800 text-zinc-200">
-                                            {chapter.number}
-                                        </span>
-                                        <div>
-                                            <span className="text-xs uppercase tracking-[0.2em] dark:text-zinc-600 text-zinc-400 block">
-                                                Chapter
-                                            </span>
-                                            {chapter.current && (
-                                                <span className="flex items-center gap-1.5 text-xs text-[#33E092] mt-1">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#33E092] animate-pulse" />
-                                                    Writing
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Title */}
-                                    <h2 className="text-2xl md:text-3xl font-serif dark:text-white text-zinc-900 mb-2">
-                                        {chapter.title}
-                                    </h2>
-
-                                    <p className="text-[#33E092] mb-1">{chapter.subtitle}</p>
-                                    <p className="text-sm dark:text-zinc-500 text-zinc-500 mb-4">
-                                        {chapter.grades} • {chapter.location}
-                                    </p>
-
-                                    {/* Content */}
-                                    <p className="dark:text-zinc-400 text-zinc-600 leading-relaxed italic">
-                                        &ldquo;{chapter.content}&rdquo;
-                                    </p>
-
-                                    {/* Period */}
-                                    <span className="inline-block mt-4 font-mono text-xs px-3 py-1.5 dark:bg-zinc-800/50 bg-[#d5d5da] dark:text-zinc-400 text-zinc-600 rounded">
-                                        {chapter.period}
-                                    </span>
-                                </div>
-
-                                {/* Image - story page styling (exact match) */}
-                                <div className="lg:w-80 w-full max-w-xs mx-auto lg:mx-0 relative flex-shrink-0">
-                                    <div className="aspect-square rounded-2xl overflow-hidden border dark:border-zinc-800 border-zinc-200">
-                                        <div className="w-full h-full flex items-center justify-center dark:bg-zinc-900 bg-[#d5d5da]">
-                                            <svg
-                                                className="w-24 h-24 dark:text-purple-500/60 text-purple-400/60"
-                                                fill="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    {/* Corner decorations */}
-                                    <div className="absolute -bottom-3 -right-3 w-20 h-20 border-2 border-[#33E092] rounded-2xl -z-10" />
-                                    <div className="absolute -top-3 -left-3 w-12 h-12 bg-[#33E092]/20 rounded-xl -z-10" />
-                                </div>
-                            </div>
-
-                            {/* Divider */}
-                            {index < chapters.length - 1 && (
-                                <div className="flex items-center justify-center mt-10">
-                                    <div className="w-10 h-px dark:bg-zinc-800 bg-zinc-200" />
-                                    <span className="mx-3 text-sm dark:text-zinc-700 text-zinc-300">✦</span>
-                                    <div className="w-10 h-px dark:bg-zinc-800 bg-zinc-200" />
-                                </div>
-                            )}
-                        </article>
                     ))}
                 </div>
+            </header>
 
-                {/* End */}
-                <div className="text-center mt-12">
-                    <span className="text-xs uppercase tracking-[0.4em] dark:text-zinc-600 text-zinc-400">
-                        To Be Continued...
-                    </span>
+            {/* Chapter list */}
+            <div className="animate-slide-up" style={{ animationDelay: "80ms" }}>
+                {chapters.map((ch, i) => (
+                    <article
+                        key={ch.number}
+                        className={`group relative grid md:grid-cols-[72px_1fr_220px] gap-x-8 gap-y-4 py-10 border-t transition-colors duration-150 ${
+                            i === chapters.length - 1 ? "border-b" : ""
+                        } border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/30 -mx-3 px-3 rounded-lg`}
+                    >
+                        {/* Left: big chapter number */}
+                        <div className="flex md:flex-col items-center md:items-start gap-3 md:gap-0">
+                            <span
+                                className={`font-mono text-5xl md:text-6xl font-black leading-none select-none transition-colors duration-150 ${
+                                    ch.current
+                                        ? "text-[#33E092]"
+                                        : "text-zinc-200 dark:text-zinc-800 group-hover:text-zinc-300 dark:group-hover:text-zinc-700"
+                                }`}
+                            >
+                                {ch.number}
+                            </span>
+                            {ch.current && (
+                                <span className="md:mt-2 text-[9px] font-mono uppercase tracking-[0.28em] text-[#33E092]">
+                                    Current
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Center: main content */}
+                        <div>
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-zinc-400">
+                                    {ch.status}
+                                </span>
+                            </div>
+
+                            <h2 className="font-incognito text-xl md:text-2xl font-semibold text-zinc-900 dark:text-zinc-100 leading-snug">
+                                {ch.institution}
+                            </h2>
+
+                            <p className={`mt-1 text-sm font-medium ${ch.current ? "text-[#33E092]" : "dark:text-zinc-400 text-zinc-500"}`}>
+                                {ch.program}
+                            </p>
+
+                            <p className="mt-4 text-sm dark:text-zinc-400 text-zinc-600 leading-relaxed max-w-xl">
+                                {ch.story}
+                            </p>
+
+                            <div className="flex flex-wrap gap-1.5 mt-5">
+                                {ch.proof.map((tag) => (
+                                    <span
+                                        key={tag}
+                                        className="text-[10px] font-mono uppercase tracking-[0.14em] border border-zinc-200 dark:border-zinc-800 text-zinc-500 px-2 py-1"
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Right: meta */}
+                        <aside className="flex md:flex-col md:items-end justify-start md:justify-start gap-4 md:gap-2 text-sm text-zinc-500 md:pt-1">
+                            <div className="flex items-center gap-1.5">
+                                <CalendarDays size={13} />
+                                <span className="font-mono text-xs">{ch.years}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <MapPin size={13} />
+                                <span className="font-mono text-xs">{ch.place}</span>
+                            </div>
+
+                            {/* Progress bar */}
+                            <div className="hidden md:block mt-auto w-full">
+                                <div className="h-[2px] w-full bg-zinc-200 dark:bg-zinc-800 mt-4">
+                                    <div
+                                        className={`h-[2px] transition-all ${ch.current ? "bg-[#33E092]" : "bg-zinc-400 dark:bg-zinc-600"}`}
+                                        style={{ width: `${Number(ch.number) * 22}%` }}
+                                    />
+                                </div>
+                                <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.2em] text-zinc-400">
+                                    ch. {ch.number} / 04
+                                </p>
+                            </div>
+                        </aside>
+                    </article>
+                ))}
+            </div>
+
+            {/* Footer */}
+            <footer className="mt-16 pt-10 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 animate-slide-up" style={{ animationDelay: "160ms" }}>
+                <div className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
+                    <GraduationCap size={16} className="text-[#33E092] shrink-0" />
+                    <span>Pursuing B.E. Computer Science (AI) — expected graduation 2026</span>
                 </div>
+                <div className="flex items-center gap-3">
+                    <Link
+                        href="/edu/courses"
+                        className="text-sm border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-md text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                    >
+                        Courses
+                    </Link>
+                    <Link
+                        href="/edu/engineering"
+                        className="inline-flex items-center gap-1.5 text-sm bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-2 rounded-md hover:bg-[#33E092] dark:hover:bg-[#33E092] hover:text-black transition-colors font-medium"
+                    >
+                        Engineering
+                        <ArrowUpRight size={13} />
+                    </Link>
+                </div>
+            </footer>
 
-                {/* Footer */}
-                <footer className="mt-12 pt-8 border-t dark:border-zinc-800/50 border-zinc-200">
-                    <blockquote className="text-center max-w-md mx-auto mb-8">
-                        <p className="text-lg font-serif italic dark:text-zinc-400 text-zinc-600">
-                            &ldquo;The beautiful thing about learning is that nobody can take it away from you.&rdquo;
-                        </p>
-                        <cite className="text-sm dark:text-zinc-500 text-zinc-500 mt-2 block not-italic">
-                            — B.B. King
-                        </cite>
-                    </blockquote>
-
-                    <nav className="flex items-center justify-between text-sm">
-                        <Link
-                            href="/edu"
-                            className="dark:text-zinc-500 text-zinc-500 hover:text-zinc-900 dark:hover:text-[#33E092] transition-colors"
-                        >
-                            ← Back to Education
-                        </Link>
-                        <Link
-                            href="/edu/courses"
-                            className="px-5 py-2.5 rounded-xl bg-[#33E092] text-black text-sm font-medium hover:bg-[#2bc97f] transition-colors"
-                        >
-                            View Courses →
-                        </Link>
-                    </nav>
-                </footer>
-            </main>
-        </div>
+        </main>
     )
 }

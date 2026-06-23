@@ -1,61 +1,73 @@
-import { Metadata } from "next"
-import { PageHeader } from "@/components/layout/PageHeader"
+import type { Metadata } from "next"
 import Link from "next/link"
-import { FiBookOpen, FiFileText, FiArrowRight } from "react-icons/fi"
+import { ArrowUpRight, BookOpen, FileText } from "lucide-react"
 
 export const metadata: Metadata = {
-    title: "Ink | Writing",
-    description: "Articles, research papers, and written explorations.",
+    title: "Ink",
+    description: "Articles, research, and written explorations.",
 }
 
 const sections = [
     {
+        num: "01",
         title: "Articles",
-        description: "Thoughts, tutorials, and insights on development, design, and technology.",
+        description: "Thoughts, tutorials, and observations on development, design, and technology.",
         href: "/ink/articles",
-        icon: FiBookOpen,
+        icon: BookOpen,
+        cta: "Browse articles",
     },
     {
+        num: "02",
         title: "Research",
-        description: "Academic papers, publications, and studies exploring technology and innovation.",
+        description: "Academic papers, publications, and structured explorations of technical topics.",
         href: "/ink/research",
-        icon: FiFileText,
+        icon: FileText,
+        cta: "View research",
     },
 ]
 
 export default function InkPage() {
     return (
-        <main className="max-w-7xl mx-auto pt-20 lg:pt-28 pb-20 px-6 sm:px-8 md:px-12 lg:px-16">
-            <PageHeader
-                title="Ink"
-                description="Collective representations of research and articles. Written explorations of technology, design, and engineering."
-            />
+        <main className="max-w-[1400px] mx-auto px-6 pb-24 pt-14 sm:px-8 md:px-12 lg:px-16 lg:pt-20">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-                {sections.map((section) => {
-                    const Icon = section.icon
+            <header className="mb-12 pb-10 border-b border-zinc-200 dark:border-zinc-800 animate-slide-up">
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-400">Ink</span>
+                <h1 className="mt-4 font-incognito text-4xl md:text-5xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                    Writing as a thinking tool.
+                </h1>
+                <p className="mt-4 text-base dark:text-zinc-400 text-zinc-600 max-w-xl leading-relaxed">
+                    Articles and research — putting ideas into words forces the kind of clarity that code alone can't.
+                </p>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up" style={{ animationDelay: "80ms" }}>
+                {sections.map((s) => {
+                    const Icon = s.icon
                     return (
                         <Link
-                            key={section.href}
-                            href={section.href}
-                            className="group block p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300 hover:-translate-y-1"
+                            key={s.href}
+                            href={s.href}
+                            className="group relative block rounded-xl border border-zinc-200 dark:border-zinc-800 p-7 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200"
                         >
-                            <div className="flex items-start justify-between mb-4">
-                                <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                                    <Icon className="w-6 h-6 text-zinc-500" />
-                                </div>
-                                <FiArrowRight className="w-5 h-5 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="flex items-start justify-between mb-8">
+                                <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-zinc-400">{s.num}</span>
+                                <Icon size={15} className="text-zinc-400" />
                             </div>
-                            <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 font-incognito mb-2">
-                                {section.title}
+                            <h3 className="font-incognito text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                                {s.title}
                             </h3>
-                            <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
-                                {section.description}
+                            <p className="text-sm dark:text-zinc-500 text-zinc-500 leading-relaxed mb-8">
+                                {s.description}
                             </p>
+                            <div className="flex items-center gap-1.5 text-xs text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
+                                <span>{s.cta}</span>
+                                <ArrowUpRight size={11} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </div>
                         </Link>
                     )
                 })}
             </div>
+
         </main>
     )
 }

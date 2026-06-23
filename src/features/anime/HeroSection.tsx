@@ -37,10 +37,9 @@ export function FloatingKanji() {
                             fontSize: `${data.size}px`,
                             opacity: 0.04,
                             color: 'var(--kanji-color)',
-                            // @ts-ignore - CSS custom properties for animation timing (valid CSS, not in React.CSSProperties)
                             '--anim-duration': `${data.duration}s`,
                             '--anim-delay': `${data.delay}s`,
-                        } as React.CSSProperties}
+                        } as React.CSSProperties & Record<string, string | number>}
                     >
                         {kanji}
                     </div>

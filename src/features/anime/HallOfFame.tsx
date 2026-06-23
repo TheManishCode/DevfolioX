@@ -234,9 +234,10 @@ export default function HallOfFame() {
                                     </button>
                                     <div className="w-full h-full max-w-4xl max-h-[90%] p-4 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
                                         <iframe
-                                            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`}
+                                            src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`}
+                                            title={`${activeAnime.title} trailer`}
                                             className="w-full aspect-video rounded-xl"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowFullScreen
                                         />
                                     </div>

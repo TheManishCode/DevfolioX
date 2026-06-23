@@ -5,7 +5,7 @@ import { GitHubRepo, ProjectModel, ProjectMetadata, PortfolioProject, ProjectCat
 // =============================================================================
 
 const GITHUB_USERNAME = process.env.GITHUB_USERNAME || "TheManishCode"
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN?.trim()
 
 /**
  * ISR CACHE BEHAVIOR:
@@ -56,6 +56,49 @@ async function fetchWithTimeout(
     }
 }
 
+function getGitHubHeaders(accept: string = "application/vnd.github.v3+json", withAuth: boolean = true): HeadersInit {
+    const headers: HeadersInit = {
+        Accept: accept,
+        "User-Agent": "Portfolio-App",
+    }
+
+    if (withAuth && GITHUB_TOKEN) {
+        headers.Authorization = `Bearer ${GITHUB_TOKEN}`
+    }
+
+    return headers
+}
+
+function withoutAuthorization(headers: RequestInit["headers"]): HeadersInit {
+    const nextHeaders = new Headers(headers)
+    nextHeaders.delete("Authorization")
+    return nextHeaders
+}
+
+async function fetchGitHubWithAuthFallback(
+    url: string,
+    options: RequestInit,
+    timeoutMs?: number
+): Promise<Response> {
+    const response = await fetchWithTimeout(url, options, timeoutMs)
+
+    if (response.status !== 401 || !GITHUB_TOKEN) {
+        return response
+    }
+
+    console.warn("GitHub token was rejected; retrying public request without authentication.")
+    const { headers: _headers, ...retryOptions } = options
+
+    return fetchWithTimeout(
+        url,
+        {
+            ...retryOptions,
+            headers: withoutAuthorization(options.headers),
+        },
+        timeoutMs
+    )
+}
+
 /**
  * Execute async tasks with controlled concurrency to prevent rate limiting
  * Uses Promise.allSettled in batches for safe parallel execution
@@ -91,20 +134,11 @@ async function batchedPromiseAll<T, R>(
  */
 export async function fetchProfileReadme(): Promise<string | null> {
     try {
-        const headers: HeadersInit = {
-            Accept: "application/vnd.github.v3.raw",
-            "User-Agent": "Portfolio-App"
-        }
-
-        if (GITHUB_TOKEN) {
-            headers.Authorization = `Bearer ${GITHUB_TOKEN}`
-        }
-
-        const res = await fetchWithTimeout(
+        const res = await fetchGitHubWithAuthFallback(
             `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_USERNAME}/readme`,
             {
                 ...getFetchOptions(3600), // 1 hour ISR
-                headers,
+                headers: getGitHubHeaders("application/vnd.github.v3.raw"),
             }
         )
 
@@ -122,20 +156,11 @@ export async function fetchProfileReadme(): Promise<string | null> {
 
 export async function fetchProjects(): Promise<ProjectModel[]> {
     try {
-        const headers: HeadersInit = {
-            Accept: "application/vnd.github.v3+json",
-            "User-Agent": "Portfolio-App"
-        }
-
-        if (GITHUB_TOKEN) {
-            headers.Authorization = `Bearer ${GITHUB_TOKEN}`
-        }
-
-        const res = await fetchWithTimeout(
+        const res = await fetchGitHubWithAuthFallback(
             `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&direction=desc&per_page=100`,
             {
                 ...getFetchOptions(3600), // 1 hour ISR in production
-                headers,
+                headers: getGitHubHeaders(),
             }
         )
 
@@ -159,15 +184,9 @@ export async function fetchProjects(): Promise<ProjectModel[]> {
 
 async function fetchRepoLanguages(repoName: string): Promise<string[]> {
     try {
-        const headers: HeadersInit = {
-            Accept: "application/vnd.github.v3+json",
-            "User-Agent": "Portfolio-App"
-        }
-        if (GITHUB_TOKEN) headers.Authorization = `Bearer ${GITHUB_TOKEN}`
-
-        const res = await fetchWithTimeout(
+        const res = await fetchGitHubWithAuthFallback(
             `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/languages`,
-            { ...getFetchOptions(86400), headers } // 24 hour cache - languages rarely change
+            { ...getFetchOptions(86400), headers: getGitHubHeaders() } // 24 hour cache - languages rarely change
         )
         if (!res.ok) return []
         const data = await res.json()
@@ -578,20 +597,11 @@ async function fetchProjectMetadata(repoName: string, defaultBranch: string): Pr
  */
 export async function fetchPortfolioProjects(): Promise<PortfolioProject[]> {
     try {
-        const headers: HeadersInit = {
-            Accept: "application/vnd.github.v3+json",
-            "User-Agent": "Portfolio-App"
-        }
-
-        if (GITHUB_TOKEN) {
-            headers.Authorization = `Bearer ${GITHUB_TOKEN}`
-        }
-
-        const res = await fetchWithTimeout(
+        const res = await fetchGitHubWithAuthFallback(
             `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&direction=desc&per_page=100`,
             {
                 ...getFetchOptions(3600), // 1 hour ISR in production
-                headers,
+                headers: getGitHubHeaders(),
             }
         )
 

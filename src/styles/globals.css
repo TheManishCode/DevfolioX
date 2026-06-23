@@ -64,6 +64,9 @@ body {
 html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 body {
@@ -74,6 +77,9 @@ body {
     background-image: url('/noise.webp');
     background-size: 200px 200px;
     background-position: 0 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 /* Default (light mode) body colors */

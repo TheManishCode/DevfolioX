@@ -52,7 +52,13 @@ const Section = ({
     </section>
 )
 
-const SemesterBlock = ({ semester }: { semester: any }) => {
+interface Semester {
+    semester: number
+    themes?: string[]
+    subjects?: string[]
+}
+
+const SemesterBlock = ({ semester }: { semester: Semester }) => {
     if (!semester.subjects?.length) return null
 
     return (
@@ -66,9 +72,9 @@ const SemesterBlock = ({ semester }: { semester: any }) => {
             </div>
 
             <div>
-                {semester.themes?.length > 0 && (
+                {(semester.themes?.length ?? 0) > 0 && (
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {semester.themes.map((theme: string, i: number) => (
+                        {(semester.themes ?? []).map((theme: string, i: number) => (
                             <span key={i} className="text-[9px] font-bold uppercase tracking-widest text-zinc-400 border border-zinc-200/50 dark:border-zinc-800/50 px-2 py-0.5 rounded-sm backdrop-blur-md">
                                 {theme}
                             </span>

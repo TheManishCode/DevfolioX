@@ -1,6 +1,6 @@
 {
     "title": "devfolio",
-    "description": "My professional digital garden and portfolio website. Built with Next.js 14, TypeScript, and Tailwind CSS. Features dynamic GitHub integration, real-time Spotify tracking, and a bespoke design system.",
+    "description": "My professional digital garden and portfolio website. Built with Next.js 15, React 18, TypeScript, and Tailwind CSS 4. Features dynamic GitHub integration, real-time Spotify tracking, anime and gaming pages, and a bespoke design system.",
     "categories": [
         "creations",
         "now",
@@ -17,11 +17,12 @@
         "ui-ux"
     ],
     "techStack": [
-        "Next.js 14",
+        "Next.js 15",
+        "React 18",
         "TypeScript",
-        "Tailwind CSS",
-        "Framer Motion",
+        "Tailwind CSS 4",
         "GitHub API",
-        "Spotify API"
+        "Spotify API",
+        "NextAuth.js"
     ]
 }

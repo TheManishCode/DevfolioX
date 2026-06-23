@@ -40,9 +40,7 @@ const securityHeaders = [
 
 const nextConfig = {
   typescript: {
-    // TypeScript errors are handled by IDE/editor linting
-    // Build continues even with TS warnings for faster iteration
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   async headers() {
     return [

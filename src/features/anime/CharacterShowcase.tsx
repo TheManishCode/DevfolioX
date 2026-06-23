@@ -1,5 +1,7 @@
 "use client"
 
+import type { CSSProperties } from "react"
+
 interface Character {
     name: string
     anime: string
@@ -7,6 +9,12 @@ interface Character {
     image: string
     color: string
     imagePosition?: string
+}
+
+type PolaroidVars = CSSProperties & {
+    "--polaroid-rotate": string
+    "--polaroid-offset": string
+    "--caption-rotate": string
 }
 
 const BEST_CHARACTERS: Character[] = [
@@ -38,7 +46,7 @@ export function CharacterShowcase() {
                     </h2>
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-6 md:gap-4 lg:gap-2">
+                <div className="grid grid-cols-2 min-[460px]:grid-cols-3 md:flex md:flex-wrap justify-center gap-x-4 gap-y-10 md:gap-4 lg:gap-2">
                     {BEST_CHARACTERS.map((char, i) => {
                         const style = polaroidStyles[i % polaroidStyles.length]
                         const tapeColor = tapeColors[i % tapeColors.length]
@@ -46,10 +54,12 @@ export function CharacterShowcase() {
                         return (
                             <div
                                 key={char.name}
-                                className="relative group transition-all duration-300 hover:z-20 hover:scale-105"
+                                className="relative group justify-self-center transition-all duration-300 hover:z-20 hover:scale-105 md:[transform:rotate(var(--polaroid-rotate))_translateY(var(--polaroid-offset))]"
                                 style={{
-                                    transform: `rotate(${style.rotate}deg) translateY(${style.translateY}px)`,
-                                }}
+                                    "--polaroid-rotate": `${style.rotate}deg`,
+                                    "--polaroid-offset": `${style.translateY}px`,
+                                    "--caption-rotate": `${-style.rotate}deg`,
+                                } as PolaroidVars}
                             >
                                 <div
                                     className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 z-10 opacity-80"
@@ -61,13 +71,13 @@ export function CharacterShowcase() {
                                 />
 
                                 <div
-                                    className="relative bg-white p-3 pb-16 shadow-xl transition-shadow duration-300 group-hover:shadow-2xl"
+                                    className="relative bg-white p-2.5 md:p-3 pb-14 md:pb-16 shadow-xl transition-shadow duration-300 group-hover:shadow-2xl"
                                     style={{
                                         boxShadow: '0 4px 20px rgba(0,0,0,0.15), 0 8px 40px rgba(0,0,0,0.1)',
                                     }}
                                 >
                                     <div
-                                        className="w-40 h-48 overflow-hidden flex items-center justify-center"
+                                        className="w-32 h-40 md:w-40 md:h-48 overflow-hidden flex items-center justify-center"
                                         style={{ backgroundColor: char.color + '20' }}
                                     >
                                         <img
@@ -78,10 +88,11 @@ export function CharacterShowcase() {
                                         />
                                     </div>
 
-                                    <div className="absolute bottom-3 left-3 right-3">
+                                    <div className="absolute bottom-3 left-3 right-3 min-w-0">
                                         <p
-                                            className="text-lg font-medium text-zinc-800 mb-0.5"
+                                            className="text-sm md:text-lg font-medium text-zinc-800 mb-0.5 truncate"
                                             style={{ fontFamily: 'Georgia, serif' }}
+                                            title={char.name}
                                         >
                                             {char.name}
                                         </p>
@@ -95,10 +106,9 @@ export function CharacterShowcase() {
                                 </div>
 
                                 <p
-                                    className="text-center text-sm text-zinc-500 mt-2 italic"
+                                    className="text-center text-sm text-zinc-500 mt-2 italic md:[transform:rotate(var(--caption-rotate))]"
                                     style={{
                                         fontFamily: 'Georgia, serif',
-                                        transform: `rotate(${-style.rotate}deg)`,
                                     }}
                                 >
                                     {char.anime}

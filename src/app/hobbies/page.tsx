@@ -1,130 +1,81 @@
-"use client"
-
+import type { Metadata } from "next"
 import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
+
+export const metadata: Metadata = {
+    title: "Hobbies",
+    description: "Anime, games, and interests beyond code.",
+}
+
+const sections = [
+    {
+        num: "01",
+        title: "Anime",
+        description: "Narrative-driven shows that inform how I think about storytelling, system design, and character-driven experiences.",
+        href: "/hobbies/anime",
+        cta: "Explore anime",
+        tags: ["Narrative", "World-building", "Character arcs"],
+    },
+    {
+        num: "02",
+        title: "Games",
+        description: "Strategy, optimization, and fast decision-making — games sharpen the same instincts I use when writing systems and solving problems.",
+        href: "/hobbies/games",
+        cta: "Explore games",
+        tags: ["Strategy", "Optimization", "Systems"],
+    },
+]
 
 export default function HobbiesPage() {
     return (
-        <main className="min-h-screen max-w-7xl mx-auto pt-20 lg:pt-28 pb-20 px-6 sm:px-8 md:px-12 lg:px-16 relative">
+        <main className="max-w-[1400px] mx-auto px-6 pb-24 pt-14 sm:px-8 md:px-12 lg:px-16 lg:pt-20">
 
-            {/* Background Blurs */}
-            <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-                <div className="absolute top-32 right-20 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
-                <div className="absolute bottom-32 left-10 w-80 h-80 bg-[#33E092]/5 rounded-full blur-3xl" />
-            </div>
-
-            {/* Header */}
-            <header className="mb-16 max-w-3xl">
-                <span className="text-[#33E092] text-xs font-bold tracking-[0.25em] uppercase">Beyond Code</span>
-                <h1 className="mt-4 font-serif text-4xl md:text-5xl italic dark:text-white text-zinc-900">
-                    Hobbies & Thinking Spaces
+            <header className="mb-12 pb-10 border-b border-zinc-200 dark:border-zinc-800 animate-slide-up">
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-400">Hobbies</span>
+                <h1 className="mt-4 font-incognito text-4xl md:text-5xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                    Beyond the code.
                 </h1>
-                <p className="mt-4 text-[15px] leading-relaxed dark:text-zinc-400 text-zinc-600">
-                    A curated look into how stories, strategy, and systems outside of programming influence how I think, design, and build as an engineer.
+                <p className="mt-4 text-base dark:text-zinc-400 text-zinc-600 max-w-xl leading-relaxed">
+                    The things outside of work that shape how I think, design, and build.
                 </p>
             </header>
 
-            {/* Dashboard Cards */}
-            <section className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-
-                {/* Anime Card */}
-                <div className="group relative rounded-2xl border dark:border-zinc-800 border-zinc-200 p-8 overflow-hidden bg-transparent">
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                    <div className="relative z-10">
-                        <span className="text-purple-400 text-xs font-semibold tracking-widest uppercase">Anime</span>
-                        <h2 className="mt-3 text-2xl font-semibold dark:text-white text-zinc-900">
-                            Narrative & World Systems
-                        </h2>
-                        <p className="mt-3 text-sm leading-relaxed dark:text-zinc-400 text-zinc-600">
-                            Exploring character psychology, world-building, symbolism, and long-form storytelling through modern and classic anime.
-                        </p>
-
-                        <ul className="mt-6 space-y-2 text-sm dark:text-zinc-400 text-zinc-600">
-                            <li>• Narrative pattern recognition</li>
-                            <li>• Character arcs → user journey thinking</li>
-                            <li>• Complex worlds → system design mindset</li>
-                            <li>• Cultural & creative exploration</li>
-                        </ul>
-
-                        <Link
-                            href="/hobbies/anime"
-                            className="inline-flex items-center gap-2 mt-8 text-sm font-medium text-purple-400 hover:underline"
-                        >
-                            Explore Anime Dashboard
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Games Card */}
-                <div className="group relative rounded-2xl border dark:border-zinc-800 border-zinc-200 p-8 overflow-hidden bg-transparent">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#33E092]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                    <div className="relative z-10">
-                        <span className="text-[#33E092] text-xs font-semibold tracking-widest uppercase">Games</span>
-                        <h2 className="mt-3 text-2xl font-semibold dark:text-white text-zinc-900">
-                            Strategy & Interactive Systems
-                        </h2>
-                        <p className="mt-3 text-sm leading-relaxed dark:text-zinc-400 text-zinc-600">
-                            Games sharpen my understanding of real-time decision making, feedback loops, optimization, and competitive systems.
-                        </p>
-
-                        <ul className="mt-6 space-y-2 text-sm dark:text-zinc-400 text-zinc-600">
-                            <li>• Strategic planning & adaptability</li>
-                            <li>• Resource management & optimization</li>
-                            <li>• Fast decision-making under pressure</li>
-                            <li>• Multiplayer teamwork & coordination</li>
-                        </ul>
-
-                        <Link
-                            href="/hobbies/games"
-                            className="inline-flex items-center gap-2 mt-8 text-sm font-medium text-[#33E092] hover:underline"
-                        >
-                            Explore Games Dashboard
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Insight Section */}
-            <section className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                    { title: "Systems Thinking", desc: "Understanding interconnected components and long-term impact." },
-                    { title: "Pattern Recognition", desc: "Spotting recurring structures across stories, games, and code." },
-                    { title: "Creative Problem Solving", desc: "Approaching challenges from narrative and strategic angles." },
-                    { title: "User-Centric Design", desc: "Thinking deeply about experience, feedback, and engagement." },
-                ].map((item, i) => (
-                    <div
-                        key={i}
-                        className="rounded-xl border dark:border-zinc-800 border-zinc-200 p-6 bg-transparent"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up" style={{ animationDelay: "80ms" }}>
+                {sections.map((s) => (
+                    <Link
+                        key={s.href}
+                        href={s.href}
+                        className="group relative block rounded-xl border border-zinc-200 dark:border-zinc-800 p-7 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200"
                     >
-                        <h3 className="font-medium dark:text-white text-zinc-900">
-                            {item.title}
+                        <div className="mb-8">
+                            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-zinc-400">{s.num}</span>
+                        </div>
+                        <h3 className="font-incognito text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                            {s.title}
                         </h3>
-                        <p className="mt-2 text-sm dark:text-zinc-400 text-zinc-600 leading-relaxed">
-                            {item.desc}
+                        <p className="text-sm dark:text-zinc-500 text-zinc-500 leading-relaxed mb-8">
+                            {s.description}
                         </p>
-                    </div>
+                        <div className="flex items-center justify-between">
+                            <div className="flex flex-wrap gap-1.5">
+                                {s.tags.map((tag) => (
+                                    <span
+                                        key={tag}
+                                        className="text-[10px] font-mono uppercase tracking-[0.14em] border border-zinc-200 dark:border-zinc-800 text-zinc-500 px-2 py-1 rounded"
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors shrink-0 ml-4">
+                                <span>{s.cta}</span>
+                                <ArrowUpRight size={11} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </div>
+                        </div>
+                    </Link>
                 ))}
-            </section>
+            </div>
 
-            {/* Footer Nav */}
-            <footer className="mt-24 pt-8 border-t dark:border-zinc-800/50 border-zinc-200">
-                <Link
-                    href="/"
-                    className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-[#33E092] transition-colors"
-                >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Back to Home
-                </Link>
-            </footer>
         </main>
     )
 }

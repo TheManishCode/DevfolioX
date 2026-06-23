@@ -69,8 +69,6 @@ export default function ConnectPage() {
 
         // Handle OAuth errors - redirect back to initial state
         if (params.get('error')) {
-            const error = params.get('error');
-            console.log('OAuth Error:', error);
             window.history.replaceState({}, '', window.location.pathname);
         }
     }, []);

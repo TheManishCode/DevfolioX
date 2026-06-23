@@ -33,11 +33,12 @@ export function OPPlaylist() {
                     <div className="mb-6 rounded-xl overflow-hidden border dark:border-zinc-800 border-zinc-200">
                         <div className="aspect-video w-full">
                             <iframe
-                                src={`https://www.youtube.com/embed/${currentTrack.youtubeId}?autoplay=1&rel=0`}
+                                src={`https://www.youtube-nocookie.com/embed/${currentTrack.youtubeId}?rel=0`}
+                                title={`${currentTrack.name} opening`}
                                 width="100%"
                                 height="100%"
                                 frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                                 className="w-full h-full"
                             />

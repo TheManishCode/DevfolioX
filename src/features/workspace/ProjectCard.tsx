@@ -44,12 +44,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
             <CardViewport>
                 <FaceSlider activeFace={activeFace} mode="mini">
+                    <FaceDemoPlaceholder />
+                    <FaceDescription description={project.description} />
                     <FaceTech
                         tech={project.faces.tech}
                         techStack={project.metadata.techStack}
                     />
-                    <FaceDemoPlaceholder />
-                    <FaceDescription description={project.description} />
                 </FaceSlider>
             </CardViewport>
 
