@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { signIn, signOut, useSession } from "next-auth/react"
 
 interface GuestbookEntry {
@@ -9,6 +9,8 @@ interface GuestbookEntry {
     message: string
     image?: string | null
     provider: string
+    isTest: boolean
+    expiresAt: string | null
     createdAt: string
 }
 
@@ -40,6 +42,41 @@ const UserAvatar = ({ src, name, className = "w-10 h-10" }: { src?: string | nul
     )
 }
 
+// Counts down to expiry and calls onExpire when done
+function TestEntryCountdown({ expiresAt, onExpire }: { expiresAt: string; onExpire: () => void }) {
+    const [remaining, setRemaining] = useState(() =>
+        Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000))
+    )
+    const onExpireRef = useRef(onExpire)
+    onExpireRef.current = onExpire
+
+    useEffect(() => {
+        if (remaining <= 0) {
+            onExpireRef.current()
+            return
+        }
+        const id = setInterval(() => {
+            setRemaining((r) => {
+                if (r <= 1) {
+                    clearInterval(id)
+                    onExpireRef.current()
+                    return 0
+                }
+                return r - 1
+            })
+        }, 1000)
+        return () => clearInterval(id)
+    }, [remaining])
+
+    const m = Math.floor(remaining / 60)
+    const s = remaining % 60
+    return (
+        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+            test · {m}:{s.toString().padStart(2, "0")}
+        </span>
+    )
+}
+
 export default function GuestbookPage() {
     const { data: session, status } = useSession()
     const [entries, setEntries] = useState<GuestbookEntry[]>([])
@@ -54,7 +91,11 @@ export default function GuestbookPage() {
             const res = await fetch("/api/guestbook")
             if (!res.ok) throw new Error("Failed to load entries")
             const data = await res.json()
-            setEntries(data)
+            // Filter out any already-expired test entries the server may have missed
+            const now = Date.now()
+            setEntries(data.filter((e: GuestbookEntry) =>
+                !e.isTest || !e.expiresAt || new Date(e.expiresAt).getTime() > now
+            ))
         } catch {
             setError("Couldn't load entries. The database may not be configured yet.")
         } finally {
@@ -65,6 +106,10 @@ export default function GuestbookPage() {
     useEffect(() => {
         fetchEntries()
     }, [fetchEntries])
+
+    const expireEntry = useCallback((id: number) => {
+        setEntries((prev) => prev.filter((e) => e.id !== id))
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -113,6 +158,9 @@ export default function GuestbookPage() {
         return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
     }
 
+    const realEntries = entries.filter((e) => !e.isTest)
+    const testEntries = entries.filter((e) => e.isTest)
+
     return (
         <main className="max-w-3xl mx-auto pt-20 lg:pt-28 pb-20 px-6 sm:px-8 md:px-12 lg:px-16">
             {/* Header */}
@@ -122,6 +170,9 @@ export default function GuestbookPage() {
                 </h1>
                 <p className="text-base dark:text-zinc-400 text-zinc-600 max-w-2xl leading-relaxed">
                     Sign in to leave a message. Let me know you stopped by!
+                </p>
+                <p className="text-xs dark:text-zinc-600 text-zinc-400 mt-2">
+                    Tip: start your message with <code className="font-mono">[Test]:</code> for a temporary entry that auto-deletes in 5 minutes.
                 </p>
             </section>
 
@@ -160,7 +211,7 @@ export default function GuestbookPage() {
                                         aria-label="Guestbook message"
                                         value={message}
                                         onChange={(e) => setMessage(e.target.value.slice(0, 200))}
-                                        placeholder="Leave a message..."
+                                        placeholder="Leave a message… or start with [Test]: for a temporary entry"
                                         rows={3}
                                         required
                                         className="w-full px-4 py-3 rounded-lg border dark:border-zinc-800 border-zinc-400 bg-[#d5d5da] dark:bg-zinc-900 text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-zinc-500 dark:focus:border-zinc-600 transition-colors text-sm resize-none"
@@ -248,25 +299,40 @@ export default function GuestbookPage() {
                     <p className="text-sm text-zinc-500 text-center py-8">{error}</p>
                 ) : entries.length > 0 ? (
                     <>
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3 mb-6">
                             <h2 className="text-sm font-medium text-zinc-500">
-                                {entries.length} {entries.length === 1 ? "signature" : "signatures"}
+                                {realEntries.length} {realEntries.length === 1 ? "signature" : "signatures"}
                             </h2>
+                            {testEntries.length > 0 && (
+                                <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                                    {testEntries.length} test
+                                </span>
+                            )}
                         </div>
 
                         <div className="space-y-4">
                             {entries.map((entry, index) => (
                                 <div
                                     key={entry.id}
-                                    className="flex gap-4 p-4 rounded-xl border dark:border-zinc-800/30 border-zinc-200/30 animate-slide-up"
+                                    className={`flex gap-4 p-4 rounded-xl border animate-slide-up transition-opacity duration-500 ${
+                                        entry.isTest
+                                            ? "dark:border-amber-900/30 border-amber-200/50 dark:bg-amber-950/10 bg-amber-50/30"
+                                            : "dark:border-zinc-800/30 border-zinc-200/30"
+                                    }`}
                                     style={{ animationDelay: `${index * 0.03}s` }}
                                 >
                                     <UserAvatar src={entry.image} name={entry.name} />
                                     <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 mb-1">
+                                        <div className="flex items-center gap-2 mb-1 flex-wrap">
                                             <span className="font-medium text-sm text-zinc-900 dark:text-white">{entry.name}</span>
                                             <span className="text-xs text-zinc-400">•</span>
                                             <span className="text-xs text-zinc-400">{formatDate(entry.createdAt)}</span>
+                                            {entry.isTest && entry.expiresAt && (
+                                                <TestEntryCountdown
+                                                    expiresAt={entry.expiresAt}
+                                                    onExpire={() => expireEntry(entry.id)}
+                                                />
+                                            )}
                                         </div>
                                         <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{entry.message}</p>
                                     </div>

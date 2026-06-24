@@ -8,14 +8,17 @@ datasource db {
 }
 
 model GuestbookEntry {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
   email     String
   message   String
   image     String?
   provider  String
-  createdAt DateTime @default(now())
+  isTest    Boolean   @default(false)
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
 
   @@index([createdAt])
   @@index([email])
+  @@index([isTest, expiresAt])
 }

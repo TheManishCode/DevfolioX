@@ -3,6 +3,8 @@ import { NextRequest } from "next/server"
 import { prisma } from "@/lib/prisma"
 
 const MESSAGE_MAX_LEN = 200
+const TEST_PREFIX = /^\[test\]:/i
+const TEST_TTL_MS = 5 * 60 * 1000 // 5 minutes
 
 function sanitize(input: string): string {
     return input
@@ -12,8 +14,20 @@ function sanitize(input: string): string {
         .slice(0, MESSAGE_MAX_LEN)
 }
 
+async function purgeExpiredTestEntries() {
+    await prisma.guestbookEntry.deleteMany({
+        where: {
+            isTest: true,
+            expiresAt: { lt: new Date() },
+        },
+    })
+}
+
 export async function GET() {
     try {
+        // Clean up any expired test entries on every read
+        await purgeExpiredTestEntries()
+
         const entries = await prisma.guestbookEntry.findMany({
             orderBy: { createdAt: "desc" },
             select: {
@@ -22,6 +36,8 @@ export async function GET() {
                 message: true,
                 image: true,
                 provider: true,
+                isTest: true,
+                expiresAt: true,
                 createdAt: true,
             },
         })
@@ -55,21 +71,28 @@ export async function POST(req: NextRequest) {
         return Response.json({ error: `Message must be under ${MESSAGE_MAX_LEN} characters` }, { status: 400 })
     }
 
+    const isTest = TEST_PREFIX.test(rawMessage.trim())
+
     try {
-        // Rate limit: 1 entry per 24 hours per email
-        const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
-        const recent = await prisma.guestbookEntry.findFirst({
-            where: {
-                email: token.email,
-                createdAt: { gte: oneDayAgo },
-            },
-        })
-        if (recent) {
-            return Response.json(
-                { error: "You have already signed the guestbook in the last 24 hours" },
-                { status: 429 }
-            )
+        // Rate limit: 1 entry per 24h per email — skip for test entries
+        if (!isTest) {
+            const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
+            const recent = await prisma.guestbookEntry.findFirst({
+                where: {
+                    email: token.email,
+                    isTest: false,
+                    createdAt: { gte: oneDayAgo },
+                },
+            })
+            if (recent) {
+                return Response.json(
+                    { error: "You have already signed the guestbook in the last 24 hours" },
+                    { status: 429 }
+                )
+            }
         }
+
+        const expiresAt = isTest ? new Date(Date.now() + TEST_TTL_MS) : null
 
         const entry = await prisma.guestbookEntry.create({
             data: {
@@ -78,6 +101,8 @@ export async function POST(req: NextRequest) {
                 message: sanitize(rawMessage),
                 image: (token.picture as string) || null,
                 provider: (token.provider as string) || "OAuth",
+                isTest,
+                expiresAt,
             },
             select: {
                 id: true,
@@ -85,6 +110,8 @@ export async function POST(req: NextRequest) {
                 message: true,
                 image: true,
                 provider: true,
+                isTest: true,
+                expiresAt: true,
                 createdAt: true,
             },
         })
@@ -95,5 +122,25 @@ export async function POST(req: NextRequest) {
             { error: "Database unavailable. Please add DATABASE_URL to your environment." },
             { status: 503 }
         )
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    const token = await getToken({ req })
+    if (!token || !token.email) {
+        return Response.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    // Allow users to delete only their own test entries
+    try {
+        const result = await prisma.guestbookEntry.deleteMany({
+            where: {
+                email: token.email,
+                isTest: true,
+            },
+        })
+        return Response.json({ deleted: result.count })
+    } catch {
+        return Response.json({ error: "Database unavailable" }, { status: 503 })
     }
 }
