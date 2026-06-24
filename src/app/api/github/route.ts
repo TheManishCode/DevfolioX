@@ -121,15 +121,11 @@ export async function GET(request: Request) {
                 .filter((r: any) => r.pushed_at)
                 .sort((a: any, b: any) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime());
 
-            let streakDays = 0;
+            let daysSinceLastPush = 999;
             if (sortedRepos.length > 0) {
                 const today = new Date();
                 const lastPush = new Date(sortedRepos[0].pushed_at);
-                const daysSinceLastPush = Math.floor((today.getTime() - lastPush.getTime()) / (1000 * 60 * 60 * 24));
-
-                if (daysSinceLastPush <= 2) {
-                    streakDays = Math.max(7, daysSinceLastPush);
-                }
+                daysSinceLastPush = Math.floor((today.getTime() - lastPush.getTime()) / (1000 * 60 * 60 * 24));
             }
 
             // Compute skills from repo languages (parallel via Promise.allSettled)
@@ -174,13 +170,10 @@ export async function GET(request: Request) {
                 .slice(0, 4) : []; // Top 4 languages
 
             const impactData = {
-                streakDays,
+                daysSinceLastPush,
                 commits: estimatedTotalCommits,
                 commits12mo: estimatedTotalCommits,
-                prs: 0,
-                prsMerged: 0,
                 stars,
-                starsEarned: stars,
                 followers: user.followers,
                 repos: ownRepos.length,
                 skills,
