@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { signIn } from "next-auth/react"
+import { useState, useEffect, useRef } from "react"
+import { signIn, useSession } from "next-auth/react"
 
 // Social Links
 const socialLinks = [
@@ -43,9 +43,11 @@ const socialLinks = [
 ]
 
 export default function ConnectPage() {
+    const { data: session } = useSession()
     const [currentTime, setCurrentTime] = useState("")
     const [activeStep, setActiveStep] = useState<"initial" | "processing" | "completed">("initial")
     const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
+    const notifiedRef = useRef(false)
 
     useEffect(() => {
         const updateTime = () => {
@@ -57,29 +59,36 @@ export default function ConnectPage() {
         return () => clearInterval(interval)
     }, [])
 
-    // Handle OAuth callback - check for success or error
+    // Handle OAuth callback - detect success, fire connection request
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-
-        // Handle successful authentication
-        if (params.get('status') === 'success') {
-            setActiveStep("completed");
-            window.history.replaceState({}, '', window.location.pathname);
+        const params = new URLSearchParams(window.location.search)
+        if (params.get("status") === "success") {
+            setActiveStep("completed")
+            window.history.replaceState({}, "", window.location.pathname)
         }
-
-        // Handle OAuth errors - redirect back to initial state
-        if (params.get('error')) {
-            window.history.replaceState({}, '', window.location.pathname);
+        if (params.get("error")) {
+            window.history.replaceState({}, "", window.location.pathname)
         }
-    }, []);
+    }, [])
+
+    // After auth completes and session is available, notify via /api/connect
+    useEffect(() => {
+        if (activeStep === "completed" && session?.user && !notifiedRef.current) {
+            notifiedRef.current = true
+            fetch("/api/connect", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({}),
+            }).catch(() => {/* non-fatal */})
+        }
+    }, [activeStep, session])
 
     const triggerAuth = (provider: string) => {
         setSelectedProvider(provider)
         setActiveStep("processing")
-
         signIn(provider.toLowerCase(), {
-            callbackUrl: window.location.origin + '/connect?status=success'
-        });
+            callbackUrl: window.location.origin + "/connect?status=success",
+        })
     }
 
     return (

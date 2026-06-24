@@ -22,3 +22,16 @@ model GuestbookEntry {
   @@index([email])
   @@index([isTest, expiresAt])
 }
+
+model ConnectionRequest {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  image      String?
+  provider   String
+  profileUrl String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([email])
+}

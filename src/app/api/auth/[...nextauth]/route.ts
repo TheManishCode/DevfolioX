@@ -141,58 +141,27 @@ const handler = NextAuth({
     },
     callbacks: {
         async signIn({ user, account, profile }) {
-            let profileUrl = "";
-            let username = "";
-
+            // Attach profileUrl to the token so /api/connect can use it
             if (account?.provider === "github" && profile) {
                 const ghProfile = profile as { login?: string; html_url?: string };
-                username = ghProfile.login || "";
-                profileUrl = ghProfile.html_url || `https://github.com/${username}`;
+                const login = ghProfile.login || "";
+                // Store on user object so jwt callback can pick it up
+                (user as Record<string, string>).profileUrl =
+                    ghProfile.html_url || `https://github.com/${login}`;
             } else if (account?.provider === "linkedin" && profile) {
-                const linkedInProfile = profile as LinkedInProfile;
-
-                // Use vanityName if available (requires r_basicprofile permission)
-                if (linkedInProfile.vanityName) {
-                    username = linkedInProfile.vanityName;
-                    profileUrl = `https://www.linkedin.com/in/${linkedInProfile.vanityName}`;
-                } else {
-                    // Fallback - waiting for Advertising API approval
-                    username = user.name || "Pending API access";
-                    profileUrl = "Pending r_basicprofile permission";
-                }
-            }
-
-            if (process.env.DISCORD_WEBHOOK_URL) {
-                try {
-                    await fetch(process.env.DISCORD_WEBHOOK_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            embeds: [{
-                                title: "🤝 New Connection Handshake",
-                                color: 3399826,
-                                fields: [
-                                    { name: "Name", value: user.name || "Unknown", inline: true },
-                                    { name: "Platform", value: account?.provider || "Unknown", inline: true },
-                                    { name: "Username", value: username || "N/A", inline: true },
-                                    { name: "Email", value: user.email || "No email provided", inline: false },
-                                    { name: "Profile URL", value: profileUrl || "N/A", inline: false }
-                                ],
-                                thumbnail: user.image ? { url: user.image } : undefined,
-                                footer: { text: "Identity Verified via OAuth" },
-                                timestamp: new Date().toISOString(),
-                            }]
-                        }),
-                    });
-                } catch (error) {
-                    console.error("Discord webhook error:", error);
-                }
+                const li = profile as LinkedInProfile;
+                (user as Record<string, string>).profileUrl = li.vanityName
+                    ? `https://www.linkedin.com/in/${li.vanityName}`
+                    : "";
             }
             return true;
         },
         async jwt({ token, user, account }) {
             if (user) {
                 token.picture = user.image;
+                if ((user as Record<string, string>).profileUrl) {
+                    token.profileUrl = (user as Record<string, string>).profileUrl;
+                }
             }
             if (account?.provider) {
                 token.provider = account.provider;
