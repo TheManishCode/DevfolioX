@@ -1,8 +1,8 @@
 /**
  * Home Page
  *
- * Landing page: hero, work experience preview, GitHub contributions,
- * featured projects, tech stacks, and hackathons. Uses ISR (1 hour).
+ * Landing page: hero, featured projects, work experience preview,
+ * hackathons, GitHub contributions, tech stacks. Uses ISR (1 hour).
  *
  * Data flow:
  * - Projects fetched from GitHub API via fetchPortfolioProjects()
@@ -40,28 +40,52 @@ export default async function HomePage() {
             {/* Main content container */}
             <main id="main-content" className="max-w-[1400px] mx-auto pt-20 lg:pt-28 px-6 sm:px-8 md:px-12 lg:px-16">
 
+                {/* ── 1. Hero ── */}
                 <section className="mb-16 relative">
-                    <div className="lg:max-w-4xl animate-slide-up">
+                    <div className="lg:max-w-4xl animate-slide-up relative z-10">
 
                         <h1 className="font-incognito font-semibold tracking-tight text-3xl sm:text-5xl mb-6 lg:leading-[3.7rem] leading-tight">
                             Software developer, technical writer & open-source maintainer
                         </h1>
 
-
                         <p className="text-base dark:text-zinc-400 text-zinc-600 leading-relaxed">
                             Designing performant systems with C++ and Python, while crafting seamless frontends using React and Tailwind CSS. Focused on the future of Cloud Native and Open Source.
                         </p>
 
-
                         <SocialLinks />
                     </div>
-
 
                     <HeroVisual />
                 </section>
 
-
+                {/* ── 2. Featured Projects ── */}
                 <section className="mt-12 animate-slide-up delay-100">
+                    <div className="flex items-center justify-between mb-4">
+                        <SectionTitle>Featured</SectionTitle>
+                        <Link
+                            href="/workspace/now"
+                            className="text-black dark:text-[#33E092] hover:underline text-sm"
+                        >
+                            View all →
+                        </Link>
+                    </div>
+                </section>
+            </main>
+
+            {/* Featured cards - wider container */}
+            <div className="max-w-[1400px] mx-auto lg:ml-[calc((100vw-80rem)/2)] px-6 sm:px-8 md:px-12 lg:px-16">
+                {nowProjects.length > 0 ? (
+                    <ProjectGrid projects={nowProjects} />
+                ) : (
+                    <p className="font-incognito text-xl font-semibold tracking-tight dark:text-zinc-500 text-zinc-400">
+                        Coming Soon
+                    </p>
+                )}
+            </div>
+
+            {/* ── 3. Work Experience ── */}
+            <div className="max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+                <section className="mt-20 animate-slide-up delay-100">
                     <div className="flex items-center justify-between mb-4">
                         <SectionTitle>Work Experience</SectionTitle>
                         <Link
@@ -72,7 +96,7 @@ export default async function HomePage() {
                         </Link>
                     </div>
                 </section>
-            </main>
+            </div>
 
             {/* Work Experience cards - wider container aligned with 7xl boundaries */}
             <div className="max-w-[1400px] mx-auto lg:ml-[calc((100vw-80rem)/2)] px-6 sm:px-8 md:px-12 lg:px-16">
@@ -124,50 +148,12 @@ export default async function HomePage() {
             </div>
 
             {/* Continue main content */}
-            <div className="max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
-
-
-                <div className="mt-20">
-                    <GitHubContributions />
-                </div>
-
-
-                <section className="mt-20 animate-slide-up delay-200">
-                    <div className="flex items-center justify-between mb-4">
-                        <SectionTitle>Featured</SectionTitle>
-                        <Link
-                            href="/workspace/now"
-                            className="text-black dark:text-[#33E092] hover:underline text-sm"
-                        >
-                            View all →
-                        </Link>
-                    </div>
-                </section>
-            </div>
-
-            {/* Featured cards - wider container */}
-            <div className="max-w-[1400px] mx-auto lg:ml-[calc((100vw-80rem)/2)] px-6 sm:px-8 md:px-12 lg:px-16">
-                {nowProjects.length > 0 ? (
-                    <ProjectGrid projects={nowProjects} />
-                ) : (
-                    <p className="font-incognito text-xl font-semibold tracking-tight dark:text-zinc-500 text-zinc-400">
-                        Coming Soon
-                    </p>
-                )}
-            </div>
-
-            {/* Continue main content */}
             <div className="max-w-[1400px] mx-auto pb-20 px-6 sm:px-8 md:px-12 lg:px-16">
 
-                <div className="mt-20">
-                    <TechStacks />
-                </div>
+                {/* ── 4. Hackathons ── */}
+                <section className="mt-20 mb-20 animate-slide-up delay-300">
 
-
-                {/* Hackathons */}
-                <section className="mt-20 mb-32 animate-slide-up delay-300">
-
-                    {/* Centered label with flanking lines — from reference design */}
+                    {/* Centered label with flanking lines */}
                     <div className="flex items-center gap-4 mb-10">
                         <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
                         <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-400 px-1">Hackathons</span>
@@ -191,6 +177,15 @@ export default async function HomePage() {
 
                 </section>
 
+                {/* ── 5. GitHub Contributions ── */}
+                <div className="mt-4">
+                    <GitHubContributions />
+                </div>
+
+                {/* ── 6. Tech Stacks ── */}
+                <div className="mt-20">
+                    <TechStacks />
+                </div>
 
                 <NavigationIcons />
             </div>

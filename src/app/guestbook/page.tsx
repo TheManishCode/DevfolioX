@@ -1,35 +1,31 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { signIn, signOut, useSession } from "next-auth/react"
 
 interface GuestbookEntry {
     id: number
     name: string
     message: string
-    image?: string
+    image?: string | null
     provider: string
-    date: string
+    createdAt: string
 }
 
-// UserAvatar Component with Error Handling
-const UserAvatar = ({ src, name, className = "w-10 h-10" }: { src?: string | null, name: string, className?: string }) => {
-    const [imgError, setImgError] = useState(false);
+const UserAvatar = ({ src, name, className = "w-10 h-10" }: { src?: string | null; name: string; className?: string }) => {
+    const [imgError, setImgError] = useState(false)
 
     useEffect(() => {
-        setImgError(false); // Reset error state when src changes
-    }, [src]);
+        setImgError(false)
+    }, [src])
 
-    const getInitials = (name: string) => {
-        return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-    }
+    const getInitials = (n: string) =>
+        n.split(" ").map((p) => p[0]).join("").toUpperCase().slice(0, 2)
 
     if (!src || imgError) {
         return (
             <div className={`${className} rounded-full bg-[#d5d5da] dark:bg-zinc-800 flex items-center justify-center flex-shrink-0`}>
-                <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
-                    {getInitials(name)}
-                </span>
+                <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">{getInitials(name)}</span>
             </div>
         )
     }
@@ -49,65 +45,57 @@ export default function GuestbookPage() {
     const [entries, setEntries] = useState<GuestbookEntry[]>([])
     const [message, setMessage] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const [showSuccess, setShowSuccess] = useState(false)
 
-    // Load entries from localStorage on mount and sync with current user profile
-    useEffect(() => {
-        const saved = localStorage.getItem("guestbook-entries-v3")
-        if (saved) {
-            let parsedEntries = JSON.parse(saved)
-
-            // Feature: Sync past entries with current profile if logged in
-            if (session?.user?.image || session?.user?.name) {
-                let hasUpdates = false
-                parsedEntries = parsedEntries.map((entry: GuestbookEntry) => {
-                    // Match by name for this demo (in prod use ID/Email)
-                    if (entry.name === session.user?.name && (entry.image !== session.user?.image)) {
-                        hasUpdates = true
-                        return {
-                            ...entry,
-                            image: session.user.image,
-                            name: session.user.name // also sync name if changed
-                        }
-                    }
-                    return entry
-                })
-
-                if (hasUpdates) {
-                    localStorage.setItem("guestbook-entries-v3", JSON.stringify(parsedEntries))
-                }
-            }
-
-            setEntries(parsedEntries)
+    const fetchEntries = useCallback(async () => {
+        try {
+            const res = await fetch("/api/guestbook")
+            if (!res.ok) throw new Error("Failed to load entries")
+            const data = await res.json()
+            setEntries(data)
+        } catch {
+            setError("Couldn't load entries. The database may not be configured yet.")
+        } finally {
+            setIsLoading(false)
         }
-    }, [session]) // Re-run when session loads
+    }, [])
+
+    useEffect(() => {
+        fetchEntries()
+    }, [fetchEntries])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!session?.user || !message.trim()) return
 
         setIsSubmitting(true)
+        setError(null)
 
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500))
+        try {
+            const res = await fetch("/api/guestbook", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message.trim() }),
+            })
 
-        const newEntry: GuestbookEntry = {
-            id: Date.now(),
-            name: session.user.name || "Anonymous",
-            message: message.trim(),
-            image: session.user.image || undefined,
-            provider: "OAuth",
-            date: new Date().toISOString(),
+            const data = await res.json()
+
+            if (!res.ok) {
+                setError(data.error || "Something went wrong")
+                return
+            }
+
+            setEntries((prev) => [data, ...prev])
+            setMessage("")
+            setShowSuccess(true)
+            setTimeout(() => setShowSuccess(false), 3000)
+        } catch {
+            setError("Failed to submit. Please try again.")
+        } finally {
+            setIsSubmitting(false)
         }
-
-        const updatedEntries = [newEntry, ...entries]
-        setEntries(updatedEntries)
-        localStorage.setItem("guestbook-entries-v3", JSON.stringify(updatedEntries))
-
-        setMessage("")
-        setIsSubmitting(false)
-        setShowSuccess(true)
-        setTimeout(() => setShowSuccess(false), 3000)
     }
 
     const formatDate = (dateStr: string) => {
@@ -122,7 +110,7 @@ export default function GuestbookPage() {
         if (diffMins < 60) return `${diffMins}m ago`
         if (diffHours < 24) return `${diffHours}h ago`
         if (diffDays < 7) return `${diffDays}d ago`
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
     }
 
     return (
@@ -138,7 +126,7 @@ export default function GuestbookPage() {
             </section>
 
             {/* Sign Form or Login */}
-            <section className="mb-12 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <section className="mb-12 animate-slide-up" style={{ animationDelay: "0.1s" }}>
                 <div className="p-6 rounded-xl border dark:border-zinc-800/50 border-zinc-200/50">
                     {status === "loading" ? (
                         <div className="flex items-center justify-center py-8">
@@ -148,14 +136,10 @@ export default function GuestbookPage() {
                             </svg>
                         </div>
                     ) : session ? (
-                        // Authenticated - Show sign form
                         <div>
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-3">
-                                    <UserAvatar
-                                        src={session.user?.image}
-                                        name={session.user?.name || "?"}
-                                    />
+                                    <UserAvatar src={session.user?.image} name={session.user?.name || "?"} />
                                     <div>
                                         <p className="text-sm font-medium dark:text-white text-zinc-900">{session.user?.name}</p>
                                         <p className="text-xs text-zinc-500">{session.user?.email}</p>
@@ -168,11 +152,6 @@ export default function GuestbookPage() {
                                     Sign out
                                 </button>
                             </div>
-
-                            <details className="mb-4 text-[10px] text-zinc-500 font-mono">
-                                <summary className="cursor-pointer">Debug Info</summary>
-                                <pre className="mt-2 p-2 bg-zinc-900 rounded overflow-auto">{JSON.stringify(session.user, null, 2)}</pre>
-                            </details>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
@@ -188,6 +167,10 @@ export default function GuestbookPage() {
                                     />
                                     <p className="text-xs text-zinc-400 mt-1 text-right">{message.length}/200</p>
                                 </div>
+
+                                {error && (
+                                    <p className="text-xs text-red-500 dark:text-red-400">{error}</p>
+                                )}
 
                                 <div className="flex items-center gap-4">
                                     <button
@@ -220,7 +203,6 @@ export default function GuestbookPage() {
                             </form>
                         </div>
                     ) : (
-                        // Not authenticated - Show login options
                         <div className="text-center py-4">
                             <p className="text-sm text-zinc-500 mb-6">Sign in with your account to leave a message</p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -250,11 +232,25 @@ export default function GuestbookPage() {
 
             {/* Entries */}
             <section className="mb-32">
-                {entries.length > 0 ? (
+                {isLoading ? (
+                    <div className="space-y-4">
+                        {[...Array(3)].map((_, i) => (
+                            <div key={i} className="flex gap-4 p-4 rounded-xl border dark:border-zinc-800/30 border-zinc-200/30 animate-pulse">
+                                <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 shrink-0" />
+                                <div className="flex-1 space-y-2 pt-1">
+                                    <div className="h-3 w-32 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                                    <div className="h-3 w-full bg-zinc-200 dark:bg-zinc-800 rounded" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : error && entries.length === 0 ? (
+                    <p className="text-sm text-zinc-500 text-center py-8">{error}</p>
+                ) : entries.length > 0 ? (
                     <>
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-sm font-medium text-zinc-500">
-                                {entries.length} {entries.length === 1 ? 'signature' : 'signatures'}
+                                {entries.length} {entries.length === 1 ? "signature" : "signatures"}
                             </h2>
                         </div>
 
@@ -265,18 +261,12 @@ export default function GuestbookPage() {
                                     className="flex gap-4 p-4 rounded-xl border dark:border-zinc-800/30 border-zinc-200/30 animate-slide-up"
                                     style={{ animationDelay: `${index * 0.03}s` }}
                                 >
-                                    {/* Avatar */}
-                                    <UserAvatar
-                                        src={entry.image}
-                                        name={entry.name}
-                                    />
-
-                                    {/* Content */}
+                                    <UserAvatar src={entry.image} name={entry.name} />
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className="font-medium text-sm text-zinc-900 dark:text-white">{entry.name}</span>
                                             <span className="text-xs text-zinc-400">•</span>
-                                            <span className="text-xs text-zinc-400">{formatDate(entry.date)}</span>
+                                            <span className="text-xs text-zinc-400">{formatDate(entry.createdAt)}</span>
                                         </div>
                                         <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{entry.message}</p>
                                     </div>

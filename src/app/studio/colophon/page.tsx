@@ -24,7 +24,7 @@ import {
 
 export default function ColophonPage() {
     const techStack = [
-        { icon: <SiNextdotjs size={24} />, name: "Next.js 16" },
+        { icon: <SiNextdotjs size={24} />, name: "Next.js 15" },
         { icon: <SiReact size={24} />, name: "React 19" },
         { icon: <SiTypescript size={24} />, name: "TypeScript 5" },
         { icon: <SiTailwindcss size={24} />, name: "Tailwind v4" },
@@ -220,7 +220,7 @@ export default function ColophonPage() {
                                 <p className="text-xs dark:text-zinc-500 text-zinc-500">Interface & Body</p>
                             </div>
                             <div>
-                                <p className="text-lg font-mono dark:text-white text-zinc-900 mb-1">Fira Code</p>
+                                <p className="font-mono text-lg dark:text-white text-zinc-900 mb-1">JetBrains Mono</p>
                                 <p className="text-xs dark:text-zinc-500 text-zinc-500">Code & Technical</p>
                             </div>
                         </div>
@@ -287,7 +287,7 @@ export default function ColophonPage() {
                         <span className="uppercase">Online</span>
                     </div>
                     <span>·</span>
-                    <span>Build 2026.02</span>
+                    <span>v1.0.0</span>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm dark:text-zinc-500 text-zinc-500">
@@ -296,10 +296,10 @@ export default function ColophonPage() {
                 </div>
 
                 <div className="flex gap-4 font-mono text-[10px] uppercase">
-                    <Link href="https://github.com/" target="_blank" rel="noopener noreferrer" className="dark:text-zinc-600 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors flex items-center gap-1">
+                    <Link href="https://github.com/TheManishCode" target="_blank" rel="noopener noreferrer" className="dark:text-zinc-600 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors flex items-center gap-1">
                         GitHub <ExternalLink size={10} />
                     </Link>
-                    <Link href="https://vercel.com/" target="_blank" rel="noopener noreferrer" className="dark:text-zinc-600 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors flex items-center gap-1">
+                    <Link href="https://vercel.com/themanishcode" target="_blank" rel="noopener noreferrer" className="dark:text-zinc-600 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors flex items-center gap-1">
                         Vercel <ExternalLink size={10} />
                     </Link>
                 </div>

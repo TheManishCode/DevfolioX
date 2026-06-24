@@ -25,8 +25,34 @@ import { incognito } from "@/assets/fonts/font"
 import { siteConfig } from "@/config/site"
 import { SideUsername } from "@/components/decorative/SideUsername"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import { Analytics } from "@vercel/analytics/react"
 import { SessionProvider } from "@/components/providers/SessionProvider"
+
+const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Person",
+            "@id": `${siteConfig.url}/#person`,
+            name: siteConfig.name,
+            url: siteConfig.url,
+            jobTitle: siteConfig.title,
+            description: siteConfig.description,
+            sameAs: [
+                `https://github.com/${siteConfig.social.github}`,
+                `https://twitter.com/${siteConfig.social.twitter}`,
+            ],
+        },
+        {
+            "@type": "WebSite",
+            "@id": `${siteConfig.url}/#website`,
+            url: siteConfig.url,
+            name: siteConfig.name,
+            description: siteConfig.description,
+            author: { "@id": `${siteConfig.url}/#person` },
+        },
+    ],
+}
 
 const inter = Inter({
     subsets: ["latin"],
@@ -71,6 +97,11 @@ export default function RootLayout({
                 className={`${inter.className} ${incognito.variable} dark:bg-zinc-900 bg-[#d5d5da] dark:text-zinc-100 text-zinc-800`}
             >
                 <SpeedInsights />
+                <Analytics />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+                />
                 {/* Skip to content link for keyboard navigation */}
                 <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-md">
                     Skip to main content

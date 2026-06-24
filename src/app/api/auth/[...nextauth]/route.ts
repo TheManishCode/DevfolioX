@@ -93,7 +93,7 @@ function CustomLinkedInProvider(): OAuthConfig<LinkedInProfile> {
                             id: meData.id,
                         };
                     } else {
-                        console.log("LinkedIn /v2/me error:", meRes.status, await meRes.text());
+                        console.error("LinkedIn /v2/me error:", meRes.status, await meRes.text());
                     }
                 } catch (e) {
                     console.error("Failed to fetch LinkedIn /v2/me:", e);
@@ -190,10 +190,12 @@ const handler = NextAuth({
             }
             return true;
         },
-        async jwt({ token, user, account, profile }) {
-            // Persist the profile picture from the initial sign-in
+        async jwt({ token, user, account }) {
             if (user) {
                 token.picture = user.image;
+            }
+            if (account?.provider) {
+                token.provider = account.provider;
             }
             return token;
         },
