@@ -25,6 +25,7 @@ import { incognito } from "@/assets/fonts/font"
 import { siteConfig } from "@/config/site"
 import { SideUsername } from "@/components/decorative/SideUsername"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 
 import { SessionProvider } from "@/components/providers/SessionProvider"
 
@@ -71,6 +72,7 @@ export default function RootLayout({
                 className={`${inter.className} ${incognito.variable} dark:bg-zinc-900 bg-[#d5d5da] dark:text-zinc-100 text-zinc-800`}
             >
                 <SpeedInsights />
+                <Analytics />
                 {/* Skip to content link for keyboard navigation */}
                 <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-md">
                     Skip to main content
