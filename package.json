@@ -11,6 +11,7 @@
     "enrich:certs": "tsx scripts/enrich-certificates.ts"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "clsx": "^2.1.1",
     "lenis": "^1.3.17",
