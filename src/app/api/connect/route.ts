@@ -8,33 +8,25 @@ export async function POST(req: NextRequest) {
         return Response.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    let body: { profileUrl?: string } = {}
-    try {
-        body = await req.json()
-    } catch {
-        // body is optional
-    }
+    const name = (token.name as string) || "Unknown"
+    const email = token.email as string
+    const provider = (token.provider as string) || "OAuth"
+    const image = (token.picture as string) || null
 
     try {
-        // Avoid duplicate: one per email per 24h
+        // One request per email per 24h to avoid duplicate pings
         const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
         const recent = await prisma.connectionRequest.findFirst({
-            where: { email: token.email as string, createdAt: { gte: oneDayAgo } },
+            where: { email, createdAt: { gte: oneDayAgo } },
         })
 
         if (!recent) {
             await prisma.connectionRequest.create({
-                data: {
-                    name: (token.name as string) || "Unknown",
-                    email: token.email as string,
-                    image: (token.picture as string) || null,
-                    provider: (token.provider as string) || "OAuth",
-                    profileUrl: body.profileUrl || null,
-                },
+                data: { name, email, image, provider },
             })
         }
 
-        // Discord webhook — only fires from the Connect page
+        // Discord webhook — scoped to Connect page only
         if (process.env.DISCORD_WEBHOOK_URL) {
             await fetch(process.env.DISCORD_WEBHOOK_URL, {
                 method: "POST",
@@ -44,12 +36,11 @@ export async function POST(req: NextRequest) {
                         title: "🤝 New Connection Request",
                         color: 3399826,
                         fields: [
-                            { name: "Name", value: (token.name as string) || "Unknown", inline: true },
-                            { name: "Platform", value: (token.provider as string) || "OAuth", inline: true },
-                            { name: "Email", value: (token.email as string) || "N/A", inline: false },
-                            { name: "Profile", value: body.profileUrl || "N/A", inline: false },
+                            { name: "Name", value: name, inline: true },
+                            { name: "Platform", value: provider, inline: true },
+                            { name: "Email", value: email, inline: false },
                         ],
-                        thumbnail: token.picture ? { url: token.picture } : undefined,
+                        thumbnail: image ? { url: image } : undefined,
                         footer: { text: "Via Connect page · Identity verified via OAuth" },
                         timestamp: new Date().toISOString(),
                     }],

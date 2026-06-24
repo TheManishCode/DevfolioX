@@ -140,28 +140,12 @@ const handler = NextAuth({
         error: "/connect",
     },
     callbacks: {
-        async signIn({ user, account, profile }) {
-            // Attach profileUrl to the token so /api/connect can use it
-            if (account?.provider === "github" && profile) {
-                const ghProfile = profile as { login?: string; html_url?: string };
-                const login = ghProfile.login || "";
-                // Store on user object so jwt callback can pick it up
-                (user as Record<string, string>).profileUrl =
-                    ghProfile.html_url || `https://github.com/${login}`;
-            } else if (account?.provider === "linkedin" && profile) {
-                const li = profile as LinkedInProfile;
-                (user as Record<string, string>).profileUrl = li.vanityName
-                    ? `https://www.linkedin.com/in/${li.vanityName}`
-                    : "";
-            }
+        async signIn() {
             return true;
         },
         async jwt({ token, user, account }) {
             if (user) {
                 token.picture = user.image;
-                if ((user as Record<string, string>).profileUrl) {
-                    token.profileUrl = (user as Record<string, string>).profileUrl;
-                }
             }
             if (account?.provider) {
                 token.provider = account.provider;
