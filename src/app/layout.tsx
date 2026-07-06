@@ -26,7 +26,6 @@ import { siteConfig } from "@/config/site"
 import { SideUsername } from "@/components/decorative/SideUsername"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
-import { SessionProvider } from "@/components/providers/SessionProvider"
 
 const structuredData = {
     "@context": "https://schema.org",
@@ -106,17 +105,15 @@ export default function RootLayout({
                 <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-md">
                     Skip to main content
                 </a>
-                <SessionProvider>
-                    <ThemeProvider>
-                        <SmoothScroll>
-                            <AnimatedFavicon />
-                            <SideUsername />
-                            <Navbar />
-                            {children}
-                            <Footer />
-                        </SmoothScroll>
-                    </ThemeProvider>
-                </SessionProvider>
+                <ThemeProvider>
+                    <SmoothScroll>
+                        <AnimatedFavicon />
+                        <SideUsername />
+                        <Navbar />
+                        {children}
+                        <Footer />
+                    </SmoothScroll>
+                </ThemeProvider>
             </body>
         </html>
     )

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { signIn, signOut, useSession } from "next-auth/react"
+import { SessionProvider } from "@/components/providers/SessionProvider"
 
 interface GuestbookEntry {
     id: number
@@ -42,6 +43,14 @@ const UserAvatar = ({ src, name, className = "w-10 h-10" }: { src?: string | nul
 }
 
 export default function GuestbookPage() {
+    return (
+        <SessionProvider>
+            <GuestbookPageContent />
+        </SessionProvider>
+    )
+}
+
+function GuestbookPageContent() {
     const { data: session, status } = useSession()
     const [entries, setEntries] = useState<GuestbookEntry[]>([])
     const [message, setMessage] = useState("")

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { signIn, useSession } from "next-auth/react"
+import { SessionProvider } from "@/components/providers/SessionProvider"
 
 // Social Links
 const socialLinks = [
@@ -43,6 +44,14 @@ const socialLinks = [
 ]
 
 export default function ConnectPage() {
+    return (
+        <SessionProvider>
+            <ConnectPageContent />
+        </SessionProvider>
+    )
+}
+
+function ConnectPageContent() {
     const { data: session } = useSession()
     const [currentTime, setCurrentTime] = useState("")
     const [activeStep, setActiveStep] = useState<"initial" | "processing" | "completed">("initial")
