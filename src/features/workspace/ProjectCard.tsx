@@ -77,6 +77,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                 : "bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600"
                                 }`}
                             aria-label={`View card face ${i + 1}`}
+                            aria-current={activeFace === i}
                         />
                     ))}
                 </div>
