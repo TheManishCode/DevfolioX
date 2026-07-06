@@ -20,6 +20,12 @@ export async function GET(request: Request) {
 
     try {
         const data = await getLeetCodeData(username);
+        if (!data.profile && !data.stats) {
+            return NextResponse.json(
+                { error: 'Failed to fetch LeetCode data' },
+                { status: 502 }
+            );
+        }
         return NextResponse.json(data);
     } catch (error) {
         console.error('LeetCode API error:', error);
