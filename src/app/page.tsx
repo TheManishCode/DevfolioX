@@ -30,9 +30,11 @@ export const revalidate = 3600
 
 
 export default async function HomePage() {
-    const allProjects = await fetchPortfolioProjects()
+    const [allProjects, experienceData] = await Promise.all([
+        fetchPortfolioProjects(),
+        getExperienceData(),
+    ])
     const nowProjects = filterByCategory(allProjects, 'now')
-    const experienceData = await getExperienceData()
     const experiences: Experience[] = experienceData.experiences || []
 
     return (
