@@ -9,6 +9,7 @@ const TEST_TTL_MS = 5 * 60 * 1000 // 5 minutes
 function sanitize(input: string): string {
     return input
         .trim()
+        .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .slice(0, MESSAGE_MAX_LEN)
