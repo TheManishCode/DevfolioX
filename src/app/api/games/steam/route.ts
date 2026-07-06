@@ -131,15 +131,15 @@ export async function GET(request: NextRequest) {
 
     const allGames: SteamOwnedGame[] = ownedData.response.games
 
-    // Fetch recently played games
-    const recentRes = await fetch(
-      `https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/?steamid=${steamId}&key=${apiKey}&count=10`
-    )
+    // Fetch recently played games and user stats — independent of each other
+    const [recentRes, { level, achievements }] = await Promise.all([
+      fetch(
+        `https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/?steamid=${steamId}&key=${apiKey}&count=10`
+      ),
+      getSteamUserStats(steamId, apiKey),
+    ])
     const recentData = await recentRes.json()
     const recentGames: SteamRecentGame[] = recentData.response?.games || []
-
-    // Get user stats
-    const { level, achievements } = await getSteamUserStats(steamId, apiKey)
 
     // Calculate stats
     const totalGames = allGames.length
