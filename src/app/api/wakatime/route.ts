@@ -23,10 +23,22 @@ export async function GET(request: Request) {
     try {
         if (type === 'today') {
             const today = await getWakaTimeToday(apiKey);
+            if (!today) {
+                return NextResponse.json(
+                    { error: 'Failed to fetch WakaTime data' },
+                    { status: 502 }
+                );
+            }
             return NextResponse.json(today);
         }
 
         const stats = await getWakaTimeStats(apiKey);
+        if (!stats) {
+            return NextResponse.json(
+                { error: 'Failed to fetch WakaTime data' },
+                { status: 502 }
+            );
+        }
         return NextResponse.json(stats);
     } catch (error) {
         console.error('WakaTime API error:', error);

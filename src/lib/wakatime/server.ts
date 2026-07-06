@@ -60,12 +60,9 @@ function formatTime(seconds: number): string {
  */
 export async function getWakaTimeStats(apiKey: string): Promise<WakaTimeStats | null> {
     try {
-        // Handle different API key formats
-        // Keys starting with "waka_" are new format, use as bearer token
-        // Old format keys need base64 encoding
-        const authHeader = apiKey.startsWith('waka_')
-            ? `Bearer ${apiKey}`
-            : `Basic ${Buffer.from(apiKey).toString('base64')}`;
+        // WakaTime's API only accepts HTTP Basic Auth with the base64-encoded
+        // key, regardless of key format/prefix.
+        const authHeader = `Basic ${Buffer.from(apiKey).toString('base64')}`;
 
         const response = await fetch(`${WAKATIME_API_BASE}/users/current/stats/last_7_days`, {
             headers: {
@@ -118,9 +115,7 @@ export async function getWakaTimeStats(apiKey: string): Promise<WakaTimeStats | 
  */
 export async function getWakaTimeToday(apiKey: string): Promise<{ totalSeconds: number; formatted: string } | null> {
     try {
-        const authHeader = apiKey.startsWith('waka_')
-            ? `Bearer ${apiKey}`
-            : `Basic ${Buffer.from(apiKey).toString('base64')}`;
+        const authHeader = `Basic ${Buffer.from(apiKey).toString('base64')}`;
         const today = new Date().toISOString().split('T')[0];
 
         const response = await fetch(`${WAKATIME_API_BASE}/users/current/summaries?start=${today}&end=${today}`, {
