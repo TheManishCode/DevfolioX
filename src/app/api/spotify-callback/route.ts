@@ -5,9 +5,23 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+function escapeHtml(input: string): string {
+    return input
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 export async function GET(request: NextRequest) {
+    if (process.env.NODE_ENV !== 'development') {
+        return new NextResponse('Not found', { status: 404 });
+    }
+
     const code = request.nextUrl.searchParams.get('code');
-    const error = request.nextUrl.searchParams.get('error');
+    const rawError = request.nextUrl.searchParams.get('error');
+    const error = rawError ? escapeHtml(rawError) : rawError;
 
     if (error) {
         return new NextResponse(`
@@ -58,12 +72,14 @@ export async function GET(request: NextRequest) {
                 <html>
                     <body style="font-family: system-ui; padding: 40px; background: #1a1a1a; color: white;">
                         <h1 style="color: #ef4444;">❌ Token Exchange Failed</h1>
-                        <p>Error: ${data.error}</p>
-                        <p>${data.error_description || ''}</p>
+                        <p>Error: ${escapeHtml(String(data.error))}</p>
+                        <p>${escapeHtml(String(data.error_description || ''))}</p>
                     </body>
                 </html>
             `, { headers: { 'Content-Type': 'text/html' } });
         }
+
+        const refreshToken = escapeHtml(String(data.refresh_token || ''));
 
         return new NextResponse(`
             <html>
@@ -71,11 +87,11 @@ export async function GET(request: NextRequest) {
                     <h1 style="color: #33E092;">✅ Success! Here's your Refresh Token</h1>
                     <p>Copy this value and add it to your <code>.env.local</code> file:</p>
                     <div style="background: #0a0a0a; padding: 20px; border-radius: 8px; margin: 20px 0; word-break: break-all; border: 1px solid #333;">
-                        <code style="color: #33E092; font-size: 14px;">${data.refresh_token}</code>
+                        <code style="color: #33E092; font-size: 14px;">${refreshToken}</code>
                     </div>
                     <p>Set it like this:</p>
                     <pre style="background: #0a0a0a; padding: 15px; border-radius: 8px; border: 1px solid #333;">
-SPOTIFY_REFRESH_TOKEN=${data.refresh_token}</pre>
+SPOTIFY_REFRESH_TOKEN=${refreshToken}</pre>
                     <p style="margin-top: 20px; color: #888;">Then restart your dev server.</p>
                 </body>
             </html>
@@ -85,7 +101,7 @@ SPOTIFY_REFRESH_TOKEN=${data.refresh_token}</pre>
             <html>
                 <body style="font-family: system-ui; padding: 40px; background: #1a1a1a; color: white;">
                     <h1 style="color: #ef4444;">❌ Error</h1>
-                    <p>${err}</p>
+                    <p>${escapeHtml(String(err))}</p>
                 </body>
             </html>
         `, { headers: { 'Content-Type': 'text/html' } });
