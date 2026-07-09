@@ -1,60 +1,18 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowUpRight, CalendarDays, MapPin, GraduationCap } from "lucide-react"
+import { getContent } from "@/lib/content"
+import schoolingData from "@/data/schooling.json"
 
 export const metadata: Metadata = {
     title: "Schooling",
     description: "A chaptered schooling timeline from early foundations to computer science engineering.",
 }
 
-const chapters = [
-    {
-        number: "04",
-        years: "2022 – 2026",
-        status: "Current",
-        institution: "Maharaja Institute of Technology, Mysore",
-        program: "B.E. Computer Science — Artificial Intelligence",
-        place: "Mysore, Karnataka",
-        story: "The point where curiosity became engineering practice. Algorithms, systems, AI, and security stopped being abstract subjects and started becoming tools I could actually ship with.",
-        proof: ["AI track", "Software systems", "Security instinct"],
-        current: true,
-    },
-    {
-        number: "03",
-        years: "2020 – 2022",
-        status: "Completed",
-        institution: "St. Joseph's Pre-University College",
-        program: "PUC — PCMCs Science Stream",
-        place: "Hunsur, Mysore",
-        story: "A strict bridge between school and engineering. Physics, chemistry, mathematics, and computer science made the work sharper, faster, and less dependent on mood.",
-        proof: ["PCMCs", "Math rhythm", "Exam stamina"],
-        current: false,
-    },
-    {
-        number: "02",
-        years: "2016 – 2020",
-        status: "Completed",
-        institution: "Adarsha Vidyalaya [R.M.S.A]",
-        program: "Secondary Education",
-        place: "Hunsur, Mysore",
-        story: "The chapter where science and mathematics started feeling personal. Not just marks, but the first real sense that difficult things could be understood if I stayed with them.",
-        proof: ["Science curiosity", "Self-belief", "Core academics"],
-        current: false,
-    },
-    {
-        number: "01",
-        years: "2010 – 2015",
-        status: "Completed",
-        institution: "Talent School [T.E.T]",
-        program: "Primary Education",
-        place: "Hunsur, Mysore",
-        story: "Small classrooms, simple routines, and the first habit of showing up. This is where the academic trail starts: curiosity before strategy, practice before polish.",
-        proof: ["Basics", "Routine", "Curiosity"],
-        current: false,
-    },
-]
+export default async function SchoolingPage() {
+    const content = await getContent("schooling", schoolingData)
+    const chapters = content.chapters
 
-export default function SchoolingPage() {
     return (
         <main className="max-w-[1400px] mx-auto px-6 pb-24 pt-14 sm:px-8 md:px-12 lg:px-16 lg:pt-20 dark:text-zinc-100 text-zinc-900">
 
@@ -75,12 +33,7 @@ export default function SchoolingPage() {
 
                 {/* Stats row */}
                 <div className="flex items-center gap-8 mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-                    {[
-                        { v: "16+", l: "Years" },
-                        { v: "04", l: "Chapters" },
-                        { v: "CSE-AI", l: "Direction" },
-                        { v: "2026", l: "Graduating" },
-                    ].map((s) => (
+                    {content.pageStats.map((s) => (
                         <div key={s.l}>
                             <div className="font-mono text-lg font-semibold">{s.v}</div>
                             <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 mt-0.5">{s.l}</div>
@@ -180,7 +133,7 @@ export default function SchoolingPage() {
             <footer className="mt-16 pt-10 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 animate-slide-up" style={{ animationDelay: "160ms" }}>
                 <div className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
                     <GraduationCap size={16} className="text-[#33E092] shrink-0" />
-                    <span>Pursuing B.E. Computer Science (AI) — expected graduation 2026</span>
+                    <span>{content.footerNote}</span>
                 </div>
                 <div className="flex items-center gap-3">
                     <Link

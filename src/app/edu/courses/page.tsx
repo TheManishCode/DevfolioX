@@ -9,7 +9,9 @@ import {
 } from "lucide-react"
 import certificatesData from "@/data/certificates.json"
 import enrichedData from "@/data/certificates.enriched.json"
+import coursesData from "@/data/courses.json"
 import { CertificateCard } from "@/features/education/CertificateCard"
+import { getContent } from "@/lib/content"
 
 export const metadata: Metadata = {
     title: "Learning & Certifications",
@@ -39,74 +41,16 @@ interface EnrichedData {
 }
 
 /* =============================================================================
-   STATIC DATA
-============================================================================= */
-
-const SNAPSHOT = [
-    { label: "Years of Study", value: "4+" },
-    { label: "Certifications Earned", value: String(certificatesData.certificates.length) + "+" },
-    { label: "Technical Domains", value: "6" },
-    { label: "Courses Completed", value: "20+" },
-]
-
-const EDUCATION = [
-    {
-        degree: "Bachelor of Engineering",
-        field: "Computer Science & Engineering",
-        institution: "Visvesvaraya Technological University (VTU)",
-        period: "2022 — 2026",
-        focus:
-            "Core computer science fundamentals with applied systems and software engineering.",
-    },
-]
-
-const DOMAINS = [
-    {
-        title: "Cloud & Infrastructure",
-        skills: [
-            "Cloud service models",
-            "Deployment fundamentals",
-            "Security and cost awareness",
-        ],
-    },
-    {
-        title: "Data Engineering",
-        skills: [
-            "ETL concepts",
-            "Pipeline design",
-            "Analytics workflows",
-        ],
-    },
-    {
-        title: "Machine Learning",
-        skills: [
-            "Model fundamentals",
-            "Evaluation metrics",
-            "Applied ML tooling",
-        ],
-    },
-]
-
-const COURSEWORK = [
-    "Data Structures & Algorithms",
-    "Operating Systems",
-    "Database Management Systems",
-    "Computer Networks",
-    "Machine Learning Foundations",
-    "Cloud Computing",
-]
-
-/* =============================================================================
    HELPER FUNCTIONS
 ============================================================================= */
 
 /**
  * Merge base certificates with enriched data
  */
-function getCertificatesWithEnrichment() {
+function getCertificatesWithEnrichment(certificates: typeof certificatesData) {
     const enriched = enrichedData as Record<string, EnrichedData>
 
-    return (certificatesData.certificates as BaseCertificate[])
+    return (certificates.certificates as BaseCertificate[])
         .filter(cert =>
             cert.image &&
             cert.image.trim() !== "" &&
@@ -160,8 +104,22 @@ const Card = ({ children }: { children: React.ReactNode }) => (
    PAGE
 ============================================================================= */
 
-export default function LearningPage() {
-    const certificates = getCertificatesWithEnrichment()
+export default async function LearningPage() {
+    const [certificatesData_, coursesData_] = await Promise.all([
+        getContent("certificates", certificatesData),
+        getContent("courses", coursesData),
+    ])
+
+    const certificates = getCertificatesWithEnrichment(certificatesData_)
+
+    const SNAPSHOT = [
+        coursesData_.snapshot[0],
+        { label: "Certifications Earned", value: String(certificatesData_.certificates.length) + "+" },
+        ...coursesData_.snapshot.slice(1),
+    ]
+    const EDUCATION = coursesData_.education
+    const DOMAINS = coursesData_.domains
+    const COURSEWORK = coursesData_.coursework
 
     return (
         <article className="mx-auto max-w-7xl pt-20 lg:pt-28 pb-20 px-6 sm:px-8 md:px-12 lg:px-16 text-zinc-900 dark:text-zinc-200">

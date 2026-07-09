@@ -1,0 +1,171 @@
+name: Validate Content
+
+on:
+  push:
+    branches: [main]
+    paths: ["src/data/**/*.json"]
+  pull_request:
+    branches: [main]
+    paths: ["src/data/**/*.json"]
+
+jobs:
+  validate-json:
+    name: Validate JSON Content Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check JSON syntax
+        run: |
+          echo "Checking JSON syntax in src/data/..."
+          FAILED=0
+          for file in src/data/*.json; do
+            if python3 -c "import json; json.load(open('$file'))" 2>/dev/null; then
+              echo "  ✅  $file"
+            else
+              echo "  ❌  $file — invalid JSON syntax"
+              python3 -c "import json; json.load(open('$file'))" || true
+              FAILED=1
+            fi
+          done
+          if [ $FAILED -eq 1 ]; then
+            echo "One or more JSON files have syntax errors. Fix them and push again."
+            exit 1
+          fi
+          echo "All JSON files passed syntax check."
+
+      - name: Check required fields
+        run: |
+          python3 << 'EOF'
+          import json, sys, os
+          errors = []
+          def load(path):
+              with open(path) as f:
+                  return json.load(f)
+          def check(path, checks):
+              if not os.path.exists(path):
+                  return
+              data = load(path)
+              for desc, fn in checks:
+                  try:
+                      ok = fn(data)
+                  except Exception as e:
+                      ok = False
+                      desc = f"{desc} (error: {e})"
+                  if not ok:
+                      errors.append(f"{path}: {desc}")
+          check("src/data/about.json", [
+              ("must have 'name' string",      lambda d: isinstance(d.get("name"), str) and len(d["name"]) > 0),
+              ("must have 'email' with @",     lambda d: isinstance(d.get("email"), str) and "@" in d["email"]),
+              ("must have 'bio' array",        lambda d: isinstance(d.get("bio"), list) and len(d["bio"]) > 0),
+              ("must have 'resumeUrl'",        lambda d: isinstance(d.get("resumeUrl"), str) and len(d["resumeUrl"]) > 0),
+          ])
+          check("src/data/hero.json", [
+              ("must have 'headline'",         lambda d: isinstance(d.get("headline"), str) and len(d["headline"]) > 0),
+              ("must have 'subheadline'",      lambda d: isinstance(d.get("subheadline"), str)),
+              ("must have 'hackathonHeading'", lambda d: isinstance(d.get("hackathonHeading"), str)),
+              ("must have 'hackathonBody'",    lambda d: isinstance(d.get("hackathonBody"), str)),
+          ])
+          check("src/data/schooling.json", [
+              ("must have 'chapters' array",   lambda d: isinstance(d.get("chapters"), list) and len(d["chapters"]) > 0),
+              ("must have 'pageStats' array",  lambda d: isinstance(d.get("pageStats"), list)),
+              ("must have 'footerNote'",       lambda d: isinstance(d.get("footerNote"), str)),
+          ])
+          if os.path.exists("src/data/schooling.json"):
+              for i, ch in enumerate(load("src/data/schooling.json").get("chapters", [])):
+                  for f in ["number", "institution", "program", "years"]:
+                      if ch.get(f) in (None, ""):
+                          errors.append(f"src/data/schooling.json: chapter [{i}] missing '{f}'")
+          check("src/data/courses.json", [
+              ("must have 'domains' array",    lambda d: isinstance(d.get("domains"), list)),
+              ("must have 'coursework' array", lambda d: isinstance(d.get("coursework"), list)),
+              ("must have 'education' array",  lambda d: isinstance(d.get("education"), list)),
+          ])
+          check("src/data/toolkit.json", [
+              ("must have 'gear' array",       lambda d: isinstance(d.get("gear"), list)),
+              ("must have 'bookmarks' array",  lambda d: isinstance(d.get("bookmarks"), list)),
+              ("must have 'setupImageUrl'",    lambda d: isinstance(d.get("setupImageUrl"), str)),
+          ])
+          check("src/data/techstack.json", [
+              ("must have 'stack' array",      lambda d: isinstance(d.get("stack"), list) and len(d["stack"]) > 0),
+          ])
+          if os.path.exists("src/data/techstack.json"):
+              for i, item in enumerate(load("src/data/techstack.json").get("stack", [])):
+                  if not item.get("iconKey"):
+                      errors.append(f"src/data/techstack.json: stack[{i}] missing 'iconKey'")
+          check("src/data/colophon.json", [
+              ("must have 'techStack' array",  lambda d: isinstance(d.get("techStack"), list)),
+              ("must have 'colors' array",     lambda d: isinstance(d.get("colors"), list)),
+          ])
+          check("src/data/gallery.json", [
+              ("must have 'photos' array",     lambda d: isinstance(d.get("photos"), list)),
+              ("must have 'categories' array", lambda d: isinstance(d.get("categories"), list)),
+          ])
+          if os.path.exists("src/data/gallery.json"):
+              for i, p in enumerate(load("src/data/gallery.json").get("photos", [])):
+                  for f in ["id", "src", "alt", "category"]:
+                      if p.get(f) in (None, ""):
+                          errors.append(f"src/data/gallery.json: photo[{i}] missing '{f}'")
+          check("src/data/hackathons.json", [
+              ("must have 'hackathons' array", lambda d: isinstance(d.get("hackathons"), list)),
+          ])
+          check("src/data/travels.json", [
+              ("must have 'travels' array",    lambda d: isinstance(d.get("travels"), list)),
+          ])
+          check("src/data/certificates.json", [
+              ("must have 'certificates' array", lambda d: isinstance(d.get("certificates"), list)),
+          ])
+          if os.path.exists("src/data/certificates.json"):
+              for i, c in enumerate(load("src/data/certificates.json").get("certificates", [])):
+                  if c.get("id") in (None, ""):
+                      errors.append(f"src/data/certificates.json: cert[{i}] missing 'id'")
+                  if c.get("title") in (None, ""):
+                      errors.append(f"src/data/certificates.json: cert[{i}] missing 'title'")
+                  if c.get("verifyUrl") in (None, ""):
+                      errors.append(f"src/data/certificates.json: cert[{i}] missing 'verifyUrl'")
+          check("src/data/anime.json", [
+              ("must have 'favorites' array",   lambda d: isinstance(d.get("favorites"), list)),
+              ("must have 'watchingNow' array", lambda d: isinstance(d.get("watchingNow"), list)),
+              ("must have 'stats' object",      lambda d: isinstance(d.get("stats"), dict)),
+          ])
+          if os.path.exists("src/data/anime.json"):
+              valid = {"Watching", "Completed", "Plan to Watch", "On Hold", "Dropped"}
+              for key in ["favorites", "watchingNow"]:
+                  for i, a in enumerate(load("src/data/anime.json").get(key, [])):
+                      if a.get("status") not in valid:
+                          errors.append(f"src/data/anime.json: {key}[{i}] '{a.get('title', i)}' invalid status '{a.get('status')}'")
+          check("src/data/games.json", [
+              ("must have 'favorites' array",   lambda d: isinstance(d.get("favorites"), list)),
+              ("must have 'playingNow' array",  lambda d: isinstance(d.get("playingNow"), list)),
+              ("must have 'stats' object",      lambda d: isinstance(d.get("stats"), dict)),
+          ])
+          if os.path.exists("src/data/games.json"):
+              valid = {"Playing", "Completed", "Backlog", "Dropped", "100%"}
+              for key in ["favorites", "playingNow"]:
+                  for i, g in enumerate(load("src/data/games.json").get(key, [])):
+                      if g.get("status") not in valid:
+                          errors.append(f"src/data/games.json: {key}[{i}] '{g.get('title', i)}' invalid status '{g.get('status')}'")
+          check("src/data/articles.json", [
+              ("must have 'articles' array",   lambda d: isinstance(d.get("articles"), list)),
+          ])
+          check("src/data/research.json", [
+              ("must have 'papers' array",     lambda d: isinstance(d.get("papers"), list)),
+          ])
+          if errors:
+              print("\n❌ Content validation failed:\n")
+              for e in errors:
+                  print(f"   • {e}")
+              print(f"\n{len(errors)} issue(s) found. Fix them and push again.")
+              sys.exit(1)
+          else:
+              print("✅ All content fields validated successfully.")
+          EOF
+
+      - name: Summary
+        if: success()
+        run: |
+          echo "=========================================="
+          echo "  All JSON content files are valid."
+          echo "  Vercel will now deploy automatically."
+          echo "=========================================="

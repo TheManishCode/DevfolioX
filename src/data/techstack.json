@@ -1,0 +1,20 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. iconKey maps to the ICON_MAP added to TechStacks.tsx. label is the display name. desc is the subtitle.",
+    "iconKey": "nextjs",
+    "label": "Next.js 15",
+    "desc": "React Framework"
+  },
+  "stack": [
+    { "iconKey": "nextjs",     "label": "Next.js 16",   "desc": "React Framework" },
+    { "iconKey": "react",      "label": "React 19",      "desc": "UI Library" },
+    { "iconKey": "typescript", "label": "TypeScript",    "desc": "Type Safety" },
+    { "iconKey": "tailwind",   "label": "Tailwind v4",   "desc": "Styling" },
+    { "iconKey": "lenis",      "label": "Lenis",         "desc": "Smooth Scroll" },
+    { "iconKey": "swr",        "label": "SWR",           "desc": "Data Fetching" },
+    { "iconKey": "nextauth",   "label": "NextAuth",      "desc": "Authentication" },
+    { "iconKey": "swiper",     "label": "Swiper",        "desc": "Carousels" },
+    { "iconKey": "vercel",     "label": "Vercel",        "desc": "Deployment" },
+    { "iconKey": "github",     "label": "GitHub",        "desc": "Version Control" }
+  ]
+}

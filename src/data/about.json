@@ -1,0 +1,35 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. Copy this structure when updating your info.",
+    "name": "Jane Doe",
+    "location": "San Francisco",
+    "locationTagline": "where I build the future",
+    "email": "jane@example.com",
+    "resumeUrl": "/resume/resume.pdf",
+    "profileImageUrl": "/images/profile/profile.jpg",
+    "bio": [
+      "First paragraph about yourself.",
+      "Second paragraph."
+    ],
+    "quotes": [
+      "First quote shown in the quote box.",
+      "Second quote shown in the quote box."
+    ]
+  },
+  "name": "Manish P",
+  "location": "Mysore",
+  "locationTagline": "where I build the future",
+  "email": "manishp.dev@gmail.com",
+  "resumeUrl": "/resume/Manish_Pcollege (21).pdf",
+  "profileImageUrl": "/images/profile/profile.jpg",
+  "bio": [
+    "I started with curiosity — the kind that makes you ask “how does this work?” and actually stay until you figure it out.",
+    "Now I’m pursuing my B.E. in Computer Science (Artificial Intelligence), and I spend most of my time building things that feel real and useful. I work mainly with Next.js, TypeScript, JavaScript, and Python, and I enjoy creating web applications that are clean, interactive, and easy to use.",
+    "Alongside development, I’m also exploring AI and machine learning, learning how models are trained, how data shapes outcomes, and how systems improve over time.",
+    "I’m always hungry to learn and improve, and I genuinely welcome guidance and mentorship that can help me move forward faster. This portfolio is simply a record of that journey — what I’m building now, and what I’m growing into next."
+  ],
+  "quotes": [
+    "If you ever see me around, say hi! Let’s talk tech, projects, or argue about the best programming language.",
+    "Bonus points if you play Pokémon GO — let’s squad up for a raid!"
+  ]
+}

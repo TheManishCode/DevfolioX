@@ -12,7 +12,7 @@ interface Travel {
     href: string
 }
 
-const TRAVELS = travelsData as Travel[]
+const TRAVELS = travelsData.travels as Travel[]
 
 // ─── Layout constants ────────────────────────────────────────────────────────
 const PILL_H = 44          // card height in px

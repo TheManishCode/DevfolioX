@@ -1,10 +1,24 @@
-[
-  {
-    "title": "VTU State-Level Hack-2-Intern Hackathon",
-    "dates": "2024",
-    "location": "Karnataka, India",
-    "description": "State-level hackathon organized by Centralised Placement Cell, VTU. Brought together engineering students from across Karnataka to build impactful solutions under real-world constraints.",
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. links is an array of objects with type and href. image is optional (leave empty string if none). type options for links: Code | Demo | Website | DevPost | Video | Slides",
+    "title": "Hackathon Name",
+    "dates": "2025",
+    "location": "City, Country",
+    "description": "What the hackathon was about and what you built.",
     "image": "",
-    "links": []
-  }
-]
+    "links": [
+      { "type": "Code", "href": "https://github.com/..." },
+      { "type": "Demo", "href": "https://yourproject.com" }
+    ]
+  },
+  "hackathons": [
+    {
+      "title": "VTU State-Level Hack-2-Intern Hackathon",
+      "dates": "2024",
+      "location": "Karnataka, India",
+      "description": "State-level hackathon organized by Centralised Placement Cell, VTU. Brought together engineering students from across Karnataka to build impactful solutions under real-world constraints.",
+      "image": "",
+      "links": []
+    }
+  ]
+}

@@ -19,7 +19,7 @@ interface Hackathon {
     links?: HackathonLink[]
 }
 
-const hackathons = hackathonsData as Hackathon[]
+const hackathons = hackathonsData.hackathons as Hackathon[]
 
 function linkIcon(type: LinkType) {
     switch (type) {

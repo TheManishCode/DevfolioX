@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { FAVORITE_ANIME } from '@/data/anime';
+import animeData from '@/data/anime.json';
 import { FaStar, FaSpotify, FaYoutube, FaPlay, FaMusic, FaTimes } from 'react-icons/fa';
 import { SiMyanimelist } from 'react-icons/si';
 
@@ -18,7 +18,7 @@ export default function HallOfFame() {
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const collection = FAVORITE_ANIME;
+    const collection = animeData.favorites;
 
     // Auto-rotate banners every 5 seconds
     useEffect(() => {

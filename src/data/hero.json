@@ -1,0 +1,13 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered.",
+    "headline": "Your role and what you do.",
+    "subheadline": "One or two sentences about your work and focus.",
+    "hackathonHeading": "I like building things",
+    "hackathonBody": "Your text about why you love hackathons."
+  },
+  "headline": "Software developer, technical writer & open-source maintainer",
+  "subheadline": "Designing performant systems with C++ and Python, while crafting seamless frontends using React and Tailwind CSS. Focused on the future of Cloud Native and Open Source.",
+  "hackathonHeading": "I like building things",
+  "hackathonBody": "I love competing — there's something about a deadline and a blank slate that brings out my best work. Hackathons push me to move fast, think under pressure, and build things I wouldn't attempt otherwise. Every one has taught me something the classroom couldn't."
+}

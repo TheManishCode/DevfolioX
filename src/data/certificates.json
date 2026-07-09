@@ -1,4 +1,14 @@
 {
+    "_example": {
+        "_comment": "EXAMPLE — never rendered. image is either a filename (e.g. my-cert.webp, resolved to /certificates/) or a full https URL when using R2. verifyUrl must be a full https URL.",
+        "id": "cert-slug-here",
+        "title": "Certificate Title",
+        "image": "cert-filename.webp",
+        "issuer": "Issuing Organization",
+        "platform": "Platform Name",
+        "year": "2025",
+        "verifyUrl": "https://verify.example.com/cert-id"
+    },
     "certificates": [
         {
             "id": "machine-learning-specialization",

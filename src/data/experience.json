@@ -1,4 +1,21 @@
 {
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. endDate: null means currently active. Set current: true for active roles. type options: Internship | Full-time | Part-time | Contract | Freelance",
+    "id": "COMPANY-YEAR",
+    "role": "Job Title",
+    "company": "Company Name",
+    "companyUrl": "https://company.com",
+    "location": "City (Remote)",
+    "startDate": "2026-01-01",
+    "endDate": null,
+    "type": "Internship",
+    "description": "Short description.",
+    "responsibilities": ["Responsibility one", "Responsibility two"],
+    "technologies": ["Tech A", "Tech B"],
+    "period": "Jan 2026 - Present",
+    "duration": "X Months",
+    "current": true
+  },
   "experiences": [
     {
       "id": "LB01-2026",

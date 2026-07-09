@@ -1,15 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ANIME_STATS } from "@/data/anime"
+import animeData from "@/data/anime.json"
 import { StatCard } from "./StatCard"
 
 export function AnimeMalStats() {
     const [stats, setStats] = useState({
-        totalWatched: ANIME_STATS.totalWatched,
-        episodesWatched: ANIME_STATS.episodesWatched,
-        daysWatched: ANIME_STATS.daysWatched,
-        meanScore: ANIME_STATS.meanScore
+        totalWatched: animeData.stats.totalWatched,
+        episodesWatched: animeData.stats.episodesWatched,
+        daysWatched: animeData.stats.daysWatched,
+        meanScore: animeData.stats.meanScore
     })
     const [isLoading, setIsLoading] = useState(true)
 
@@ -19,10 +19,10 @@ export function AnimeMalStats() {
             .then(data => {
                 if (data && !data.error) {
                     setStats({
-                        totalWatched: data.totalWatched || ANIME_STATS.totalWatched,
-                        episodesWatched: data.episodesWatched || ANIME_STATS.episodesWatched,
-                        daysWatched: data.daysWatched || ANIME_STATS.daysWatched,
-                        meanScore: data.meanScore || ANIME_STATS.meanScore
+                        totalWatched: data.totalWatched || animeData.stats.totalWatched,
+                        episodesWatched: data.episodesWatched || animeData.stats.episodesWatched,
+                        daysWatched: data.daysWatched || animeData.stats.daysWatched,
+                        meanScore: data.meanScore || animeData.stats.meanScore
                     })
                 }
             })

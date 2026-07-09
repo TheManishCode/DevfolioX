@@ -1,0 +1,49 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. For gear items use imageUrl. For system/coding/software items use iconKey (see ICON_MAP in toolkit/page.tsx). Tags are optional. bookmarks need title, description, url.",
+    "gear_item": { "name": "Device", "description": "Brand and model", "imageUrl": "/images/gear/device.png", "tags": ["Brand"] },
+    "icon_item": { "name": "Tool", "description": "What it does", "iconKey": "vscode", "link": "https://example.com" },
+    "bookmark": { "title": "Site Name", "description": "What it is.", "url": "https://example.com/" }
+  },
+  "setupImageUrl": "/images/gear/setup.jpeg",
+  "gear": [
+    { "name": "Laptop", "description": "ASUS ROG Strix G15 2022 Electro Punk", "imageUrl": "/images/gear/laptop.png", "tags": ["ASUS", "ROG", "Gaming"] },
+    { "name": "Mouse", "description": "ROG Impact Mouse", "imageUrl": "/images/gear/mouse.png", "tags": ["ASUS", "ROG", "Gaming"] },
+    { "name": "Phone", "description": "Samsung S23 FE", "imageUrl": "/images/gear/phone.png", "tags": ["Samsung", "Android"] },
+    { "name": "Earbuds", "description": "CMF Buds by Nothing", "imageUrl": "/images/gear/earbuds.png", "tags": ["Nothing", "Wireless"] }
+  ],
+  "system": [
+    { "name": "Windows 11", "description": "Operating System", "iconKey": "windows", "link": "https://www.microsoft.com/windows" },
+    { "name": "Kali Linux", "description": "Security OS", "iconKey": "kali", "link": "https://www.kali.org/" },
+    { "name": "VS Code", "description": "Primary Code Editor", "iconKey": "vscode", "link": "https://code.visualstudio.com/" },
+    { "name": "Chrome", "description": "Primary Browser", "iconKey": "chrome", "link": "https://www.google.com/chrome/" },
+    { "name": "GitHub Copilot", "description": "AI Coding Assistant", "iconKey": "copilot", "link": "https://copilot.github.com/" },
+    { "name": "Notion", "description": "Notes & Organization", "iconKey": "notion", "link": "https://www.notion.so/" }
+  ],
+  "coding": [
+    { "name": "React", "description": "Frontend Library", "iconKey": "react", "link": "https://reactjs.org/" },
+    { "name": "Next.js", "description": "React Framework", "iconKey": "nextjs", "link": "https://nextjs.org/" },
+    { "name": "TypeScript", "description": "Type Safety", "iconKey": "typescript", "link": "https://www.typescriptlang.org/" },
+    { "name": "TailwindCSS", "description": "Utility-first CSS", "iconKey": "tailwind", "link": "https://tailwindcss.com/" },
+    { "name": "Python", "description": "Backend & AI/ML", "iconKey": "python", "link": "https://www.python.org/" },
+    { "name": "Git", "description": "Version Control", "iconKey": "git", "link": "https://git-scm.com/" },
+    { "name": "GitHub", "description": "Code Hosting", "iconKey": "github", "link": "https://github.com/" },
+    { "name": "Vercel", "description": "Deployment Platform", "iconKey": "vercel", "link": "https://vercel.com/" },
+    { "name": "Netlify", "description": "Alternative Hosting", "iconKey": "netlify", "link": "https://netlify.com/" },
+    { "name": "Postman", "description": "API Testing", "iconKey": "postman", "link": "https://www.postman.com/" }
+  ],
+  "software": [
+    { "name": "Spotify", "description": "Music Streaming", "iconKey": "spotify", "link": "https://www.spotify.com/" },
+    { "name": "Figma", "description": "UI/UX Design", "iconKey": "figma", "link": "https://www.figma.com/" },
+    { "name": "DaVinci Resolve", "description": "Video Editing", "iconKey": "davinci", "link": "https://www.blackmagicdesign.com/products/davinciresolve" },
+    { "name": "Canva", "description": "Quick Graphics", "iconKey": "canva", "link": "https://www.canva.com/" },
+    { "name": "Discord", "description": "Community & Chat", "iconKey": "discord", "link": "https://discord.com/" },
+    { "name": "Slack", "description": "Team Communication", "iconKey": "slack", "link": "https://slack.com/" }
+  ],
+  "bookmarks": [
+    { "title": "React Documentation", "description": "Official React docs with hooks, patterns, and best practices.", "url": "https://react.dev/" },
+    { "title": "Tailwind CSS", "description": "Utility-first CSS framework documentation.", "url": "https://tailwindcss.com/docs" },
+    { "title": "MDN Web Docs", "description": "Comprehensive web development documentation.", "url": "https://developer.mozilla.org/" },
+    { "title": "GitHub", "description": "Code hosting, version control, and collaboration.", "url": "https://github.com/" }
+  ]
+}

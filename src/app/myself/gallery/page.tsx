@@ -1,13 +1,21 @@
 import { Metadata } from "next"
 import { PageHeader } from "@/components/layout/PageHeader"
 import { FiImage, FiGrid, FiCamera } from "react-icons/fi"
+import galleryData from "@/data/gallery.json"
 
 export const metadata: Metadata = {
     title: "Gallery | Myself",
     description: "A collection of photos capturing moments, travels, and memories.",
 }
 
-const categories = ["All", "Travel", "Nature", "Urban", "Tech", "Moments"]
+const categories = galleryData.categories
+
+interface Photo {
+    id: string
+    src: string
+    alt: string
+    category: string
+}
 
 function ComingSoon() {
     return (
@@ -25,9 +33,7 @@ function ComingSoon() {
     )
 }
 
-// Placeholder for future gallery implementation
-// Will read from /public/images/gallery or a CMS
-const photos: { id: string; src: string; alt: string; category: string }[] = []
+const photos = galleryData.photos as Photo[]
 
 export default function GalleryPage() {
     return (

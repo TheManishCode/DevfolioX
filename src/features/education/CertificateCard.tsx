@@ -25,7 +25,7 @@ interface Certificate {
 export function CertificateCard({ cert }: { cert: Certificate }) {
     const [activeFace, setActiveFace] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const imageSrc = `/certificates/${cert.image}`
+    const imageSrc = /^https?:\/\//.test(cert.image) ? cert.image : `/certificates/${cert.image}`
 
     if (!cert.image || !cert.verifyUrl) return null
 

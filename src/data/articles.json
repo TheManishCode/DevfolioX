@@ -1,4 +1,15 @@
 {
+    "_example": {
+        "_comment": "EXAMPLE — never rendered. slug is used for the article URL. tags are display labels. featured adds a badge.",
+        "id": "article-id",
+        "title": "Article Title",
+        "slug": "article-url-slug",
+        "description": "Short description for the card preview.",
+        "publishedAt": "2026-01-01",
+        "readingTime": "5 min read",
+        "tags": ["Tag1", "Tag2"],
+        "featured": false
+    },
     "articles": [],
     "metadata": {
         "description": "Blog articles, tutorials, and technical writings",

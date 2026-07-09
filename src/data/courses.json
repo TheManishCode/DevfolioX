@@ -1,0 +1,50 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. snapshot drives the 4-stat row. education is your formal degree block. domains are skill areas with bullet skills. coursework is a flat list of course names.",
+    "snapshot_entry": { "label": "Years of Study", "value": "4+" },
+    "education_entry": {
+      "degree": "Bachelor of Engineering",
+      "field": "Computer Science",
+      "institution": "Example University",
+      "period": "2020 — 2024",
+      "focus": "Core focus description."
+    },
+    "domain_entry": { "title": "Domain Name", "skills": ["Skill A", "Skill B"] }
+  },
+  "snapshot": [
+    { "label": "Years of Study", "value": "4+" },
+    { "label": "Technical Domains", "value": "6" },
+    { "label": "Courses Completed", "value": "20+" }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Engineering",
+      "field": "Computer Science & Engineering",
+      "institution": "Visvesvaraya Technological University (VTU)",
+      "period": "2022 — 2026",
+      "focus": "Core computer science fundamentals with applied systems and software engineering."
+    }
+  ],
+  "domains": [
+    {
+      "title": "Cloud & Infrastructure",
+      "skills": ["Cloud service models", "Deployment fundamentals", "Security and cost awareness"]
+    },
+    {
+      "title": "Data Engineering",
+      "skills": ["ETL concepts", "Pipeline design", "Analytics workflows"]
+    },
+    {
+      "title": "Machine Learning",
+      "skills": ["Model fundamentals", "Evaluation metrics", "Applied ML tooling"]
+    }
+  ],
+  "coursework": [
+    "Data Structures & Algorithms",
+    "Operating Systems",
+    "Database Management Systems",
+    "Computer Networks",
+    "Machine Learning Foundations",
+    "Cloud Computing"
+  ]
+}

@@ -1,4 +1,17 @@
 {
+    "_example": {
+        "_comment": "EXAMPLE — never rendered. status options: published | in-progress | preprint. doi should be the full paper URL.",
+        "id": "paper-id",
+        "title": "Paper Title",
+        "abstract": "Short abstract.",
+        "publishedAt": "2026-01-01",
+        "journal": "Journal or Conference Name",
+        "doi": "https://doi.org/...",
+        "tags": ["AI", "ML"],
+        "status": "published",
+        "authors": ["Manish P", "Co-Author Name"],
+        "pdfUrl": "/papers/paper-name.pdf"
+    },
     "papers": [],
     "metadata": {
         "description": "Academic research papers, publications, and studies",

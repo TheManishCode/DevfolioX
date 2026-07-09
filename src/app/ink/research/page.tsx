@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { PageHeader } from "@/components/layout/PageHeader"
 import Link from "next/link"
 import { FiFileText, FiExternalLink, FiCalendar, FiBookmark } from "react-icons/fi"
+import { getContent } from "@/lib/content"
 import researchData from "@/data/research.json"
 
 export const metadata: Metadata = {
@@ -140,8 +141,9 @@ function ComingSoon() {
     )
 }
 
-export default function ResearchPage() {
-    const papers = researchData.papers as ResearchPaper[]
+export default async function ResearchPage() {
+    const content = await getContent("research", researchData)
+    const papers = content.papers as ResearchPaper[]
 
     return (
         <main className="max-w-7xl mx-auto pt-20 lg:pt-28 pb-20 px-6 sm:px-8 md:px-12 lg:px-16">

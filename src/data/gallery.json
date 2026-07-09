@@ -1,0 +1,11 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. Add a photo entry to make it appear in the gallery. category must exactly match one value in the categories array. When using R2, src will be a full https URL.",
+    "id": "photo-001",
+    "src": "/images/gallery/photo-001.jpg",
+    "alt": "Description of the photo",
+    "category": "Travel"
+  },
+  "categories": ["All", "Travel", "Nature", "Urban", "Tech", "Moments"],
+  "photos": []
+}

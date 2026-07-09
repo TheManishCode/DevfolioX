@@ -1,0 +1,23 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. techStack items use iconKey resolved in colophon/page.tsx ICON_MAP. colors drive the palette swatches.",
+    "techStack_item": { "iconKey": "nextjs", "name": "Next.js 15" },
+    "color_item": { "hex": "#000000", "name": "Black", "desc": "Primary text" }
+  },
+  "techStack": [
+    { "iconKey": "nextjs",     "name": "Next.js 15" },
+    { "iconKey": "react",      "name": "React 19" },
+    { "iconKey": "typescript", "name": "TypeScript 5" },
+    { "iconKey": "tailwind",   "name": "Tailwind v4" },
+    { "iconKey": "lenis",      "name": "Lenis" },
+    { "iconKey": "swiper",     "name": "Swiper" },
+    { "iconKey": "vercel",     "name": "Vercel Edge" },
+    { "iconKey": "github",     "name": "GitHub" }
+  ],
+  "colors": [
+    { "hex": "#18181b", "name": "Zinc 900", "desc": "Primary Background" },
+    { "hex": "#27272a", "name": "Zinc 800", "desc": "Surfaces & Cards" },
+    { "hex": "#71717a", "name": "Zinc 500", "desc": "Muted Text" },
+    { "hex": "#fafafa", "name": "Zinc 50",  "desc": "Light Mode" }
+  ]
+}

@@ -37,208 +37,28 @@ import {
 import { FaWindows, FaExternalLinkAlt } from "react-icons/fa"
 import { BiLogoVisualStudio } from "react-icons/bi"
 import { VscCopilot } from "react-icons/vsc"
+import toolkitData from "@/data/toolkit.json"
 
 // =============================================================================
 // DATA
 // =============================================================================
 
-const gearItems = [
-    {
-        name: "Laptop",
-        description: "ASUS ROG Strix G15 2022 Electro Punk",
-        image: "/images/gear/laptop.png",
-        tags: ["ASUS", "ROG", "Gaming"],
-    },
-    {
-        name: "Mouse",
-        description: "ROG Impact Mouse",
-        image: "/images/gear/mouse.png",
-        tags: ["ASUS", "ROG", "Gaming"],
-    },
-    {
-        name: "Phone",
-        description: "Samsung S23 FE",
-        image: "/images/gear/phone.png",
-        tags: ["Samsung", "Android"],
-    },
-    {
-        name: "Earbuds",
-        description: "CMF Buds by Nothing",
-        image: "/images/gear/earbuds.png",
-        tags: ["Nothing", "Wireless"],
-    },
-]
-
-const systemItems = [
-    {
-        name: "Windows 11",
-        description: "Operating System",
-        icon: FaWindows,
-        link: "https://www.microsoft.com/windows",
-    },
-    {
-        name: "Kali Linux",
-        description: "Security OS",
-        icon: SiKalilinux,
-        link: "https://www.kali.org/",
-    },
-    {
-        name: "VS Code",
-        description: "Primary Code Editor",
-        icon: BiLogoVisualStudio,
-        link: "https://code.visualstudio.com/",
-    },
-    {
-        name: "Chrome",
-        description: "Primary Browser",
-        icon: SiGooglechrome,
-        link: "https://www.google.com/chrome/",
-    },
-    {
-        name: "GitHub Copilot",
-        description: "AI Coding Assistant",
-        icon: VscCopilot,
-        link: "https://copilot.github.com/",
-    },
-    {
-        name: "Notion",
-        description: "Notes & Organization",
-        icon: SiNotion,
-        link: "https://www.notion.so/",
-    },
-]
-
-const codingItems = [
-    {
-        name: "React",
-        description: "Frontend Library",
-        icon: SiReact,
-        link: "https://reactjs.org/",
-    },
-    {
-        name: "Next.js",
-        description: "React Framework",
-        icon: SiNextdotjs,
-        link: "https://nextjs.org/",
-    },
-    {
-        name: "TypeScript",
-        description: "Type Safety",
-        icon: SiTypescript,
-        link: "https://www.typescriptlang.org/",
-    },
-    {
-        name: "TailwindCSS",
-        description: "Utility-first CSS",
-        icon: SiTailwindcss,
-        link: "https://tailwindcss.com/",
-    },
-    {
-        name: "Python",
-        description: "Backend & AI/ML",
-        icon: SiPython,
-        link: "https://www.python.org/",
-    },
-    {
-        name: "Git",
-        description: "Version Control",
-        icon: SiGit,
-        link: "https://git-scm.com/",
-    },
-    {
-        name: "GitHub",
-        description: "Code Hosting",
-        icon: SiGithub,
-        link: "https://github.com/",
-    },
-    {
-        name: "Vercel",
-        description: "Deployment Platform",
-        icon: SiVercel,
-        link: "https://vercel.com/",
-    },
-    {
-        name: "Netlify",
-        description: "Alternative Hosting",
-        icon: SiNetlify,
-        link: "https://netlify.com/",
-    },
-    {
-        name: "Postman",
-        description: "API Testing",
-        icon: SiPostman,
-        link: "https://www.postman.com/",
-    },
-]
-
-const softwareItems = [
-    {
-        name: "Spotify",
-        description: "Music Streaming",
-        icon: SiSpotify,
-        link: "https://www.spotify.com/",
-    },
-    {
-        name: "Figma",
-        description: "UI/UX Design",
-        icon: SiFigma,
-        link: "https://www.figma.com/",
-    },
-    {
-        name: "DaVinci Resolve",
-        description: "Video Editing",
-        icon: SiDavinciresolve,
-        link: "https://www.blackmagicdesign.com/products/davinciresolve",
-    },
-    {
-        name: "Canva",
-        description: "Quick Graphics",
-        icon: SiCanva,
-        link: "https://www.canva.com/",
-    },
-    {
-        name: "Discord",
-        description: "Community & Chat",
-        icon: SiDiscord,
-        link: "https://discord.com/",
-    },
-    {
-        name: "Slack",
-        description: "Team Communication",
-        icon: SiSlack,
-        link: "https://slack.com/",
-    },
-]
-
-const bookmarks = [
-    {
-        title: "React Documentation",
-        description: "Official React docs with hooks, patterns, and best practices.",
-        url: "https://react.dev/",
-    },
-    {
-        title: "Tailwind CSS",
-        description: "Utility-first CSS framework documentation.",
-        url: "https://tailwindcss.com/docs",
-    },
-    {
-        title: "MDN Web Docs",
-        description: "Comprehensive web development documentation.",
-        url: "https://developer.mozilla.org/",
-    },
-    {
-        title: "GitHub",
-        description: "Code hosting, version control, and collaboration.",
-        url: "https://github.com/",
-    },
-]
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
+    windows: FaWindows, kali: SiKalilinux, vscode: BiLogoVisualStudio,
+    chrome: SiGooglechrome, copilot: VscCopilot, notion: SiNotion,
+    react: SiReact, nextjs: SiNextdotjs, typescript: SiTypescript,
+    tailwind: SiTailwindcss, python: SiPython, git: SiGit,
+    github: SiGithub, vercel: SiVercel, netlify: SiNetlify,
+    postman: SiPostman, spotify: SiSpotify, figma: SiFigma,
+    davinci: SiDavinciresolve, canva: SiCanva, discord: SiDiscord, slack: SiSlack,
+}
 
 // =============================================================================
 // COMPONENTS
 // =============================================================================
 
 // Gear Card - Enhanced with hover effects
-function GearCard({ item }: { item: typeof gearItems[0] }) {
+function GearCard({ item }: { item: { name: string; description: string; imageUrl: string; tags: string[] } }) {
     const [imageError, setImageError] = useState(false)
 
     return (
@@ -250,7 +70,7 @@ function GearCard({ item }: { item: typeof gearItems[0] }) {
                     </div>
                 ) : (
                     <Image
-                        src={item.image}
+                        src={item.imageUrl}
                         alt={item.name}
                         fill
                         className="object-contain"
@@ -275,8 +95,9 @@ function GearCard({ item }: { item: typeof gearItems[0] }) {
 }
 
 // Icon Card - Enhanced with hover effects
-function IconCard({ item }: { item: { name: string; description: string; icon: React.ComponentType<any>; link: string } }) {
-    const Icon = item.icon
+function IconCard({ item }: { item: { name: string; description: string; iconKey: string; link: string } }) {
+    const Icon = ICON_MAP[item.iconKey]
+    if (!Icon) return null
 
     return (
         <a
@@ -292,7 +113,7 @@ function IconCard({ item }: { item: { name: string; description: string; icon: R
 }
 
 // Bookmark Card - Enhanced with better hover effects
-function BookmarkCard({ item }: { item: typeof bookmarks[0] }) {
+function BookmarkCard({ item }: { item: { title: string; description: string; url: string } }) {
     return (
         <a
             href={item.url}
@@ -332,7 +153,7 @@ export default function ToolkitPage() {
                 {/* Main Image Container */}
                 <div className="relative aspect-[16/9] w-full rounded-[2rem] overflow-hidden border dark:border-zinc-800 border-zinc-200 bg-zinc-100 dark:bg-zinc-900 shadow-xl dark:shadow-emerald-900/10 shadow-emerald-500/5">
                     <Image
-                        src="/images/gear/setup.jpeg"
+                        src={toolkitData.setupImageUrl}
                         alt="My Gaming Setup"
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -352,7 +173,7 @@ export default function ToolkitPage() {
             <section className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 dark:text-white text-gray-900">Gear</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                    {gearItems.map((item, i) => (
+                    {toolkitData.gear.map((item, i) => (
                         <GearCard key={i} item={item} />
                     ))}
                 </div>
@@ -362,7 +183,7 @@ export default function ToolkitPage() {
             <section className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 dark:text-white text-gray-900">System</h2>
                 <div className="flex flex-wrap gap-3">
-                    {systemItems.map((item, i) => (
+                    {toolkitData.system.map((item, i) => (
                         <IconCard key={i} item={item} />
                     ))}
                 </div>
@@ -372,7 +193,7 @@ export default function ToolkitPage() {
             <section className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 dark:text-white text-gray-900">Coding Tools</h2>
                 <div className="flex flex-wrap gap-3">
-                    {codingItems.map((item, i) => (
+                    {toolkitData.coding.map((item, i) => (
                         <IconCard key={i} item={item} />
                     ))}
                 </div>
@@ -382,7 +203,7 @@ export default function ToolkitPage() {
             <section className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 dark:text-white text-gray-900">Software/Applications</h2>
                 <div className="flex flex-wrap gap-3">
-                    {softwareItems.map((item, i) => (
+                    {toolkitData.software.map((item, i) => (
                         <IconCard key={i} item={item} />
                     ))}
                 </div>
@@ -392,7 +213,7 @@ export default function ToolkitPage() {
             <section className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 dark:text-white text-gray-900">Bookmarks</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {bookmarks.map((item, i) => (
+                    {toolkitData.bookmarks.map((item, i) => (
                         <BookmarkCard key={i} item={item} />
                     ))}
                 </div>

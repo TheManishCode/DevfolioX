@@ -1,0 +1,67 @@
+{
+  "_example": {
+    "_comment": "EXAMPLE — never rendered. Chapters in reverse chronological order (latest first). Set current: true for your active institution only.",
+    "number": "05",
+    "years": "2026 – 2030",
+    "status": "Current",
+    "institution": "Example University",
+    "program": "M.S. Computer Science",
+    "place": "City, State",
+    "story": "A short narrative about this chapter.",
+    "proof": ["Tag one", "Tag two"],
+    "current": true
+  },
+  "pageStats": [
+    { "v": "16+", "l": "Years" },
+    { "v": "04", "l": "Chapters" },
+    { "v": "CSE-AI", "l": "Direction" },
+    { "v": "2026", "l": "Graduating" }
+  ],
+  "footerNote": "Pursuing B.E. Computer Science (AI) — expected graduation 2026",
+  "chapters": [
+    {
+      "number": "04",
+      "years": "2022 – 2026",
+      "status": "Current",
+      "institution": "Maharaja Institute of Technology, Mysore",
+      "program": "B.E. Computer Science — Artificial Intelligence",
+      "place": "Mysore, Karnataka",
+      "story": "The point where curiosity became engineering practice. Algorithms, systems, AI, and security stopped being abstract subjects and started becoming tools I could actually ship with.",
+      "proof": ["AI track", "Software systems", "Security instinct"],
+      "current": true
+    },
+    {
+      "number": "03",
+      "years": "2020 – 2022",
+      "status": "Completed",
+      "institution": "St. Joseph's Pre-University College",
+      "program": "PUC — PCMCs Science Stream",
+      "place": "Hunsur, Mysore",
+      "story": "A strict bridge between school and engineering. Physics, chemistry, mathematics, and computer science made the work sharper, faster, and less dependent on mood.",
+      "proof": ["PCMCs", "Math rhythm", "Exam stamina"],
+      "current": false
+    },
+    {
+      "number": "02",
+      "years": "2016 – 2020",
+      "status": "Completed",
+      "institution": "Adarsha Vidyalaya [R.M.S.A]",
+      "program": "Secondary Education",
+      "place": "Hunsur, Mysore",
+      "story": "The chapter where science and mathematics started feeling personal. Not just marks, but the first real sense that difficult things could be understood if I stayed with them.",
+      "proof": ["Science curiosity", "Self-belief", "Core academics"],
+      "current": false
+    },
+    {
+      "number": "01",
+      "years": "2010 – 2015",
+      "status": "Completed",
+      "institution": "Talent School [T.E.T]",
+      "program": "Primary Education",
+      "place": "Hunsur, Mysore",
+      "story": "Small classrooms, simple routines, and the first habit of showing up. This is where the academic trail starts: curiosity before strategy, practice before polish.",
+      "proof": ["Basics", "Routine", "Curiosity"],
+      "current": false
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import experienceData from "@/data/experience.json"
+import { getContent } from "@/lib/content"
 
 export interface Experience {
     id: string
@@ -92,7 +93,7 @@ export async function getExperienceData(): Promise<
     ExperienceData & { isEmpty: boolean; message?: string }
 > {
     try {
-        const data = experienceData as ExperienceData
+        const data = await getContent("experience", experienceData as ExperienceData)
 
         if (!data || !Array.isArray(data.experiences) || data.experiences.length === 0) {
             return {

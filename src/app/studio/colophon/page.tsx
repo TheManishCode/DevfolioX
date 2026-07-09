@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {
     SiNextdotjs,
@@ -21,25 +19,29 @@ import {
     Cpu,
     ExternalLink,
 } from "lucide-react";
+import colophonData from "@/data/colophon.json";
+import { getContent } from "@/lib/content";
 
-export default function ColophonPage() {
-    const techStack = [
-        { icon: <SiNextdotjs size={24} />, name: "Next.js 15" },
-        { icon: <SiReact size={24} />, name: "React 19" },
-        { icon: <SiTypescript size={24} />, name: "TypeScript 5" },
-        { icon: <SiTailwindcss size={24} />, name: "Tailwind v4" },
-        { icon: <TbBrandFramerMotion size={24} />, name: "Lenis" },
-        { icon: <SiSwiper size={24} />, name: "Swiper" },
-        { icon: <SiVercel size={24} />, name: "Vercel Edge" },
-        { icon: <SiGithub size={24} />, name: "GitHub" },
-    ];
+const ICON_MAP: Record<string, React.ReactNode> = {
+    nextjs: <SiNextdotjs size={24} />,
+    react: <SiReact size={24} />,
+    typescript: <SiTypescript size={24} />,
+    tailwind: <SiTailwindcss size={24} />,
+    lenis: <TbBrandFramerMotion size={24} />,
+    swiper: <SiSwiper size={24} />,
+    vercel: <SiVercel size={24} />,
+    github: <SiGithub size={24} />,
+};
 
-    const colors = [
-        { hex: "#18181b", name: "Zinc 900", desc: "Primary Background" },
-        { hex: "#27272a", name: "Zinc 800", desc: "Surfaces & Cards" },
-        { hex: "#71717a", name: "Zinc 500", desc: "Muted Text" },
-        { hex: "#fafafa", name: "Zinc 50", desc: "Light Mode" },
-    ];
+export default async function ColophonPage() {
+    const content = await getContent("colophon", colophonData);
+
+    const techStack = content.techStack.map(item => ({
+        icon: ICON_MAP[item.iconKey] ?? null,
+        name: item.name,
+    }));
+
+    const colors = content.colors;
 
     return (
         <article className="mx-auto max-w-7xl pt-20 lg:pt-28 pb-20 px-6 sm:px-8 md:px-12 lg:px-16">

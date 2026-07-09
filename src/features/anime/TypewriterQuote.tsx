@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { BiSolidQuoteRight } from "react-icons/bi"
-import { FAVORITE_ANIME } from "@/data/anime"
+import animeData from "@/data/anime.json"
 
 export function TypewriterQuote() {
-    const quotes = FAVORITE_ANIME.filter(a => a.quote).map(a => ({ quote: a.quote!, title: a.title }))
+    const quotes = animeData.favorites.filter(a => a.quote).map(a => ({ quote: a.quote!, title: a.title }))
     const [currentIndex, setCurrentIndex] = useState(0)
     const [displayText, setDisplayText] = useState("")
     const [isTyping, setIsTyping] = useState(true)

@@ -12,6 +12,25 @@ import { TbBrandFramerMotion } from "react-icons/tb";
 import { Database, Shield } from "lucide-react";
 import { SectionTitle } from "@/components/ui/Typography";
 
+interface TechStackItem {
+    iconKey: string;
+    label: string;
+    desc: string;
+}
+
+const ICON_MAP: Record<string, React.ReactNode> = {
+    nextjs: <SiNextdotjs className="dark:text-white text-black" />,
+    react: <SiReact color="#61DBFB" />,
+    typescript: <SiTypescript color="#3178C6" />,
+    tailwind: <SiTailwindcss color="#06B6D4" />,
+    lenis: <TbBrandFramerMotion className="dark:text-white text-black" />,
+    swr: <Database className="text-[#33E092]" size={24} />,
+    nextauth: <Shield className="text-[#33E092]" size={24} />,
+    swiper: <SiSwiper color="#6332F6" />,
+    vercel: <SiVercel className="dark:text-white text-black" />,
+    github: <SiGithub className="dark:text-white text-black" />,
+};
+
 const TechCard = ({ tech }: { tech: { icon: React.ReactNode; label: string; desc: string } }) => (
     <div className="flex items-center space-x-3 px-4 py-2 min-w-[150px]">
         <div className="text-2xl flex-shrink-0">{tech.icon}</div>
@@ -22,19 +41,12 @@ const TechCard = ({ tech }: { tech: { icon: React.ReactNode; label: string; desc
     </div>
 );
 
-const TechStacks = () => {
-    const techStack = [
-        { icon: <SiNextdotjs className="dark:text-white text-black" />, label: "Next.js 16", desc: "React Framework" },
-        { icon: <SiReact color="#61DBFB" />, label: "React 19", desc: "UI Library" },
-        { icon: <SiTypescript color="#3178C6" />, label: "TypeScript", desc: "Type Safety" },
-        { icon: <SiTailwindcss color="#06B6D4" />, label: "Tailwind v4", desc: "Styling" },
-        { icon: <TbBrandFramerMotion className="dark:text-white text-black" />, label: "Lenis", desc: "Smooth Scroll" },
-        { icon: <Database className="text-[#33E092]" size={24} />, label: "SWR", desc: "Data Fetching" },
-        { icon: <Shield className="text-[#33E092]" size={24} />, label: "NextAuth", desc: "Authentication" },
-        { icon: <SiSwiper color="#6332F6" />, label: "Swiper", desc: "Carousels" },
-        { icon: <SiVercel className="dark:text-white text-black" />, label: "Vercel", desc: "Deployment" },
-        { icon: <SiGithub className="dark:text-white text-black" />, label: "GitHub", desc: "Version Control" },
-    ];
+const TechStacks = ({ stack }: { stack: TechStackItem[] }) => {
+    const techStack = stack.map(item => ({
+        icon: ICON_MAP[item.iconKey] ?? <span>{item.label}</span>,
+        label: item.label,
+        desc: item.desc,
+    }));
 
     // Split tech stack into two rows
     const firstRow = techStack.slice(0, 5);

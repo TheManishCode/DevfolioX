@@ -1,6 +1,6 @@
 "use client"
 
-import { WATCHING_NOW } from "@/data/anime"
+import animeData from "@/data/anime.json"
 import Pokedex3D from "./Pokedex3D"
 
 export function CurrentlyWatchingSection() {
@@ -12,7 +12,7 @@ export function CurrentlyWatchingSection() {
                     <h2 className="text-3xl font-bold dark:text-white text-zinc-900">Currently Watching</h2>
                     <span className="text-2xl">📺</span>
                 </div>
-                <Pokedex3D watchlist={WATCHING_NOW} />
+                <Pokedex3D watchlist={animeData.watchingNow} />
             </div>
         </section>
     )

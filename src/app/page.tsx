@@ -24,15 +24,20 @@ import { ProjectGrid } from "@/features/workspace/ProjectGrid"
 import { FiExternalLink, FiCalendar, FiMapPin } from "react-icons/fi"
 import { getExperienceData, Experience } from "@/lib/experience"
 import HackathonsTimeline from "@/features/hackathons/HackathonsTimeline"
+import { getContent } from "@/lib/content"
+import heroData from "@/data/hero.json"
+import techstackData from "@/data/techstack.json"
 
 export const revalidate = 3600
 
 
 
 export default async function HomePage() {
-    const [allProjects, experienceData] = await Promise.all([
+    const [allProjects, experienceData, heroContent, techstackContent] = await Promise.all([
         fetchPortfolioProjects(),
         getExperienceData(),
+        getContent("hero", heroData),
+        getContent("techstack", techstackData),
     ])
     const nowProjects = filterByCategory(allProjects, 'now')
     const experiences: Experience[] = experienceData.experiences || []
@@ -47,11 +52,11 @@ export default async function HomePage() {
                     <div className="lg:max-w-4xl animate-slide-up relative z-10">
 
                         <h1 className="font-incognito font-semibold tracking-tight text-3xl sm:text-5xl mb-6 lg:leading-[3.7rem] leading-tight">
-                            Software developer, technical writer & open-source maintainer
+                            {heroContent.headline}
                         </h1>
 
                         <p className="text-base dark:text-zinc-400 text-zinc-600 leading-relaxed">
-                            Designing performant systems with C++ and Python, while crafting seamless frontends using React and Tailwind CSS. Focused on the future of Cloud Native and Open Source.
+                            {heroContent.subheadline}
                         </p>
 
                         <SocialLinks />
@@ -165,12 +170,10 @@ export default async function HomePage() {
                     {/* Heading + description — centered */}
                     <div className="text-center max-w-2xl mx-auto mb-14">
                         <h2 className="font-incognito text-3xl md:text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-                            I like building things
+                            {heroContent.hackathonHeading}
                         </h2>
                         <p className="mt-4 text-base dark:text-zinc-400 text-zinc-600 leading-relaxed">
-                            I love competing — there's something about a deadline and a blank slate that brings out my best work.
-                            Hackathons push me to move fast, think under pressure, and build things I wouldn't attempt otherwise.
-                            Every one has taught me something the classroom couldn't.
+                            {heroContent.hackathonBody}
                         </p>
                     </div>
 
@@ -186,7 +189,7 @@ export default async function HomePage() {
 
                 {/* ── 6. Tech Stacks ── */}
                 <div className="mt-20">
-                    <TechStacks />
+                    <TechStacks stack={techstackContent.stack} />
                 </div>
 
                 <NavigationIcons />

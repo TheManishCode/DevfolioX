@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/layout/PageHeader"
 import { PageSubtitle } from "@/components/ui/Typography"
 import Link from "next/link"
 import { FiClock, FiCalendar, FiArrowRight, FiBookOpen } from "react-icons/fi"
+import { getContent } from "@/lib/content"
 import articlesData from "@/data/articles.json"
 
 export const metadata: Metadata = {
@@ -96,8 +97,9 @@ function ComingSoon() {
     )
 }
 
-export default function ArticlesPage() {
-    const articles = articlesData.articles as Article[]
+export default async function ArticlesPage() {
+    const content = await getContent("articles", articlesData)
+    const articles = content.articles as Article[]
 
     return (
         <main className="max-w-7xl mx-auto pt-20 lg:pt-28 pb-20 px-6 sm:px-8 md:px-12 lg:px-16">
