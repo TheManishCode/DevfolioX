@@ -13,7 +13,7 @@
         {
             "id": "machine-learning-specialization",
             "title": "Machine Learning Specialization",
-            "image": "machine-learning-specialization.webp",
+            "image": "https://cdn.manishp.dev/certificates/machine-learning-specialization.webp",
             "issuer": "DeepLearning.AI / Stanford Online",
             "platform": "Coursera",
             "year": "2025",
@@ -22,7 +22,7 @@
         {
             "id": "unsupervised-learning-recommenders-rl",
             "title": "Unsupervised Learning, Recommenders, Reinforcement Learning",
-            "image": "unsupervised-learning-recommenders-rl.webp",
+            "image": "https://cdn.manishp.dev/certificates/unsupervised-learning-recommenders-rl.webp",
             "issuer": "DeepLearning.AI / Stanford University",
             "platform": "Coursera",
             "year": "2025",
@@ -31,7 +31,7 @@
         {
             "id": "introduction-to-devops",
             "title": "Introduction to DevOps",
-            "image": "introduction-to-devops.webp",
+            "image": "https://cdn.manishp.dev/certificates/introduction-to-devops.webp",
             "issuer": "IBM",
             "platform": "Coursera",
             "year": "2025",
@@ -40,7 +40,7 @@
         {
             "id": "introduction-to-java",
             "title": "Introduction to Java",
-            "image": "introduction-to-java.webp",
+            "image": "https://cdn.manishp.dev/certificates/introduction-to-java.webp",
             "issuer": "LearnQuest",
             "platform": "Coursera",
             "year": "2025",

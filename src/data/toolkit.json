@@ -1,16 +1,16 @@
 {
   "_example": {
     "_comment": "EXAMPLE — never rendered. For gear items use imageUrl. For system/coding/software items use iconKey (see ICON_MAP in toolkit/page.tsx). Tags are optional. bookmarks need title, description, url.",
-    "gear_item": { "name": "Device", "description": "Brand and model", "imageUrl": "/images/gear/device.png", "tags": ["Brand"] },
+    "gear_item": { "name": "Device", "description": "Brand and model", "imageUrl": "https://cdn.manishp.dev/images/gear/device.png", "tags": ["Brand"] },
     "icon_item": { "name": "Tool", "description": "What it does", "iconKey": "vscode", "link": "https://example.com" },
     "bookmark": { "title": "Site Name", "description": "What it is.", "url": "https://example.com/" }
   },
-  "setupImageUrl": "/images/gear/setup.jpeg",
+  "setupImageUrl": "https://cdn.manishp.dev/images/gear/setup.jpeg",
   "gear": [
-    { "name": "Laptop", "description": "ASUS ROG Strix G15 2022 Electro Punk", "imageUrl": "/images/gear/laptop.png", "tags": ["ASUS", "ROG", "Gaming"] },
-    { "name": "Mouse", "description": "ROG Impact Mouse", "imageUrl": "/images/gear/mouse.png", "tags": ["ASUS", "ROG", "Gaming"] },
-    { "name": "Phone", "description": "Samsung S23 FE", "imageUrl": "/images/gear/phone.png", "tags": ["Samsung", "Android"] },
-    { "name": "Earbuds", "description": "CMF Buds by Nothing", "imageUrl": "/images/gear/earbuds.png", "tags": ["Nothing", "Wireless"] }
+    { "name": "Laptop", "description": "ASUS ROG Strix G15 2022 Electro Punk", "imageUrl": "https://cdn.manishp.dev/images/gear/laptop.png", "tags": ["ASUS", "ROG", "Gaming"] },
+    { "name": "Mouse", "description": "ROG Impact Mouse", "imageUrl": "https://cdn.manishp.dev/images/gear/mouse.png", "tags": ["ASUS", "ROG", "Gaming"] },
+    { "name": "Phone", "description": "Samsung S23 FE", "imageUrl": "https://cdn.manishp.dev/images/gear/phone.png", "tags": ["Samsung", "Android"] },
+    { "name": "Earbuds", "description": "CMF Buds by Nothing", "imageUrl": "https://cdn.manishp.dev/images/gear/earbuds.png", "tags": ["Nothing", "Wireless"] }
   ],
   "system": [
     { "name": "Windows 11", "description": "Operating System", "iconKey": "windows", "link": "https://www.microsoft.com/windows" },

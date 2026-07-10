@@ -10,7 +10,7 @@
     {
       "id": "redacted",
       "title": "[REDACTED]",
-      "cover": "/game-covers/redacted.jpg",
+      "cover": "https://cdn.manishp.dev/game-covers/redacted.jpg",
       "achievements": {
         "unlocked": 0,
         "total": 34
@@ -49,7 +49,7 @@
     {
       "id": "dynasty-legends-2",
       "title": "Dynasty Legends 2",
-      "cover": "/game-covers/dynasty-legends-2.png",
+      "cover": "https://cdn.manishp.dev/game-covers/dynasty-legends-2.png",
       "achievements": null
     },
     {
@@ -61,7 +61,7 @@
     {
       "id": "fortnite",
       "title": "Fortnite Battle Royale",
-      "cover": "/game-covers/fortnite.png",
+      "cover": "https://cdn.manishp.dev/game-covers/fortnite.png",
       "achievements": null
     },
     {
@@ -73,7 +73,7 @@
     {
       "id": "genshin-impact",
       "title": "Genshin Impact",
-      "cover": "/game-covers/genshin-impact.jpg",
+      "cover": "https://cdn.manishp.dev/game-covers/genshin-impact.jpg",
       "achievements": null
     },
     {
@@ -136,7 +136,7 @@
     {
       "id": "kill-knight",
       "title": "Kill Knight",
-      "cover": "/game-covers/kill-knight.png",
+      "cover": "https://cdn.manishp.dev/game-covers/kill-knight.png",
       "achievements": {
         "unlocked": 0,
         "total": 47
@@ -166,13 +166,13 @@
     {
       "id": "neko-ghost-jump",
       "title": "Neko Ghost, Jump!",
-      "cover": "/game-covers/neko-ghost-jump.png",
+      "cover": "https://cdn.manishp.dev/game-covers/neko-ghost-jump.png",
       "achievements": null
     },
     {
       "id": "ogu-secret-forest",
       "title": "Ogu and the Secret Forest",
-      "cover": "/game-covers/ogu-secret-forest.png",
+      "cover": "https://cdn.manishp.dev/game-covers/ogu-secret-forest.png",
       "achievements": {
         "unlocked": 0,
         "total": 41
@@ -208,13 +208,13 @@
     {
       "id": "sky-racket",
       "title": "Sky Racket",
-      "cover": "/game-covers/sky-racket.png",
+      "cover": "https://cdn.manishp.dev/game-covers/sky-racket.png",
       "achievements": null
     },
     {
       "id": "smite-2",
       "title": "SMITE 2",
-      "cover": "/game-covers/smite-2.png",
+      "cover": "https://cdn.manishp.dev/game-covers/smite-2.png",
       "achievements": null
     },
     {
@@ -250,7 +250,7 @@
     {
       "id": "toem",
       "title": "TOEM",
-      "cover": "/game-covers/toem.png",
+      "cover": "https://cdn.manishp.dev/game-covers/toem.png",
       "achievements": null
     },
     {
@@ -271,13 +271,13 @@
     {
       "id": "valorant",
       "title": "VALORANT",
-      "cover": "/game-covers/valorant.png",
+      "cover": "https://cdn.manishp.dev/game-covers/valorant.png",
       "achievements": null
     },
     {
       "id": "viewfinder",
       "title": "Viewfinder",
-      "cover": "/game-covers/viewfinder.png",
+      "cover": "https://cdn.manishp.dev/game-covers/viewfinder.png",
       "achievements": {
         "unlocked": 0,
         "total": 46
@@ -295,13 +295,13 @@
     {
       "id": "wuthering-waves",
       "title": "Wuthering Waves",
-      "cover": "/game-covers/wuthering-waves.png",
+      "cover": "https://cdn.manishp.dev/game-covers/wuthering-waves.png",
       "achievements": null
     },
     {
       "id": "xdefiant",
       "title": "XDefiant",
-      "cover": "/game-covers/xdefiant.png",
+      "cover": "https://cdn.manishp.dev/game-covers/xdefiant.png",
       "achievements": null
     }
   ]

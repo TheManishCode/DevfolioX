@@ -19,7 +19,7 @@ type PolaroidVars = CSSProperties & {
 
 const BEST_CHARACTERS: Character[] = [
     { name: "Monkey D. Luffy", anime: "One Piece", role: "Most Wanted", image: "https://cdn.myanimelist.net/images/characters/9/310307.jpg", color: "#EF4444" },
-    { name: "Yami Sukehiro", anime: "Black Clover", role: "Captain Goals", image: "/characters/yami.png", color: "#7C3AED", imagePosition: "center center" },
+    { name: "Yami Sukehiro", anime: "Black Clover", role: "Captain Goals", image: "https://cdn.manishp.dev/characters/yami.png", color: "#7C3AED", imagePosition: "center center" },
     { name: "Benimaru Shinmon", anime: "Fire Force", role: "Strongest", image: "https://cdn.myanimelist.net/images/characters/5/397594.jpg", color: "#F59E0B" },
     { name: "Makima", anime: "Chainsaw Man", role: "Best Villain", image: "https://cdn.myanimelist.net/images/characters/4/489561.jpg", color: "#EF4444" },
     { name: "Buggy", anime: "One Piece", role: "The Clown", image: "https://cdn.myanimelist.net/images/characters/6/69112.jpg", color: "#3B82F6" },
