@@ -7,6 +7,8 @@
  * =============================================================================
  */
 
+import { fetchWithTimeout } from '@/lib/fetchWithTimeout';
+
 export interface DuolingoStats {
     username: string;
     streak: number;
@@ -17,6 +19,10 @@ export interface DuolingoStats {
     streakExtendedToday: boolean;
 }
 
+// Last successful response, served if every fetch attempt fails — a
+// momentary upstream hiccup shouldn't flip the dashboard to "unavailable".
+let lastGoodStats: DuolingoStats | null = null;
+
 /**
  * Fetch Duolingo user stats from the public API
  * Server-side only - bypasses CORS issues in production
@@ -25,8 +31,8 @@ export async function getDuolingoStats(username: string): Promise<DuolingoStats 
     try {
         // Primary endpoint - direct user lookup
         const primaryUrl = `https://www.duolingo.com/2017-06-30/users?username=${encodeURIComponent(username)}`;
-        
-        const response = await fetch(primaryUrl, {
+
+        const response = await fetchWithTimeout(primaryUrl, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -40,7 +46,7 @@ export async function getDuolingoStats(username: string): Promise<DuolingoStats 
 
         if (!response.ok) {
             console.error(`Duolingo API error: ${response.status} ${response.statusText}`);
-            
+
             // Try fallback endpoint format
             return await tryFallbackEndpoint(username);
         }
@@ -53,7 +59,9 @@ export async function getDuolingoStats(username: string): Promise<DuolingoStats 
             return await tryFallbackEndpoint(username);
         }
 
-        return parseUserData(user, username);
+        const stats = parseUserData(user, username);
+        lastGoodStats = stats;
+        return stats;
     } catch (error) {
         console.error('Failed to fetch Duolingo stats:', error);
         return await tryFallbackEndpoint(username);
@@ -67,8 +75,8 @@ async function tryFallbackEndpoint(username: string): Promise<DuolingoStats | nu
     try {
         // Alternative: Try the profile endpoint
         const fallbackUrl = `https://www.duolingo.com/users/${encodeURIComponent(username)}`;
-        
-        const response = await fetch(fallbackUrl, {
+
+        const response = await fetchWithTimeout(fallbackUrl, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -79,14 +87,16 @@ async function tryFallbackEndpoint(username: string): Promise<DuolingoStats | nu
 
         if (!response.ok) {
             console.error(`Duolingo fallback API error: ${response.status}`);
-            return null;
+            return lastGoodStats;
         }
 
         const user = await response.json();
-        return parseUserData(user, username);
+        const stats = parseUserData(user, username);
+        lastGoodStats = stats;
+        return stats;
     } catch (error) {
         console.error('Duolingo fallback failed:', error);
-        return null;
+        return lastGoodStats;
     }
 }
 

@@ -3,6 +3,8 @@
  * Uses MAL API v2 with Client ID authentication
  */
 
+import { fetchWithTimeout } from '@/lib/fetchWithTimeout';
+
 // Types for MAL API responses
 export interface MALAnime {
     id: number;
@@ -66,8 +68,13 @@ export interface TransformedAnime {
 
 const MAL_API_BASE = 'https://api.myanimelist.net/v2';
 
+// Last successful response per status, served if a fresh fetch fails — a
+// momentary upstream hiccup shouldn't flip the dashboard to empty lists.
+const lastGoodByStatus = new Map<string, MALAnimeListResponse>();
+
 /**
- * Fetch anime list from MAL API
+ * Fetch anime list from MAL API. Retries once on failure, then falls back
+ * to the last successful response for that status rather than throwing.
  */
 async function fetchMALAnimeList(
     username: string,
@@ -78,21 +85,28 @@ async function fetchMALAnimeList(
     const fields = 'id,title,main_picture,alternative_titles,start_date,mean,status,genres,num_episodes,studios,list_status';
     const url = `${MAL_API_BASE}/users/${username}/animelist?status=${status}&limit=${limit}&fields=${fields}`;
 
-    const response = await fetch(url, {
-        headers: {
-            'X-MAL-CLIENT-ID': clientId,
-        },
-        cache: 'no-store' // Disable caching to always get fresh data
-    });
+    for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+            const response = await fetchWithTimeout(url, {
+                headers: { 'X-MAL-CLIENT-ID': clientId },
+                cache: 'no-store', // Disable caching to always get fresh data
+            });
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error('MAL API error response:', errorText);
-        throw new Error(`MAL API error: ${response.status} ${response.statusText} - ${errorText}`);
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`MAL API error response (attempt ${attempt + 1}):`, errorText);
+                continue;
+            }
+
+            const data: MALAnimeListResponse = await response.json();
+            lastGoodByStatus.set(status, data);
+            return data;
+        } catch (error) {
+            console.error(`Failed to fetch MAL animelist (attempt ${attempt + 1}):`, error);
+        }
     }
 
-    const data = await response.json();
-    return data;
+    return lastGoodByStatus.get(status) ?? { data: [] };
 }
 
 /**

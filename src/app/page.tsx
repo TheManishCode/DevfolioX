@@ -27,17 +27,19 @@ import HackathonsTimeline from "@/features/hackathons/HackathonsTimeline"
 import { getContent } from "@/lib/content"
 import heroData from "@/data/hero.json"
 import techstackData from "@/data/techstack.json"
+import hackathonsData from "@/data/hackathons.json"
 
 export const revalidate = 3600
 
 
 
 export default async function HomePage() {
-    const [allProjects, experienceData, heroContent, techstackContent] = await Promise.all([
+    const [allProjects, experienceData, heroContent, techstackContent, hackathonsContent] = await Promise.all([
         fetchPortfolioProjects(),
         getExperienceData(),
         getContent("hero", heroData),
         getContent("techstack", techstackData),
+        getContent("hackathons", hackathonsData),
     ])
     const nowProjects = filterByCategory(allProjects, 'now')
     const experiences: Experience[] = experienceData.experiences || []
@@ -178,7 +180,7 @@ export default async function HomePage() {
                     </div>
 
                     {/* Timeline — driven by src/data/hackathons.json */}
-                    <HackathonsTimeline />
+                    <HackathonsTimeline hackathons={hackathonsContent.hackathons} />
 
                 </section>
 

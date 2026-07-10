@@ -2,6 +2,14 @@ import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import type { OAuthConfig } from "next-auth/providers/oauth";
 
+function requireEnv(name: string): string {
+    const value = process.env[name];
+    if (!value) {
+        throw new Error(`Missing required env var: ${name}`);
+    }
+    return value;
+}
+
 // Extended LinkedIn profile type
 interface LinkedInProfile {
     sub: string;
@@ -18,8 +26,8 @@ function CustomLinkedInProvider(): OAuthConfig<LinkedInProfile> {
         id: "linkedin",
         name: "LinkedIn",
         type: "oauth",
-        clientId: process.env.LINKEDIN_CLIENT_ID!,
-        clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
+        clientId: requireEnv("LINKEDIN_CLIENT_ID"),
+        clientSecret: requireEnv("LINKEDIN_CLIENT_SECRET"),
         authorization: {
             url: "https://www.linkedin.com/oauth/v2/authorization",
             params: {
@@ -114,12 +122,17 @@ function CustomLinkedInProvider(): OAuthConfig<LinkedInProfile> {
 }
 
 const handler = NextAuth({
+    secret: requireEnv("NEXTAUTH_SECRET"),
+    session: {
+        strategy: "jwt",
+        maxAge: 7 * 24 * 60 * 60, // 7 days — this only gates guestbook posting, not sensitive data
+    },
     providers: [
         CustomLinkedInProvider(),
 
         GitHubProvider({
-            clientId: process.env.GITHUB_ID!,
-            clientSecret: process.env.GITHUB_SECRET!,
+            clientId: requireEnv("GITHUB_ID"),
+            clientSecret: requireEnv("GITHUB_SECRET"),
             authorization: {
                 params: {
                     prompt: "login", // Force re-authentication

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link"
 import { Github, Globe, ExternalLink, Play, FileText, Code } from "lucide-react"
-import hackathonsData from "@/data/hackathons.json"
 
 type LinkType = "Code" | "Demo" | "Website" | "DevPost" | "Video" | "Slides" | string
 
@@ -19,8 +18,6 @@ interface Hackathon {
     links?: HackathonLink[]
 }
 
-const hackathons = hackathonsData.hackathons as Hackathon[]
-
 function linkIcon(type: LinkType) {
     switch (type) {
         case "Code":     return <Github size={11} />
@@ -33,7 +30,7 @@ function linkIcon(type: LinkType) {
     }
 }
 
-export default function HackathonsTimeline() {
+export default function HackathonsTimeline({ hackathons }: { hackathons: Hackathon[] }) {
     return (
         <div className="max-w-2xl mx-auto">
             {hackathons.map((hackathon, i) => {

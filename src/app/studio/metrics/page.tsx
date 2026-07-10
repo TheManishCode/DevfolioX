@@ -127,7 +127,7 @@ function LiveDot() {
 
 function ApiUnavailable({ service }: { service: string }) {
   return (
-    <p className="text-[10px] text-zinc-600 italic mt-auto">{service} data unavailable right now</p>
+    <p className="text-[10px] text-zinc-600 mt-auto">{service} unavailable</p>
   );
 }
 
@@ -170,11 +170,11 @@ export default function MetricsPage() {
         <div className="mt-10 grid grid-cols-2 md:grid-cols-4 border-r border-b dark:border-white/10 border-zinc-400">
 
           {/* ── WAKATIME ─────────────────────────────────────────────────────── */}
-          <GridCell span={3} mobileSpan={2} minHeight="min-h-[280px]"
+          <GridCell span={2} mobileSpan={2} minHeight="min-h-[260px]"
             href="https://wakatime.com/@TheManishCode">
 
             <div className="flex justify-between items-start">
-              <CellLabel>WakaTime · Coding Activity (Last 7 Days)</CellLabel>
+              <CellLabel>WakaTime · Last 7 Days</CellLabel>
               <LiveDot />
             </div>
 
@@ -184,24 +184,16 @@ export default function MetricsPage() {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-10 mt-auto">
                 <div>
                   <StatNumber size="xl">{wakatimeData.totalHoursFormatted}</StatNumber>
-                  <p className="text-zinc-500 mt-2 font-mono text-[11px] uppercase tracking-widest">Total coding time</p>
-                  {wakatimeData.dailyAverageFormatted && (
-                    <p className="text-zinc-600 mt-1 font-mono text-[10px]">{wakatimeData.dailyAverageFormatted} / day avg</p>
-                  )}
+                  <StatCaption>Coding time</StatCaption>
                 </div>
                 <div className="flex-1 w-full max-w-xs space-y-4 pb-2">
-                  <p className="text-[9px] text-zinc-600 uppercase tracking-widest mb-3">Languages this week</p>
                   {wakatimeData.languages?.slice(0, 3).map((lang: { name: string; percent: number; hours: string }) => (
                     <BarRow key={lang.name} label={lang.name} value={lang.percent} sub={lang.hours} />
                   ))}
                 </div>
               </div>
             ) : (
-              <div className="mt-auto space-y-3">
-                <p className="text-4xl font-light dark:text-zinc-700 text-zinc-400">—</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-widest">No coding activity tracked yet</p>
-                <p className="text-[9px] text-zinc-600 italic">Install the WakaTime plugin in your editor to start tracking</p>
-              </div>
+              <p className="text-[10px] text-zinc-600 mt-auto">No activity this week</p>
             )}
 
             <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
@@ -210,10 +202,10 @@ export default function MetricsPage() {
           </GridCell>
 
           {/* ── LEETCODE ─────────────────────────────────────────────────────── */}
-          <GridCell span={1} minHeight="min-h-[280px]"
+          <GridCell span={1} minHeight="min-h-[260px]"
             href="https://leetcode.com/u/rixscx">
 
-            <CellLabel>LeetCode · Problems Solved</CellLabel>
+            <CellLabel>LeetCode</CellLabel>
 
             {leetcodeLoading ? (
               <div className="space-y-3 mt-auto">
@@ -223,7 +215,7 @@ export default function MetricsPage() {
               <div className="mt-auto space-y-5">
                 <div>
                   <StatNumber size="lg">{leetcodeData.stats.totalSolved}</StatNumber>
-                  <StatCaption>Total solved</StatCaption>
+                  <StatCaption>Solved{lcRankDisplay ? ` · ${lcRankDisplay}` : ""}</StatCaption>
                 </div>
                 <div className="space-y-2.5 border-t dark:border-white/5 border-zinc-400/50 pt-4">
                   <div className="flex justify-between items-center text-[10px] uppercase tracking-widest">
@@ -239,9 +231,6 @@ export default function MetricsPage() {
                     <span className="dark:text-white text-zinc-900 font-semibold">{leetcodeData.stats.hardSolved}</span>
                   </div>
                 </div>
-                {lcRankDisplay && (
-                  <p className="text-[9px] text-zinc-600 uppercase tracking-widest">{lcRankDisplay}</p>
-                )}
               </div>
             ) : (
               <ApiUnavailable service="LeetCode" />
@@ -249,6 +238,39 @@ export default function MetricsPage() {
 
             <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
               <SourceLink href="https://leetcode.com/u/rixscx" label="leetcode.com/u/rixscx" />
+            </div>
+          </GridCell>
+
+          {/* ── MAL ──────────────────────────────────────────────────────────── */}
+          <GridCell span={1} minHeight="min-h-[260px]"
+            href="https://myanimelist.net/profile/reizoku">
+
+            <CellLabel>MyAnimeList</CellLabel>
+
+            {malLoading ? (
+              <div className="space-y-2 mt-auto"><SkeletonLine w="w-20" /><SkeletonLine w="w-16" /></div>
+            ) : malData ? (
+              <div className="mt-auto space-y-4">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <StatNumber size="lg">{malData.totalWatched ?? 0}</StatNumber>
+                    <StatCaption>Completed</StatCaption>
+                  </div>
+                  <div className="text-right">
+                    <StatNumber size="sm">{malData.daysWatched ?? 0}</StatNumber>
+                    <StatCaption>Days watched</StatCaption>
+                  </div>
+                </div>
+                <div className="space-y-1 border-t dark:border-white/5 border-zinc-400/50 pt-3">
+                  <p className="text-[10px] text-zinc-600 uppercase tracking-[0.25em]">{malData.episodesWatched ?? 0} episodes · {malData.meanScore ?? "—"}/10 avg</p>
+                </div>
+              </div>
+            ) : (
+              <ApiUnavailable service="MyAnimeList" />
+            )}
+
+            <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
+              <SourceLink href="https://myanimelist.net/profile/reizoku" label="myanimelist.net/profile/reizoku" />
             </div>
           </GridCell>
 
@@ -277,9 +299,11 @@ export default function MetricsPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-[10px] text-zinc-500 line-clamp-1 italic font-light tracking-wide">
-                      {repo.description ?? "No description"}
-                    </p>
+                    {repo.description && (
+                      <p className="text-[10px] text-zinc-500 line-clamp-1 font-light tracking-wide">
+                        {repo.description}
+                      </p>
+                    )}
                   </a>
                 ))
               ) : (
@@ -288,7 +312,7 @@ export default function MetricsPage() {
             </div>
 
             <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
-              <SourceLink href="https://github.com/TheManishCode?tab=repositories" label="github.com/TheManishCode — sorted by last push" />
+              <SourceLink href="https://github.com/TheManishCode?tab=repositories" label="github.com/TheManishCode" />
             </div>
           </GridCell>
 
@@ -296,7 +320,7 @@ export default function MetricsPage() {
           <GridCell span={2} mobileSpan={2} minHeight="min-h-[360px]" className="!justify-start"
             href="https://github.com/TheManishCode">
 
-            <CellLabel>Projects · Featured Deployments</CellLabel>
+            <CellLabel>Featured Projects</CellLabel>
 
             <div className="space-y-5 mt-4 flex-1">
               {projectsLoading ? (
@@ -322,9 +346,11 @@ export default function MetricsPage() {
                         {p.status ?? "Active"}
                       </span>
                     </div>
-                    <p className="text-[10px] text-zinc-500 line-clamp-2 italic font-light tracking-wide mt-2">
-                      {p.description ?? "—"}
-                    </p>
+                    {p.description && (
+                      <p className="text-[10px] text-zinc-500 line-clamp-2 font-light tracking-wide mt-2">
+                        {p.description}
+                      </p>
+                    )}
                     <div className="flex justify-between items-center mt-3">
                       <span className="text-[9px] text-zinc-600 uppercase tracking-[0.22em] font-bold">{p.stack ?? ""}</span>
                       <div className="flex gap-4">
@@ -355,10 +381,10 @@ export default function MetricsPage() {
           </GridCell>
 
           {/* ── GITHUB ACCOUNT ───────────────────────────────────────────────── */}
-          <GridCell span={1} minHeight="min-h-[240px]"
+          <GridCell span={2} mobileSpan={2} minHeight="min-h-[240px]"
             href="https://github.com/TheManishCode">
 
-            <CellLabel>GitHub · Account Stats</CellLabel>
+            <CellLabel>GitHub · Account</CellLabel>
 
             {githubImpactLoading ? (
               <div className="space-y-5 mt-auto">
@@ -373,14 +399,14 @@ export default function MetricsPage() {
                   </div>
                   <div className="text-right">
                     <StatNumber size="md">{githubImpact.stars ?? 0}</StatNumber>
-                    <StatCaption>Stars earned</StatCaption>
+                    <StatCaption>Stars</StatCaption>
+                  </div>
+                  <div className="text-right">
+                    <StatNumber size="md">{githubImpact.followers ?? 0}</StatNumber>
+                    <StatCaption>Followers</StatCaption>
                   </div>
                 </div>
-                <div className="space-y-1 border-t dark:border-white/5 border-zinc-400/50 pt-3">
-                  <p className="text-[10px] text-zinc-600 uppercase tracking-[0.25em]">{githubImpact.followers ?? 0} followers</p>
-                  <p className="text-[10px] text-zinc-600 uppercase tracking-[0.25em]">{githubImpact.commits ?? 0} commits (est.)</p>
-                  <p className="text-[9px] text-zinc-600 italic uppercase tracking-widest">{lastActiveLabel}</p>
-                </div>
+                <p className="text-[10px] text-zinc-500 uppercase tracking-[0.25em] border-t dark:border-white/5 border-zinc-400/50 pt-3">{lastActiveLabel}</p>
               </div>
             ) : (
               <ApiUnavailable service="GitHub" />
@@ -392,7 +418,7 @@ export default function MetricsPage() {
           </GridCell>
 
           {/* ── GITHUB LANGUAGES ─────────────────────────────────────────────── */}
-          <GridCell span={1} minHeight="min-h-[240px]"
+          <GridCell span={2} mobileSpan={2} minHeight="min-h-[240px]"
             href="https://github.com/TheManishCode?tab=repositories">
 
             <CellLabel>GitHub · Top Languages</CellLabel>
@@ -412,66 +438,29 @@ export default function MetricsPage() {
             </div>
 
             <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
-              <SourceLink href="https://github.com/TheManishCode?tab=repositories" label="calculated from repo byte counts" />
-            </div>
-          </GridCell>
-
-          {/* ── MAL ──────────────────────────────────────────────────────────── */}
-          <GridCell span={1} minHeight="min-h-[240px]"
-            href="https://myanimelist.net/profile/reizoku">
-
-            <CellLabel>MyAnimeList · Watch Stats</CellLabel>
-
-            {malLoading ? (
-              <div className="space-y-2 mt-auto"><SkeletonLine w="w-20" /><SkeletonLine w="w-16" /></div>
-            ) : malData ? (
-              <div className="mt-auto space-y-4">
-                <div className="flex justify-between items-end">
-                  <div>
-                    <StatNumber size="lg">{malData.totalWatched ?? 0}</StatNumber>
-                    <StatCaption>Titles completed</StatCaption>
-                  </div>
-                  <div className="text-right">
-                    <StatNumber size="sm">{malData.daysWatched ?? 0}</StatNumber>
-                    <StatCaption>Days watched</StatCaption>
-                  </div>
-                </div>
-                <div className="space-y-1 border-t dark:border-white/5 border-zinc-400/50 pt-3">
-                  <p className="text-[10px] text-zinc-600 uppercase tracking-[0.25em]">{malData.episodesWatched ?? 0} episodes total</p>
-                  <p className="text-[10px] text-zinc-600 uppercase tracking-[0.25em]">Mean score: {malData.meanScore ?? "—"} / 10</p>
-                  {(malData.watching ?? 0) > 0 && (
-                    <p className="text-[10px] text-zinc-600 uppercase tracking-[0.25em]">{malData.watching} currently watching</p>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <ApiUnavailable service="MyAnimeList" />
-            )}
-
-            <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
-              <SourceLink href="https://myanimelist.net/profile/reizoku" label="myanimelist.net/profile/reizoku" />
+              <SourceLink href="https://github.com/TheManishCode?tab=repositories" label="github.com/TheManishCode" />
             </div>
           </GridCell>
 
           {/* ── EDUCATION ────────────────────────────────────────────────────── */}
           <GridCell span={2} mobileSpan={2} minHeight="min-h-[160px]">
             <div className="flex items-start justify-between">
-              <CellLabel>Education · VTU B.E. Computer Science</CellLabel>
+              <CellLabel>Education</CellLabel>
               <span className="text-[9px] text-zinc-500 border border-zinc-400/50 dark:border-white/10 px-2 py-0.5 uppercase tracking-wider shrink-0">2022–2026</span>
             </div>
             <p className="text-[10px] text-zinc-500 leading-relaxed mt-auto">
-              Bachelor of Engineering — Visvesvaraya Technological University. Focus: Data Engineering, MLOps, Responsible AI, NLP.
+              B.E. Computer Science — Visvesvaraya Technological University
             </p>
           </GridCell>
 
           {/* ── CERTIFICATION ────────────────────────────────────────────────── */}
           <GridCell span={2} mobileSpan={2} minHeight="min-h-[160px]">
             <div className="flex justify-between items-start">
-              <CellLabel>Certification · Data Governance</CellLabel>
+              <CellLabel>Certification</CellLabel>
               <span className="text-[9px] text-emerald-600 dark:text-emerald-500/70 border border-emerald-600/30 dark:border-emerald-500/20 px-2 py-0.5 uppercase tracking-wider shrink-0">Certified</span>
             </div>
             <p className="text-[10px] text-zinc-500 leading-relaxed mt-auto">
-              Synapse professional certification — data privacy, policy management, and governance frameworks.
+              Synapse — Data Governance & Privacy
             </p>
           </GridCell>
 
@@ -480,7 +469,7 @@ export default function MetricsPage() {
             href="https://www.duolingo.com/profile/ManishP158369">
 
             <div className="flex justify-between items-start">
-              <CellLabel>Duolingo · Language Learning Progress</CellLabel>
+              <CellLabel>Duolingo</CellLabel>
               <svg className="w-5 h-5 text-[#58CC02] shrink-0 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
               </svg>
@@ -496,7 +485,7 @@ export default function MetricsPage() {
                 </div>
                 <div>
                   <StatNumber size="md">{(duolingoData.totalXp ?? 0).toLocaleString()}</StatNumber>
-                  <StatCaption>Total XP earned</StatCaption>
+                  <StatCaption>Total XP</StatCaption>
                 </div>
                 <div>
                   <span className="text-lg font-semibold text-[#58CC02] uppercase leading-none">
@@ -506,10 +495,7 @@ export default function MetricsPage() {
                 </div>
               </div>
             ) : (
-              <div className="mt-auto">
-                <p className="text-[10px] text-zinc-500 italic">Duolingo public API is currently unavailable for this account.</p>
-                <p className="text-[9px] text-zinc-600 mt-1 uppercase tracking-widest">Profile: ManishP158369</p>
-              </div>
+              <ApiUnavailable service="Duolingo" />
             )}
 
             <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
@@ -521,7 +507,7 @@ export default function MetricsPage() {
 
         <footer className="mt-14 text-center">
           <p className="text-[10px] text-zinc-700 uppercase tracking-[0.5em] font-medium">
-            All metrics auto-refresh every 60s · Pulled live from external APIs
+            Auto-refreshes every 60s
           </p>
         </footer>
       </div>

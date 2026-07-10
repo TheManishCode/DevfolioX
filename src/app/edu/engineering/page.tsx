@@ -8,6 +8,7 @@
 import { Metadata } from "next"
 import Link from "next/link"
 import { GraduationCap, BookOpen, Lightbulb, ArrowUpRight, Hexagon } from "lucide-react"
+import { getContent } from "@/lib/content"
 import educationData from "@/data/education.json"
 
 export const metadata: Metadata = {
@@ -101,8 +102,9 @@ const SemesterBlock = ({ semester }: { semester: Semester }) => {
    PAGE
 ============================================================================= */
 
-export default function EngineeringEducationPage() {
-    const { education, supplementaryLearning, academicCapabilities } = educationData
+export default async function EngineeringEducationPage() {
+    const content = await getContent("education", educationData)
+    const { education, supplementaryLearning, academicCapabilities } = content
     if (!education?.degree) return null
 
     const degree = education.degree
