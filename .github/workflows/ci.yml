@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
+  NEXTAUTH_SECRET: "ci-placeholder-secret"
+  NEXTAUTH_URL: "http://localhost:3000"
+  GITHUB_ID: "ci-placeholder"
+  GITHUB_SECRET: "ci-placeholder"
+  LINKEDIN_CLIENT_ID: "ci-placeholder"
+  LINKEDIN_CLIENT_SECRET: "ci-placeholder"
+
+jobs:
+  build-and-test:
+    name: Lint, typecheck, test, build, audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit
+        run: npm audit --audit-level=moderate
