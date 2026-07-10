@@ -11,8 +11,7 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-const swrConfig     = { refreshInterval: 60000, revalidateOnFocus: true, dedupingInterval: 2000 };
-const swrConfigFast = { refreshInterval: 30000, revalidateOnFocus: true, dedupingInterval: 2000 };
+const swrConfig = { refreshInterval: 60000, revalidateOnFocus: true, dedupingInterval: 2000 };
 
 // =============================================================================
 // PRIMITIVES
@@ -141,7 +140,6 @@ export default function MetricsPage() {
   const { data: featuredProjects,isLoading: projectsLoading }     = useSWR("/api/projects?type=featured",                   fetcher, swrConfig);
   const { data: leetcodeData,    isLoading: leetcodeLoading }     = useSWR("/api/leetcode",                                 fetcher, swrConfig);
   const { data: wakatimeData,    isLoading: wakatimeLoading }     = useSWR("/api/wakatime",                                 fetcher, swrConfig);
-  const { data: spotifyData,     isLoading: spotifyLoading }      = useSWR("/api/now-playing",                              fetcher, swrConfigFast);
   const { data: malData,         isLoading: malLoading }          = useSWR("/api/mal?type=stats",                           fetcher, swrConfig);
   const { data: duolingoData,    isLoading: duolingoLoading }     = useSWR("/api/duolingo",                                 fetcher, swrConfig);
 
@@ -415,40 +413,6 @@ export default function MetricsPage() {
 
             <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
               <SourceLink href="https://github.com/TheManishCode?tab=repositories" label="calculated from repo byte counts" />
-            </div>
-          </GridCell>
-
-          {/* ── SPOTIFY ──────────────────────────────────────────────────────── */}
-          <GridCell span={1} minHeight="min-h-[240px]"
-            href="https://open.spotify.com/user/rixscx">
-
-            <div className="flex justify-between items-start">
-              <CellLabel>{spotifyData?.isPlaying ? "Spotify · Now Playing" : "Spotify · Last Played"}</CellLabel>
-              <svg className="w-5 h-5 text-[#1DB954] shrink-0 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-              </svg>
-            </div>
-
-            <div className="mt-auto">
-              {spotifyLoading ? (
-                <div className="h-14 w-full animate-pulse dark:bg-white/5 bg-zinc-400/30 rounded-lg" />
-              ) : spotifyData && !spotifyData.error ? (
-                <>
-                  <h3 className="text-xl sm:text-2xl font-bold dark:text-white text-zinc-900 tracking-tight mb-1 line-clamp-2">
-                    {spotifyData.title ?? "Nothing playing"}
-                  </h3>
-                  <p className="text-[11px] text-zinc-500 uppercase tracking-[0.2em] font-medium line-clamp-1">
-                    {spotifyData.artist ?? "Standby"}
-                  </p>
-                  {spotifyData.isPlaying && <div className="mt-2"><LiveDot /></div>}
-                </>
-              ) : (
-                <p className="text-[10px] text-zinc-600 italic">Nothing playing right now</p>
-              )}
-            </div>
-
-            <div className="mt-6 pt-4 border-t dark:border-white/5 border-zinc-400/30">
-              <SourceLink href="https://open.spotify.com" label="spotify.com — live playback API" />
             </div>
           </GridCell>
 

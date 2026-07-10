@@ -1,5 +1,6 @@
 import { getCompletedAnime, getWatchingAnime, getAnimeStats } from '@/lib/mal/server';
 import { NextResponse } from 'next/server';
+import { rateLimit, getClientIp } from '@/lib/rateLimit';
 
 /**
  * MAL API Route - Force dynamic rendering for real-time data
@@ -9,6 +10,14 @@ export const fetchCache = 'force-no-store';
 export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
+    const { allowed, retryAfterSeconds } = rateLimit(`mal:${getClientIp(request)}`, 30, 60_000);
+    if (!allowed) {
+        return NextResponse.json(
+            { error: 'Too many requests' },
+            { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+        );
+    }
+
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'completed';
 

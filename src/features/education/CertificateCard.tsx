@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { X, ExternalLink, Clock, BarChart3, BadgeCheck, ChevronLeft, ChevronRight } from "lucide-react"
 
 interface EnrichedData {
@@ -26,6 +26,24 @@ export function CertificateCard({ cert }: { cert: Certificate }) {
     const [activeFace, setActiveFace] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const imageSrc = /^https?:\/\//.test(cert.image) ? cert.image : `/certificates/${cert.image}`
+    const closeButtonRef = useRef<HTMLButtonElement>(null)
+    const triggerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (!isModalOpen) return
+
+        const trigger = triggerRef.current
+        closeButtonRef.current?.focus()
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setIsModalOpen(false)
+        }
+        document.addEventListener("keydown", onKeyDown)
+        return () => {
+            document.removeEventListener("keydown", onKeyDown)
+            trigger?.focus()
+        }
+    }, [isModalOpen])
 
     if (!cert.image || !cert.verifyUrl) return null
 
@@ -53,8 +71,18 @@ export function CertificateCard({ cert }: { cert: Certificate }) {
 
                 {/* Card Viewport */}
                 <div
+                    ref={triggerRef}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Expand ${cert.title} certificate`}
                     className="relative w-full aspect-[4/3] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 transition-all duration-300 cursor-pointer hover:shadow-xl dark:hover:shadow-black/40 hover:-translate-y-1"
                     onClick={() => setIsModalOpen(true)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            setIsModalOpen(true)
+                        }
+                    }}
                 >
                     {/* Face Slider */}
                     <div
@@ -143,7 +171,7 @@ export function CertificateCard({ cert }: { cert: Certificate }) {
                                         ? "text-zinc-300 dark:text-zinc-700 cursor-not-allowed"
                                         : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                     }`}
-                                aria-label="View certificate"
+                                aria-label="Show certificate image"
                             >
                                 <ChevronLeft size={14} />
                             </button>
@@ -161,7 +189,7 @@ export function CertificateCard({ cert }: { cert: Certificate }) {
                                         ? "text-zinc-300 dark:text-zinc-700 cursor-not-allowed"
                                         : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                     }`}
-                                aria-label="View details"
+                                aria-label="Show certificate details"
                             >
                                 <ChevronRight size={14} />
                             </button>
@@ -177,13 +205,16 @@ export function CertificateCard({ cert }: { cert: Certificate }) {
                     onClick={() => setIsModalOpen(false)}
                 >
                     <div
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="certificate-modal-title"
                         className="relative w-full max-w-4xl bg-zinc-900 rounded-2xl overflow-hidden shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex items-start justify-between p-5 border-b border-zinc-800">
                             <div className="flex-1 min-w-0 pr-4">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <p className="font-semibold text-zinc-100">{cert.title}</p>
+                                    <p id="certificate-modal-title" className="font-semibold text-zinc-100">{cert.title}</p>
                                     <BadgeCheck size={16} className="text-zinc-500" />
                                 </div>
                                 <p className="text-sm text-zinc-400 mt-1">{cert.issuer}</p>
@@ -193,19 +224,22 @@ export function CertificateCard({ cert }: { cert: Certificate }) {
                                 </div>
                             </div>
                             <button
+                                ref={closeButtonRef}
                                 onClick={() => setIsModalOpen(false)}
+                                aria-label="Close certificate details"
                                 className="p-2 rounded-lg hover:bg-zinc-800 transition-colors"
                             >
                                 <X size={18} className="text-zinc-400" />
                             </button>
                         </div>
 
-                        <div className="bg-zinc-100 p-6">
-                            <img
+                        <div className="relative bg-zinc-100 p-6 h-[60vh]">
+                            <Image
                                 src={imageSrc}
                                 alt={cert.title}
-                                className="w-full h-auto rounded-lg shadow-lg"
-                                style={{ maxHeight: '60vh', objectFit: 'contain', margin: '0 auto', display: 'block' }}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 896px"
+                                className="object-contain"
                             />
                         </div>
 

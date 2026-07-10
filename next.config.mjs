@@ -17,7 +17,7 @@ const securityHeaders = [
       // frame-src: allow youtube embeds
       "frame-src 'self' https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com",
       // connect-src: APIs used by the site + Vercel Analytics
-      "connect-src 'self' https://api.github.com https://api.wakatime.com https://api.myanimelist.net https://api.spotify.com https://accounts.spotify.com https://alfa-leetcode-api.onrender.com https://www.duolingo.com https://api.steampowered.com https://store.steampowered.com https://api.linkedin.com https://www.linkedin.com https://discord.com https://api.weatherapi.com https://github-contributions-api.jogruber.de https://vitals.vercel-insights.com https://va.vercel-scripts.com wss:",
+      "connect-src 'self' https://api.github.com https://api.wakatime.com https://api.myanimelist.net https://alfa-leetcode-api.onrender.com https://www.duolingo.com https://api.steampowered.com https://store.steampowered.com https://api.linkedin.com https://www.linkedin.com https://discord.com https://api.weatherapi.com https://github-contributions-api.jogruber.de https://vitals.vercel-insights.com https://va.vercel-scripts.com wss:",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

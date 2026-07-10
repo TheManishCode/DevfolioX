@@ -22,29 +22,15 @@ export async function enrichCertificate(
 ): Promise<EnrichedCertificateData | null> {
     const platform = detectPlatform(certificate.verifyUrl)
 
-
-
     switch (platform) {
         case 'coursera':
             return enrichFromCoursera(certificate.verifyUrl)
 
+        // TODO: credly/aws/google resolvers not yet implemented
         case 'credly':
-            // TODO: Implement Credly resolver
-            // TODO: Credly resolver not yet implemented
-            return null
-
         case 'aws':
-            // TODO: Implement AWS resolver
-            // TODO: AWS resolver not yet implemented
-            return null
-
         case 'google':
-            // TODO: Implement Google resolver
-            // TODO: Google resolver not yet implemented
-            return null
-
         default:
-
             return null
     }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getWakaTimeStats, getWakaTimeToday } from '@/lib/wakatime/server';
+import { rateLimit, getClientIp } from '@/lib/rateLimit';
 
 /**
  * CACHING: 5 minute ISR - WakaTime data updates hourly at most
@@ -8,6 +9,14 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 300;
 
 export async function GET(request: Request) {
+    const { allowed, retryAfterSeconds } = rateLimit(`wakatime:${getClientIp(request)}`, 30, 60_000);
+    if (!allowed) {
+        return NextResponse.json(
+            { error: 'Too many requests' },
+            { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+        );
+    }
+
     const apiKey = process.env.WAKATIME_API_KEY;
 
     if (!apiKey) {

@@ -1,6 +1,6 @@
 {
     "title": "devfolio",
-    "description": "My professional digital garden and portfolio website. Built with Next.js 15, React 18, TypeScript, and Tailwind CSS 4. Features dynamic GitHub integration, real-time Spotify tracking, anime and gaming pages, and a bespoke design system.",
+    "description": "My professional digital garden and portfolio website. Built with Next.js 15, React 18, TypeScript, and Tailwind CSS 4. Features dynamic GitHub integration, anime and gaming pages, and a bespoke design system.",
     "categories": [
         "creations",
         "now",
@@ -22,7 +22,6 @@
         "TypeScript",
         "Tailwind CSS 4",
         "GitHub API",
-        "Spotify API",
         "NextAuth.js"
     ]
 }

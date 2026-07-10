@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getDuolingoStats } from '@/lib/duolingo/server';
+import { rateLimit, getClientIp } from '@/lib/rateLimit';
 
 // Force dynamic rendering - real-time data
 export const dynamic = 'force-dynamic';
@@ -7,6 +8,14 @@ export const fetchCache = 'force-no-store';
 export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
+    const { allowed, retryAfterSeconds } = rateLimit(`duolingo:${getClientIp(request)}`, 30, 60_000);
+    if (!allowed) {
+        return NextResponse.json(
+            { error: 'Too many requests' },
+            { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+        );
+    }
+
     const { searchParams } = new URL(request.url);
     const username = searchParams.get('username') || process.env.DUOLINGO_USERNAME;
 

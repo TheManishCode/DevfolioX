@@ -14,7 +14,6 @@ A personal portfolio and digital garden built with Next.js App Router, React, Ty
 - GitHub profile, repository, contribution, and project metadata integrations
 - MyAnimeList anime watchlist and stats
 - Epic/static gaming library plus optional Steam API route
-- Spotify now-playing widget and OAuth helper route
 - WakaTime, LeetCode, Duolingo, and WeatherAPI integrations
 - NextAuth-based GitHub and LinkedIn sign-in flow
 - Interactive anime and workspace UI sections

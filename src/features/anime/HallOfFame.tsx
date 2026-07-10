@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import animeData from '@/data/anime.json';
 import { FaStar, FaSpotify, FaYoutube, FaPlay, FaMusic, FaTimes } from 'react-icons/fa';
 import { SiMyanimelist } from 'react-icons/si';
@@ -95,15 +96,13 @@ export default function HallOfFame() {
                     {activeAnime && (
                         <>
                             {/* Full-width Banner Image */}
-                            <img
+                            <Image
                                 src={displayImage}
                                 alt={activeAnime.title}
-                                className="w-full h-full object-cover object-center"
-                                style={{
-                                    objectFit: 'cover',
-                                    objectPosition: 'center',
-                                }}
-                                loading="eager"
+                                fill
+                                sizes="100vw"
+                                className="object-cover object-center"
+                                priority
                             />
 
                             {/* Gradient overlay for text readability */}
@@ -265,11 +264,12 @@ export default function HallOfFame() {
                                 `}
                             >
                                 {/* Thumbnail background (cropped preview) */}
-                                <img
+                                <Image
                                     src={thumbImage}
                                     alt={anime.title}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                    loading="lazy"
+                                    fill
+                                    sizes="(max-width: 768px) 33vw, 150px"
+                                    className="object-cover"
                                 />
 
                                 {/* Overlay */}

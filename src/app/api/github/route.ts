@@ -6,6 +6,7 @@
  * - ?type=impact&username=X - Returns impact metrics (commits, PRs, stars, etc)
  */
 import { NextResponse } from 'next/server';
+import { rateLimit, getClientIp } from '@/lib/rateLimit';
 
 /**
  * CACHING STRATEGY:
@@ -47,6 +48,14 @@ async function fetchGitHub(endpoint: string, token?: string) {
 }
 
 export async function GET(request: Request) {
+    const { allowed, retryAfterSeconds } = rateLimit(`github:${getClientIp(request)}`, 30, 60_000);
+    if (!allowed) {
+        return NextResponse.json(
+            { error: 'Too many requests' },
+            { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+        );
+    }
+
     const { searchParams } = new URL(request.url);
     const username = searchParams.get('username') || process.env.GITHUB_USERNAME || 'TheManishCode';
     const type = searchParams.get('type') || 'profile';

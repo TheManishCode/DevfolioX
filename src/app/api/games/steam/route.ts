@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { rateLimit, getClientIp } from "@/lib/rateLimit"
 
 interface SteamOwnedGame {
   appid: number
@@ -94,6 +95,14 @@ function getImageUrl(game: SteamOwnedGame | SteamRecentGame): string | null {
 }
 
 export async function GET(request: NextRequest) {
+  const { allowed, retryAfterSeconds } = rateLimit(`steam:${getClientIp(request)}`, 30, 60_000)
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(retryAfterSeconds) } }
+    )
+  }
+
   const apiKey = process.env.STEAM_API_KEY
   const steamId = process.env.STEAM_ID
 
