@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,6 +11,14 @@ const ALLOWED_IMAGE_HOSTS = new Set([
 ])
 
 export async function GET(request: NextRequest) {
+    const { allowed, retryAfterSeconds } = rateLimit(`snake:${getClientIp(request)}`, 30, 60_000)
+    if (!allowed) {
+        return NextResponse.json(
+            { error: 'Too many requests' },
+            { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+        )
+    }
+
     const searchParams = request.nextUrl.searchParams
     const url = searchParams.get('url')
 
