@@ -7,12 +7,31 @@
         "description": "Short description for the card preview.",
         "publishedAt": "2026-01-01",
         "readingTime": "5 min read",
-        "tags": ["Tag1", "Tag2"],
+        "tags": [
+            "Tag1",
+            "Tag2"
+        ],
         "featured": false
     },
-    "articles": [],
+    "articles": [
+        {
+            "id": "aftershock",
+            "title": "Aftershock: Answering “What Breaks If I Change This?” with a FalkorDB Code Graph",
+            "slug": "aftershock-falkordb-code-graph",
+            "description": "How I built a change-impact engine for Graph Hacks that indexes code into a FalkorDB property graph and answers dependency, test-selection and root-cause questions with evidence.",
+            "publishedAt": "2026-10-18",
+            "readingTime": "6 min read",
+            "tags": [
+                "FalkorDB",
+                "Graph Databases",
+                "Python",
+                "Hackathon"
+            ],
+            "featured": true
+        }
+    ],
     "metadata": {
         "description": "Blog articles, tutorials, and technical writings",
-        "lastUpdated": null
+        "lastUpdated": "2026-10-18"
     }
 }
