@@ -2,7 +2,7 @@ A one-line change to a money helper should not be scary. In most codebases it is
 
 For the WeMakeDevs × FalkorDB *Graph Hacks* hackathon I built **Aftershock** to answer that question before the merge. It reads a repository, stores it as a property graph in FalkorDB, and answers "what breaks if I change this?" by walking the graph. Every answer comes with the path it took and how sure it is about each step.
 
-The code is on [GitHub](https://github.com/TheManishCode/aftershocks---Graph-Hacks), and the web UI is at [aftershock-eta.vercel.app](https://aftershock-eta.vercel.app).
+The code is on [GitHub](https://github.com/TheManishCode/aftershocks---Graph-Hacks), and the web UI is at [aftershock-two.vercel.app](https://aftershock-two.vercel.app).
 
 ## Why grep is the wrong tool
 
