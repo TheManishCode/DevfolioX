@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a8f98"/></marker></defs>
+  <rect width="1200" height="600" fill="#101113"/>
+  <text x="40" y="52" fill="#c6ff1a" font-size="13" letter-spacing="3">FIG. 2 — THE GRAPH MODEL</text>
+  <text x="40" y="80" fill="#e8e8e8" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="600">What a repository looks like once it is in FalkorDB</text>
+  <g font-size="15" text-anchor="middle">
+    <rect x="90" y="250" width="150" height="56" rx="28" fill="#17191c" stroke="#5a5f68"/><text x="165" y="284" fill="#e8e8e8">:File</text>
+    <rect x="470" y="250" width="170" height="56" rx="28" fill="#151a0b" stroke="#c6ff1a" stroke-width="1.5"/><text x="555" y="284" fill="#c6ff1a">:Symbol</text>
+    <rect x="90" y="470" width="150" height="56" rx="28" fill="#17191c" stroke="#5a5f68"/><text x="165" y="504" fill="#e8e8e8">:Person</text>
+    <rect x="90" y="120" width="150" height="56" rx="28" fill="#17191c" stroke="#5a5f68"/><text x="165" y="154" fill="#e8e8e8">:External</text>
+    <rect x="900" y="250" width="170" height="56" rx="28" fill="#17191c" stroke="#5a5f68"/><text x="985" y="284" fill="#e8e8e8">:TestRun</text>
+  </g>
+  <g stroke="#8a8f98" stroke-width="1.5" fill="none" marker-end="url(#a)">
+    <line x1="242" y1="278" x2="466" y2="278"/>
+    <line x1="165" y1="248" x2="165" y2="180"/>
+    <line x1="165" y1="468" x2="165" y2="310"/>
+    <path d="M200 312 C 240 380, 120 380, 140 314"/>
+    <path d="M520 248 C 470 150, 640 150, 590 246"/>
+    <path d="M610 310 C 680 420, 480 420, 520 312"/>
+    <line x1="896" y1="270" x2="644" y2="270"/>
+    <line x1="896" y1="290" x2="644" y2="290"/>
+  </g>
+  <g font-size="12" fill="#c8cbd0">
+    <text x="300" y="268">DEFINES</text>
+    <text x="175" y="220">USES</text>
+    <text x="175" y="445">AUTHORED</text>
+    <text x="40" y="372">IMPORTS · CO_CHANGES</text>
+    <text x="470" y="150">CALLS {how, confidence, args}</text>
+    <text x="380" y="440">INHERITS · OVERRIDES · CONTAINS · COVERS</text>
+    <text x="700" y="262">RAN {outcome}</text>
+    <text x="700" y="310">SUSPECTS {rank, score}</text>
+  </g>
+  <rect x="740" y="400" width="430" height="150" rx="6" fill="#17191c" stroke="#2c2f34"/>
+  <text x="760" y="430" fill="#8a8f98" font-size="12" letter-spacing="2">ON EVERY CALLS EDGE</text>
+  <g font-size="13" fill="#e8e8e8"><text x="760" y="460">how         local | import | module-attr | inferred</text><text x="760" y="486">confidence  0.0 – 1.0, from how it was resolved</text><text x="760" y="512">args        argument count at the call site</text><text x="760" y="538">lines       where the call happens</text></g>
+</svg>

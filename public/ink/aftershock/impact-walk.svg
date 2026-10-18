@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a8f98"/></marker></defs>
+  <rect width="1200" height="520" fill="#101113"/>
+  <text x="40" y="52" fill="#c6ff1a" font-size="13" letter-spacing="3">FIG. 3 — HOW IMPACT SPREADS</text>
+  <text x="40" y="80" fill="#e8e8e8" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="600">A probability walk backwards along CALLS edges</text>
+  <g font-size="12" fill="#8a8f98" letter-spacing="2"><text x="70" y="130">SEED</text><text x="340" y="130">HOP 1</text><text x="640" y="130">HOP 2</text><text x="940" y="130">HOP 3</text></g>
+  <rect x="50" y="230" width="200" height="60" rx="6" fill="#151a0b" stroke="#c6ff1a" stroke-width="1.5"/>
+  <text x="70" y="256" fill="#c6ff1a" font-size="14">Money.times</text><text x="70" y="278" fill="#8a8f98" font-size="12">body change</text>
+  <g font-size="13">
+    <rect x="320" y="160" width="220" height="56" rx="6" fill="#17191c" stroke="#5a5f68"/><text x="338" y="184" fill="#e8e8e8">InterestPolicy.apply</text><text x="338" y="204" fill="#8a8f98" font-size="11">caller of Money.times</text>
+    <rect x="320" y="300" width="220" height="56" rx="6" fill="#17191c" stroke="#5a5f68"/><text x="338" y="324" fill="#e8e8e8">test_times_rounds…</text><text x="338" y="344" fill="#8a8f98" font-size="11">repo test</text>
+    <rect x="620" y="160" width="220" height="56" rx="6" fill="#17191c" stroke="#5a5f68"/><text x="638" y="184" fill="#e8e8e8">Bank.month_end</text><text x="638" y="204" fill="#8a8f98" font-size="11">caller of InterestPolicy.apply</text>
+    <rect x="920" y="160" width="240" height="56" rx="6" fill="#17191c" stroke="#5a5f68" stroke-dasharray="4 3"/><text x="938" y="184" fill="#e8e8e8">@lib/compliance/…</text><text x="938" y="204" fill="#8a8f98" font-size="11">test_month_end_never_overdraws</text>
+  </g>
+  <g stroke="#8a8f98" stroke-width="1.5" fill="none" marker-end="url(#a)">
+    <path d="M252 250 C 285 250, 290 188, 316 188"/><path d="M252 270 C 285 270, 290 328, 316 328"/>
+    <line x1="542" y1="188" x2="616" y2="188"/><line x1="842" y1="188" x2="916" y2="188"/>
+  </g>
+  <rect x="40" y="390" width="1120" height="100" rx="6" fill="#17191c" stroke="#2c2f34"/>
+  <text x="60" y="420" fill="#8a8f98" font-size="12" letter-spacing="2">THE RULE</text>
+  <text x="60" y="450" fill="#e8e8e8" font-size="14">p(node) = noisy-OR over its callers of  p(caller) × edge weight × edge confidence × transmit</text>
+  <text x="60" y="474" fill="#8a8f98" font-size="12">priors (weights.json): body 0.35 · signature 0.85 · rename/delete 1.0 · transmit 0.5 · tiers: definite ≥ 0.9, likely ≥ 0.5</text>
+</svg>

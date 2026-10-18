@@ -17,6 +17,8 @@ interface Article {
     readingTime: string
     tags: string[]
     featured?: boolean
+    video?: string
+    poster?: string
 }
 
 const articles = articlesData.articles as Article[]
@@ -85,6 +87,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 </div>
             </header>
 
+            {article.video && (
+                <figure className="mb-12">
+                    <video
+                        src={article.video}
+                        poster={article.poster}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-black"
+                    />
+                    <figcaption className="mt-3 text-xs text-zinc-500">Demo: the full walkthrough on the ledger repository, recorded from the running app.</figcaption>
+                </figure>
+            )}
+
             <article
                 className="text-zinc-700 dark:text-zinc-300 leading-relaxed space-y-5
                     [&_h2]:font-incognito [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-zinc-900 dark:[&_h2]:text-zinc-100 [&_h2]:mt-12 [&_h2]:mb-4
@@ -96,7 +112,25 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top [&_td]:border-b [&_td]:border-zinc-200 dark:[&_td]:border-zinc-800"
             >
                 <div className="overflow-x-auto [&>*+*]:mt-5">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+                    <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                            // A paragraph holding only an image renders as a figure; the image title becomes its caption.
+                            p: ({ node, children }) => {
+                                const only = node?.children.length === 1 && node.children[0].type === "element" && node.children[0].tagName === "img"
+                                return only ? <>{children}</> : <p>{children}</p>
+                            },
+                            img: ({ src, alt, title }) => (
+                                <figure className="my-10">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={typeof src === "string" ? src : undefined} alt={alt ?? ""} loading="lazy" className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800" />
+                                    {title && <figcaption className="mt-3 text-xs text-zinc-500">{title}</figcaption>}
+                                </figure>
+                            ),
+                        }}
+                    >
+                        {body}
+                    </ReactMarkdown>
                 </div>
             </article>
         </main>

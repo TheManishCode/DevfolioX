@@ -16,18 +16,20 @@
     "articles": [
         {
             "id": "aftershock",
-            "title": "Aftershock: Answering “What Breaks If I Change This?” with a FalkorDB Code Graph",
+            "title": "Aftershock: Knowing What Breaks Before You Merge",
             "slug": "aftershock-falkordb-code-graph",
-            "description": "How I built a change-impact engine for Graph Hacks that indexes code into a FalkorDB property graph and answers dependency, test-selection and root-cause questions with evidence.",
+            "description": "How I turned a codebase into a FalkorDB graph to answer change impact, test selection and root-cause questions, with the evidence behind every answer.",
             "publishedAt": "2026-10-18",
-            "readingTime": "6 min read",
+            "readingTime": "8 min read",
             "tags": [
                 "FalkorDB",
                 "Graph Databases",
                 "Python",
                 "Hackathon"
             ],
-            "featured": true
+            "featured": true,
+            "video": "/ink/aftershock/demo.mp4",
+            "poster": "/ink/aftershock/demo-poster.jpg"
         }
     ],
     "metadata": {

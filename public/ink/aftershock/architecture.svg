@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a8f98"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c6ff1a"/></marker>
+  </defs>
+  <rect width="1200" height="560" fill="#101113"/>
+  <text x="40" y="52" fill="#c6ff1a" font-size="13" letter-spacing="3">FIG. 1 — ARCHITECTURE</text>
+  <text x="40" y="80" fill="#e8e8e8" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="600">One engine, one graph, five ways in</text>
+
+  <!-- source -->
+  <rect x="40" y="150" width="170" height="250" rx="6" fill="#17191c" stroke="#2c2f34"/>
+  <text x="60" y="182" fill="#8a8f98" font-size="12" letter-spacing="2">SOURCE</text>
+  <text x="60" y="216" fill="#e8e8e8" font-size="15">git repo</text>
+  <text x="60" y="240" fill="#8a8f98" font-size="12">path or URL</text>
+  <text x="60" y="290" fill="#e8e8e8" font-size="15">test libraries</text>
+  <text x="60" y="314" fill="#8a8f98" font-size="12">outside pytest</text>
+  <text x="60" y="330" fill="#8a8f98" font-size="12">directories</text>
+  <text x="60" y="372" fill="#e8e8e8" font-size="15">git log</text>
+
+  <!-- ingest -->
+  <rect x="260" y="150" width="200" height="250" rx="6" fill="#17191c" stroke="#2c2f34"/>
+  <text x="280" y="182" fill="#8a8f98" font-size="12" letter-spacing="2">INGEST</text>
+  <text x="280" y="218" fill="#e8e8e8" font-size="14">discover</text>
+  <text x="280" y="250" fill="#e8e8e8" font-size="14">parse</text><text x="340" y="250" fill="#8a8f98" font-size="11">tree-sitter</text>
+  <text x="280" y="282" fill="#e8e8e8" font-size="14">resolve</text><text x="350" y="282" fill="#8a8f98" font-size="11">calls → defs</text>
+  <text x="280" y="314" fill="#e8e8e8" font-size="14">history</text><text x="350" y="314" fill="#8a8f98" font-size="11">churn, owners</text>
+  <text x="280" y="346" fill="#e8e8e8" font-size="14">pipeline</text><text x="358" y="346" fill="#8a8f98" font-size="11">incremental</text>
+  <text x="280" y="378" fill="#8a8f98" font-size="11">by content hash</text>
+
+  <!-- falkordb -->
+  <rect x="510" y="130" width="230" height="290" rx="6" fill="#151a0b" stroke="#c6ff1a" stroke-width="1.5"/>
+  <text x="530" y="164" fill="#c6ff1a" font-size="12" letter-spacing="2">FALKORDB</text>
+  <text x="530" y="198" fill="#e8e8e8" font-size="15">graph repo:&lt;name&gt;</text>
+  <g fill="#c6ff1a"><circle cx="560" cy="250" r="9"/><circle cx="640" cy="232" r="7"/><circle cx="700" cy="270" r="8"/><circle cx="600" cy="300" r="7"/><circle cx="680" cy="330" r="6"/><circle cx="560" cy="350" r="6"/></g>
+  <g stroke="#c6ff1a" stroke-opacity=".55" stroke-width="1.5"><line x1="560" y1="250" x2="640" y2="232"/><line x1="640" y1="232" x2="700" y2="270"/><line x1="560" y1="250" x2="600" y2="300"/><line x1="600" y1="300" x2="700" y2="270"/><line x1="600" y1="300" x2="680" y2="330"/><line x1="600" y1="300" x2="560" y2="350"/></g>
+  <text x="530" y="386" fill="#8a8f98" font-size="11">GRAPH.RO_QUERY for every read</text>
+  <text x="530" y="404" fill="#8a8f98" font-size="11">algo.pageRank · betweenness</text>
+
+  <!-- analysis -->
+  <rect x="790" y="150" width="170" height="250" rx="6" fill="#17191c" stroke="#2c2f34"/>
+  <text x="810" y="182" fill="#8a8f98" font-size="12" letter-spacing="2">ANALYSIS</text>
+  <g fill="#e8e8e8" font-size="14"><text x="810" y="218">impact</text><text x="810" y="248">diff</text><text x="810" y="278">paths</text><text x="810" y="308">culprit</text><text x="810" y="338">architecture</text><text x="810" y="368">ask agent</text></g>
+
+  <!-- surfaces -->
+  <g font-size="14" fill="#e8e8e8">
+    <rect x="1010" y="130" width="150" height="44" rx="6" fill="#17191c" stroke="#2c2f34"/><text x="1028" y="158">CLI</text>
+    <rect x="1010" y="186" width="150" height="44" rx="6" fill="#17191c" stroke="#2c2f34"/><text x="1028" y="214">REST + SSE</text>
+    <rect x="1010" y="242" width="150" height="44" rx="6" fill="#17191c" stroke="#2c2f34"/><text x="1028" y="270">MCP server</text>
+    <rect x="1010" y="298" width="150" height="44" rx="6" fill="#17191c" stroke="#2c2f34"/><text x="1028" y="326">GitHub Action</text>
+    <rect x="1010" y="354" width="150" height="44" rx="6" fill="#17191c" stroke="#2c2f34"/><text x="1028" y="382">Next.js UI</text>
+  </g>
+
+  <g stroke="#8a8f98" stroke-width="1.5" fill="none" marker-end="url(#a)">
+    <line x1="212" y1="275" x2="256" y2="275"/>
+    <line x1="462" y1="275" x2="506" y2="275"/>
+    <line x1="742" y1="275" x2="786" y2="275"/>
+    <path d="M962 275 H985 V152 H1006"/><path d="M985 208 H1006"/><path d="M985 264 H1006"/><path d="M985 275 V320 H1006"/><path d="M985 320 V376 H1006"/>
+  </g>
+  <text x="40" y="480" fill="#8a8f98" font-family="Inter,system-ui,sans-serif" font-size="14">All Cypher lives in one module (graph.py). Every surface calls the same analysis functions, so the CLI, the API and an AI agent over MCP get identical answers.</text>
+  <text x="40" y="506" fill="#8a8f98" font-family="Inter,system-ui,sans-serif" font-size="14">Running a repo's tests is off by default, and allowed only from the same machine.</text>
+</svg>
